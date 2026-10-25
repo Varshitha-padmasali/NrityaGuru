@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/*
+ * NrityaGuru design tokens.
+ * Warm ivory paper, deep kumkum maroon, temple-gold accents, dark ink text.
+ * Use these through Tailwind classes, e.g. bg-ivory, text-maroon, border-line.
+ */
+@theme {
+  --color-ivory: #fbf6ec;
+  --color-ivory-deep: #f3e9d7;
+  --color-paper: #fffdf8;
+  --color-maroon: #6e1423;
+  --color-maroon-dark: #4a0d18;
+  --color-maroon-soft: #f4e1e1;
+  --color-gold: #a8792c;
+  --color-gold-bright: #c99a45;
+  --color-gold-soft: #f1e3c4;
+  --color-ink: #2a1b17;
+  --color-ink-muted: #6b5a51;
+  --color-line: #e5d6bd;
+  --color-success: #2f6b4f;
+  --color-success-soft: #e3f0e8;
+  --color-warning: #8a5a00;
+  --color-warning-soft: #fbefd5;
+  --color-danger: #a4262c;
+  --color-danger-soft: #f9e3e3;
+
+  --font-display: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Source Sans 3 Variable", "Source Sans 3", system-ui, sans-serif;
+  --font-devanagari: "Tiro Devanagari Sanskrit", "Noto Serif Devanagari", serif;
+
+  --shadow-card: 0 1px 2px rgb(74 13 24 / 0.05), 0 8px 24px -12px rgb(74 13 24 / 0.18);
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-ivory);
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* A thin temple-border motif used as a section divider. */
+.temple-rule {
+  height: 10px;
+  background-image:
+    linear-gradient(135deg, var(--color-gold) 25%, transparent 25%),
+    linear-gradient(225deg, var(--color-gold) 25%, transparent 25%);
+  background-size: 14px 14px;
+  background-position: 0 0;
+  opacity: 0.35;
+}
+
+/* Subtle paper grain for hero areas (pure CSS, no image). */
+.paper-texture {
+  background-color: var(--color-ivory);
+  background-image:
+    radial-gradient(circle at 20% 15%, rgb(201 154 69 / 0.10), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgb(110 20 35 / 0.08), transparent 50%);
+}
+
+/* Decorative motion (all disabled for prefers-reduced-motion below). */
+@keyframes ng-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ng-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes ng-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes ng-kenburns {
+  from {
+    transform: scale(1.14) translate3d(1.5%, 1%, 0);
+  }
+  to {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+}
+@keyframes ng-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes ng-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ng-petal {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--drift, 80px), 110vh, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
+@keyframes ng-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+}
+.rise {
+  animation: ng-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Kolam-style dotted grid used behind some sections. */
+.kolam-dots {
+  background-image: radial-gradient(circle, rgb(168 121 44 / 0.22) 1.2px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

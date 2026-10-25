@@ -1,0 +1,79 @@
+NRITYAGURU - prompts for the 8 mudra images (paste into gemini.google.com)
+
+HOW TO USE: use ONE chat for all 8. Paste prompt 1 first, save the picture as mudra1.jpg.
+For prompts 2-8, first upload your mudra1 picture and add this line before the prompt:
+  'Use the attached image only for the dancer's face, hair and jewellery. Change the costume colour and the setting as described below.'
+Save each result as mudra2.jpg ... mudra8.jpg (any folder is fine - tell Claude where they are).
+If the fingers are wrong, regenerate and add: 'Exactly five fingers, anatomically correct hand, hand shape must match the description exactly.'
+
+=== PROMPT 1 - Pataka  (save as mudra1.jpg) ===
+She is performing the Pataka (the flag) hasta of Bharatanatyam: her right palm faces forward with all four fingers straight, pointing up and held tightly together, and the thumb bent in across the palm. Costume: royal blue silk saree with a gold zari border and a pleated fan at the waist, jasmine and orange kanakambaram flowers in her hair. Setting: a carved temple arch glowing behind her at dusk, strings of marigold garlands, a few marigold petals drifting through warm golden light. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 2 - Tripataka  (save as mudra2.jpg) ===
+She is performing the Tripataka (the three-part flag) hasta of Bharatanatyam: her right palm faces forward with the index, middle and little fingers straight and pointing up, the ring finger bent down towards the palm, and the thumb bent in; exactly three fingers are raised. Costume: rich magenta-pink silk saree with a gold zari border and a pleated fan at the waist. Setting: a still temple pond behind her with soft pink lotus flowers and gentle reflections, warm lamp glow, a dreamy evening haze. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 3 - Mushti  (save as mudra3.jpg) ===
+She is performing the Mushti (the fist) hasta of Bharatanatyam: her right hand is a closed fist, all four fingers curled tightly into the palm and the thumb resting over the index and middle fingers. Costume: deep maroon-red silk saree with a heavy gold zari border and a pleated fan at the waist. Setting: a dramatic dark stage with a strong golden rim light behind her and a faint haze of incense smoke, a tall brass lamp softly out of focus. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 4 - Kapittha  (save as mudra4.jpg) ===
+She is performing the Kapittha (the wood-apple) hasta of Bharatanatyam: her right hand is curled, the index finger bent down and pressed against the thumb, the other three fingers curled into the palm. Costume: peacock teal-green silk saree with a copper-gold zari border and a pleated fan at the waist. Setting: rows of glowing brass oil lamps on both sides of her, carved dark temple pillars behind, soft warm bokeh. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 5 - Alapadma  (save as mudra5.jpg) ===
+She is performing the Alapadma (the fully bloomed lotus) hasta of Bharatanatyam: her right hand is open towards the camera with all five fingers spread wide apart and gently curved outward like a lotus in bloom. Costume: soft lotus-pink and ivory silk saree with a gold border and a pleated fan at the waist. Setting: a few pink lotus petals floating in the air around her hand, a luminous pale-gold background like early morning light on water. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 6 - Hamsasya  (save as mudra6.jpg) ===
+She is performing the Hamsasya (the swan's beak) hasta of Bharatanatyam: her right thumb tip touches her index fingertip forming a small circle, while the other three fingers are extended, straight and slightly spread. Costume: pearl-white and ivory silk saree with a wide gold border and a pleated fan at the waist, a pearl-and-gold headpiece. Setting: a calm misty morning scene with soft silver-gold light, a lake and the faint silhouette of a white swan far behind her, very shallow depth of field. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 7 - Mayura  (save as mudra7.jpg) ===
+She is performing the Mayura (the peacock) hasta of Bharatanatyam: her right thumb tip touches the tip of her ring finger, while the index, middle and little fingers are extended straight up and slightly spread. Costume: deep peacock blue-violet silk saree with a green and gold zari border and a pleated fan at the waist. Setting: softly blurred peacock feathers with shimmering blue-green eyes framing the edges of the picture, rich jewel-toned lighting. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.
+
+=== PROMPT 8 - Shikhara  (save as mudra8.jpg) ===
+She is performing the Shikhara (the peak) hasta of Bharatanatyam: her right hand is a closed fist with all four fingers curled and the thumb pointing straight up. Costume: saffron-orange silk saree with a maroon and gold zari border and a pleated fan at the waist. Setting: a glowing sunrise behind the silhouette of a temple tower, warm orange and gold sky, light rays through soft mist. Cinematic, richly colour-graded, elegant and beautiful.
+
+A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change.
+
+Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.
+
+Create this as a vertical 3:4 portrait image.

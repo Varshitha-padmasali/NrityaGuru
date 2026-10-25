@@ -1,0 +1,143 @@
+{
+  "_note": "Prompts used to generate the home-page images with Gemini (npm run images:generate, or the /studio page in development). Edit freely. Every image is of a fictional adult dancer and is labelled 'AI-generated' in the UI. Decoration only — AI-generated hands can be anatomically wrong, so these must NEVER be used as mudra reference images. Slots with \"character\": true get the shared character description; slots with \"reference\" are generated using that slot's image as a reference so the dancer looks the same in every frame.",
+  "style": "Photorealistic professional performance photograph, shot on a full-frame camera with an 85mm lens, shallow depth of field, rich warm cinematic colour grading, natural skin texture, high detail. The dancer is a fictional adult Indian woman (not a real or famous person). Anatomically correct hands with exactly five fingers each. No text, no letters, no watermark, no logo, no frame or border.",
+  "character": "The same dancer in every frame: a fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with white jasmine flowers, kohl-lined expressive eyes and a small red bindi. Costume: emerald-green silk with a maroon and gold zari border and a pleated fan between the knees, gold temple jewellery (headpiece, earrings, layered necklaces, waist belt), red alta on fingertips and the soles of her feet, brass ghungroo bells on both ankles. Setting: the same traditional stage, a warm golden spotlight on the dancer, a dark background, and a tall glowing brass kuthuvilakku oil lamp softly out of focus at the left edge. Composition: wide cinematic 16:9 frame with the dancer in the right half of the image; the left third is dark, softly lit empty stage (space for text).",
+  "slots": {
+    "seq1": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "prompt": "Pushpanjali, the opening offering: she stands upright holding a small offering of flower petals in both cupped hands raised to her forehead, eyes lowered in devotion, a few petals falling softly through the spotlight."
+    },
+    "seq2": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Alarippu, the blossoming: she sits deep in aramandi (knees turned outward, half-sitting, heels together), torso upright, both arms raised straight above her head with palms joined, a calm serene smile."
+    },
+    "seq3": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Jatiswaram, pure dance: caught mid-movement in aramandi, one arm stretched straight out to the side with the palm facing outward, the other hand held at the chest, one foot striking the floor, the pleated fan flaring, slight motion blur on the ghungroo bells."
+    },
+    "seq4": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Shabdam, the first story: a medium shot from the waist up, one hand held gracefully beside her face, eyebrows gently raised, eyes glancing sideways with a playful, expressive smile."
+    },
+    "seq5": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Varnam, the centrepiece: a powerful wide stance with one leg extended to the side, both arms sweeping out in a long strong line, an intense focused expression, dramatic golden rim light outlining her silhouette."
+    },
+    "seq6": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Padam, a song of longing: she kneels on one knee, one hand resting over her heart, looking up into the distance with soft, emotional, slightly tearful eyes; the light is warmer and dimmer."
+    },
+    "seq7": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Tillana, the joyful finale: captured mid-leap in the air with both knees bent outward, arms flung wide, a radiant joyful smile, the costume fan flying, golden dust sparkling in the spotlight."
+    },
+    "seq8": {
+      "aspectRatio": "16:9",
+      "imageSize": "2K",
+      "character": true,
+      "reference": "seq1",
+      "prompt": "Mangalam, the closing prayer: she bows gently forward with both palms joined in namaskaram in front of her chest, eyes closed, peaceful; the spotlight is softly fading."
+    },
+    "shloka": {
+      "aspectRatio": "4:5",
+      "imageSize": "1K",
+      "prompt": "Close-up of a Bharatanatyam dancer's two hands crossed at the wrists against a pure black background, fingers gracefully spread and curved, fingertips painted with bright red alta, stacked gold bangles and thin gold rings, dramatic soft studio light from above, elegant and sculptural, centred composition."
+    },
+    "blackPortrait": {
+      "aspectRatio": "1:1",
+      "imageSize": "1K",
+      "prompt": "Studio portrait of a Bharatanatyam dancer posing against a pure black background, three-quarter view from the waist up, deep maroon silk costume with gold border, traditional temple jewellery with a headpiece and nose ring, kohl-lined expressive eyes, one hand held near the face in a graceful gesture, soft golden rim light."
+    },
+    "redStage": {
+      "aspectRatio": "9:16",
+      "imageSize": "1K",
+      "prompt": "Full-length Bharatanatyam dancer performing on a dark stage under dramatic red and amber stage lighting, wearing a vibrant orange and magenta silk costume with gold zari, both arms extended, one leg lifted mid-step, haze in the spotlight beams, theatrical atmosphere."
+    },
+    "smileStage": {
+      "aspectRatio": "4:3",
+      "imageSize": "1K",
+      "prompt": "A smiling Bharatanatyam dancer on stage during a live performance, eyes bright and expressive, hands held in front of the chest in a graceful gesture, green and gold silk costume, temple jewellery, warm golden spotlight, blurred audience lights in the dark background."
+    },
+    "greenCostume": {
+      "aspectRatio": "4:3",
+      "imageSize": "1K",
+      "prompt": "A Bharatanatyam dancer in a red and green silk costume performing in the stone courtyard of an ancient South Indian temple at golden hour, carved granite pillars softly blurred behind her, warm sunlight, mid-movement with arms extended, pleated fan of the costume spread."
+    },
+    "mudra1": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Pataka (the flag) hasta of Bharatanatyam: her right palm faces forward with all four fingers straight, pointing up and held tightly together, and the thumb bent in across the palm. Costume: royal blue silk saree with a gold zari border and a pleated fan at the waist, jasmine and orange kanakambaram flowers in her hair. Setting: a carved temple arch glowing behind her at dusk, strings of marigold garlands, a few marigold petals drifting through warm golden light. Cinematic, richly colour-graded, elegant and beautiful."
+    },
+    "mudra2": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Tripataka (the three-part flag) hasta of Bharatanatyam: her right palm faces forward with the index, middle and little fingers straight and pointing up, the ring finger bent down towards the palm, and the thumb bent in; exactly three fingers are raised. Costume: rich magenta-pink silk saree with a gold zari border and a pleated fan at the waist. Setting: a still temple pond behind her with soft pink lotus flowers and gentle reflections, warm lamp glow, a dreamy evening haze. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra3": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Mushti (the fist) hasta of Bharatanatyam: her right hand is a closed fist, all four fingers curled tightly into the palm and the thumb resting over the index and middle fingers. Costume: deep maroon-red silk saree with a heavy gold zari border and a pleated fan at the waist. Setting: a dramatic dark stage with a strong golden rim light behind her and a faint haze of incense smoke, a tall brass lamp softly out of focus. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra4": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Kapittha (the wood-apple) hasta of Bharatanatyam: her right hand is curled, the index finger bent down and pressed against the thumb, the other three fingers curled into the palm. Costume: peacock teal-green silk saree with a copper-gold zari border and a pleated fan at the waist. Setting: rows of glowing brass oil lamps on both sides of her, carved dark temple pillars behind, soft warm bokeh. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra5": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Alapadma (the fully bloomed lotus) hasta of Bharatanatyam: her right hand is open towards the camera with all five fingers spread wide apart and gently curved outward like a lotus in bloom. Costume: soft lotus-pink and ivory silk saree with a gold border and a pleated fan at the waist. Setting: a few pink lotus petals floating in the air around her hand, a luminous pale-gold background like early morning light on water. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra6": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Hamsasya (the swan's beak) hasta of Bharatanatyam: her right thumb tip touches her index fingertip forming a small circle, while the other three fingers are extended, straight and slightly spread. Costume: pearl-white and ivory silk saree with a wide gold border and a pleated fan at the waist, a pearl-and-gold headpiece. Setting: a calm misty morning scene with soft silver-gold light, a lake and the faint silhouette of a white swan far behind her, very shallow depth of field. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra7": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Mayura (the peacock) hasta of Bharatanatyam: her right thumb tip touches the tip of her ring finger, while the index, middle and little fingers are extended straight up and slightly spread. Costume: deep peacock blue-violet silk saree with a green and gold zari border and a pleated fan at the waist. Setting: softly blurred peacock feathers with shimmering blue-green eyes framing the edges of the picture, rich jewel-toned lighting. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    },
+    "mudra8": {
+      "aspectRatio": "3:4",
+      "imageSize": "2K",
+      "characterKey": "mudraCharacter",
+      "prompt": "She is performing the Shikhara (the peak) hasta of Bharatanatyam: her right hand is a closed fist with all four fingers curled and the thumb pointing straight up. Costume: saffron-orange silk saree with a maroon and gold zari border and a pleated fan at the waist. Setting: a glowing sunrise behind the silhouette of a temple tower, warm orange and gold sky, light rays through soft mist. Cinematic, richly colour-graded, elegant and beautiful.",
+      "reference": "mudra1"
+    }
+  },
+  "mudraCharacter": "A fictional Bharatanatyam dancer in her early twenties with warm brown skin, long black hair in a braided bun wrapped with fresh jasmine flowers, kohl-lined expressive eyes, a small red bindi and red alta on her fingertips and palms. Gold temple jewellery: headpiece with a maang tikka, jhumka earrings, layered necklaces, a gold waist belt and bangles on both wrists. Composition: vertical 3:4 portrait photographed from the head to the waist, the dancer centred and facing the camera with a serene smile, her right hand raised beside her face at shoulder height, large in the frame, in sharp focus and well lit so every finger is clearly visible, her left hand resting at her waist. Keep the same face, hair and jewellery style in every picture; only the costume colour and the setting change."
+}

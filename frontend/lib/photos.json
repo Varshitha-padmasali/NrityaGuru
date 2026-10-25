@@ -1,0 +1,205 @@
+{
+  "_note": "Images for the home page. If `generated` is set (by `npm run images:generate` or the /studio page), the AI-generated image is shown and labelled as such; otherwise the free-licence stock photo below is used (Pexels License / Unsplash License). Decoration only — never mudra reference images.",
+  "photos": {
+    "seq1": {
+      "provider": "pexels",
+      "id": "26856873",
+      "alt": "Bharatanatyam dancer performing in a dimly lit temple",
+      "photographer": "Shuvra Podder",
+      "photoPage": "https://www.pexels.com/photo/dancer-in-traditional-clothing-dancing-in-darkness-at-temple-26856873/",
+      "generated": null
+    },
+    "seq2": {
+      "provider": "pexels",
+      "id": "34717625",
+      "alt": "Bharatanatyam dancer performing on stage in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/bharatanatyam-dancer-performing-on-stage-34717625/",
+      "generated": null
+    },
+    "seq3": {
+      "provider": "pexels",
+      "id": "34717651",
+      "alt": "Bharatanatyam dance performance in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-indian-dancer-performing-bharatanatyam-34717651/",
+      "generated": null
+    },
+    "seq4": {
+      "provider": "pexels",
+      "id": "20134505",
+      "alt": "Dancer in colourful traditional costume performing classical dance",
+      "photographer": "SKG Photography",
+      "photoPage": "https://www.pexels.com/photo/a-woman-in-traditional-dress-and-jewelry-posing-against-black-background-20134505/",
+      "generated": null
+    },
+    "seq5": {
+      "provider": "pexels",
+      "id": "34717650",
+      "alt": "Bharatanatyam dancer in a vibrant costume",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-bharatanatyam-dancer-in-vibrant-costume-34717650/",
+      "generated": null
+    },
+    "seq6": {
+      "provider": "pexels",
+      "id": "20134504",
+      "alt": "Dancer in traditional clothing and jewellery on a black background",
+      "photographer": "SKG Photography",
+      "photoPage": "https://www.pexels.com/photo/a-dancer-in-traditional-clothing-and-jewelry-posing-against-black-background-20134504/",
+      "generated": null
+    },
+    "seq7": {
+      "provider": "pexels",
+      "id": "34717652",
+      "alt": "Bharatanatyam dancer on stage in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-bharatanatyam-dancer-performing-in-india-34717652/",
+      "generated": null
+    },
+    "seq8": {
+      "provider": "pexels",
+      "id": "28518032",
+      "alt": "Classical dancer in a vibrant costume striking a pose",
+      "photographer": "Nilendra Jyoti Halder",
+      "photoPage": "https://www.pexels.com/photo/indian-classical-dance-performer-striking-a-pose-28518032/",
+      "generated": null
+    },
+    "shloka": {
+      "provider": "unsplash",
+      "id": "photo-1740456977659-bdd269417fc0",
+      "alt": "Bharatanatyam dancer in an orange and purple costume, Guledgudda, Karnataka",
+      "photographer": "Arun Prakash",
+      "photoPage": "https://unsplash.com/photos/a-woman-in-an-orange-and-purple-outfit-dancing-an7J_0OggUg",
+      "generated": null
+    },
+    "blackPortrait": {
+      "provider": "pexels",
+      "id": "20134508",
+      "alt": "Dancer in traditional costume and jewellery posing against a black background",
+      "photographer": "SKG Photography",
+      "photoPage": "https://www.pexels.com/photo/a-dancer-in-traditional-clothing-and-jewelry-posing-against-black-background-20134508/",
+      "generated": null
+    },
+    "redStage": {
+      "provider": "pexels",
+      "id": "18240707",
+      "alt": "Classical dancer in a vibrant costume under red stage lighting",
+      "photographer": "Syam Vijai",
+      "photoPage": "https://www.pexels.com/photo/young-woman-in-traditional-clothing-18240707/",
+      "generated": null
+    },
+    "smileStage": {
+      "provider": "pexels",
+      "id": "5563077",
+      "alt": "Smiling dancer performing classical Indian dance on stage",
+      "photographer": "Expressionswala",
+      "photoPage": "https://www.pexels.com/photo/dancer-in-costume-5563077/",
+      "generated": null
+    },
+    "greenCostume": {
+      "provider": "unsplash",
+      "id": "photo-1783859503944-e989da3d3218",
+      "alt": "Classical dancer in a traditional red and green costume",
+      "photographer": "Jayanth Muppaneni",
+      "photoPage": "https://unsplash.com/photos/indian-classical-dancer-in-traditional-red-and-green-costume-jvDU5190kmg",
+      "generated": null
+    },
+    "mudra1": {
+      "provider": "pexels",
+      "id": "26856873",
+      "alt": "Bharatanatyam dancer performing in a dimly lit temple",
+      "photographer": "Shuvra Podder",
+      "photoPage": "https://www.pexels.com/photo/dancer-in-traditional-clothing-dancing-in-darkness-at-temple-26856873/",
+      "generated": {
+        "src": "/images/generated/mudra1.jpg?v=1792865822450",
+        "model": "Gemini app (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:17:02Z"
+      }
+    },
+    "mudra2": {
+      "provider": "pexels",
+      "id": "34717625",
+      "alt": "Bharatanatyam dancer performing on stage in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/bharatanatyam-dancer-performing-on-stage-34717625/",
+      "generated": {
+        "src": "/images/generated/mudra2.jpg?v=1792867076670",
+        "model": "Gemini (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:37:56Z"
+      }
+    },
+    "mudra3": {
+      "provider": "pexels",
+      "id": "34717651",
+      "alt": "Bharatanatyam dance performance in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-indian-dancer-performing-bharatanatyam-34717651/",
+      "generated": {
+        "src": "/images/generated/mudra3.jpg?v=1792865822450",
+        "model": "Gemini app (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:17:02Z"
+      }
+    },
+    "mudra4": {
+      "provider": "pexels",
+      "id": "20134505",
+      "alt": "Dancer in colourful traditional costume performing classical dance",
+      "photographer": "SKG Photography",
+      "photoPage": "https://www.pexels.com/photo/a-woman-in-traditional-dress-and-jewelry-posing-against-black-background-20134505/",
+      "generated": {
+        "src": "/images/generated/mudra4.jpg?v=1792866969839",
+        "model": "Gemini (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:36:09Z"
+      }
+    },
+    "mudra5": {
+      "provider": "pexels",
+      "id": "34717650",
+      "alt": "Bharatanatyam dancer in a vibrant costume",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-bharatanatyam-dancer-in-vibrant-costume-34717650/",
+      "generated": {
+        "src": "/images/generated/mudra5.jpg?v=1792865822450",
+        "model": "Gemini app (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:17:02Z"
+      }
+    },
+    "mudra6": {
+      "provider": "pexels",
+      "id": "20134504",
+      "alt": "Dancer in traditional clothing and jewellery on a black background",
+      "photographer": "SKG Photography",
+      "photoPage": "https://www.pexels.com/photo/a-dancer-in-traditional-clothing-and-jewelry-posing-against-black-background-20134504/",
+      "generated": {
+        "src": "/images/generated/mudra6.jpg?v=1792865822450",
+        "model": "Gemini app (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:17:02Z"
+      }
+    },
+    "mudra7": {
+      "provider": "pexels",
+      "id": "34717652",
+      "alt": "Bharatanatyam dancer on stage in Guruvayur",
+      "photographer": "Atelier by Vineeth",
+      "photoPage": "https://www.pexels.com/photo/traditional-bharatanatyam-dancer-performing-in-india-34717652/",
+      "generated": {
+        "src": "/images/generated/mudra7.jpg?v=1792866532577",
+        "model": "Gemini (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:28:52Z"
+      }
+    },
+    "mudra8": {
+      "provider": "pexels",
+      "id": "28518032",
+      "alt": "Classical dancer in a vibrant costume striking a pose",
+      "photographer": "Nilendra Jyoti Halder",
+      "photoPage": "https://www.pexels.com/photo/indian-classical-dance-performer-striking-a-pose-28518032/",
+      "generated": {
+        "src": "/images/generated/mudra8.jpg?v=1792865822450",
+        "model": "Gemini app (made by hand, free tier)",
+        "createdAt": "2026-10-24T18:17:02Z"
+      }
+    }
+  }
+}
