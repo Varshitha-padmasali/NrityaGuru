@@ -1,0 +1,466 @@
+{
+  "metrics": {
+    "test_accuracy": 0.9019607843137255,
+    "test_macro_precision": 0.9139730639730641,
+    "test_macro_recall": 0.9037037037037038,
+    "test_macro_f1": 0.9009042213376578,
+    "test_weighted_f1": 0.8986003069958634,
+    "chance_level_accuracy": 0.08333333333333333,
+    "per_class": {
+      "arthachandran": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1-score": 0.8571428571428571,
+        "support": 8.0
+      },
+      "arthapataka": {
+        "precision": 0.8181818181818182,
+        "recall": 0.9,
+        "f1-score": 0.8571428571428571,
+        "support": 10.0
+      },
+      "kapitham": {
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1-score": 0.8571428571428571,
+        "support": 8.0
+      },
+      "kartharimukaham": {
+        "precision": 0.9,
+        "recall": 1.0,
+        "f1-score": 0.9473684210526315,
+        "support": 9.0
+      },
+      "mayooram": {
+        "precision": 0.8333333333333334,
+        "recall": 0.5555555555555556,
+        "f1-score": 0.6666666666666666,
+        "support": 9.0
+      },
+      "mushti": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "pathaka": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 10.0
+      },
+      "shikaram": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 7.0
+      },
+      "simhamugham": {
+        "precision": 0.7272727272727273,
+        "recall": 1.0,
+        "f1-score": 0.8421052631578947,
+        "support": 8.0
+      },
+      "soochi": {
+        "precision": 0.8888888888888888,
+        "recall": 1.0,
+        "f1-score": 0.9411764705882353,
+        "support": 8.0
+      },
+      "tripathaka": {
+        "precision": 0.8,
+        "recall": 0.8888888888888888,
+        "f1-score": 0.8421052631578947,
+        "support": 9.0
+      },
+      "trishoolam": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 8.0
+      },
+      "accuracy": 0.9019607843137255,
+      "macro avg": {
+        "precision": 0.9139730639730641,
+        "recall": 0.9037037037037038,
+        "f1-score": 0.9009042213376578,
+        "support": 102.0
+      },
+      "weighted avg": {
+        "precision": 0.9108932461873639,
+        "recall": 0.9019607843137255,
+        "f1-score": 0.8986003069958634,
+        "support": 102.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        6,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        6,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        1,
+        5,
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        10,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        7,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8
+      ]
+    ],
+    "confusion_matrix_labels": [
+      "arthachandran",
+      "arthapataka",
+      "kapitham",
+      "kartharimukaham",
+      "mayooram",
+      "mushti",
+      "pathaka",
+      "shikaram",
+      "simhamugham",
+      "soochi",
+      "tripathaka",
+      "trishoolam"
+    ]
+  },
+  "metadata": {
+    "model_version": "0.1-prototype",
+    "feature_schema_version": "hand-v1",
+    "trained_utc": "2026-10-25T15:28:38+00:00",
+    "classes": [
+      "arthachandran",
+      "arthapataka",
+      "kapitham",
+      "kartharimukaham",
+      "mayooram",
+      "mushti",
+      "pathaka",
+      "shikaram",
+      "simhamugham",
+      "soochi",
+      "tripathaka",
+      "trishoolam"
+    ],
+    "feature_names": [
+      "x0",
+      "y0",
+      "z0",
+      "x1",
+      "y1",
+      "z1",
+      "x2",
+      "y2",
+      "z2",
+      "x3",
+      "y3",
+      "z3",
+      "x4",
+      "y4",
+      "z4",
+      "x5",
+      "y5",
+      "z5",
+      "x6",
+      "y6",
+      "z6",
+      "x7",
+      "y7",
+      "z7",
+      "x8",
+      "y8",
+      "z8",
+      "x9",
+      "y9",
+      "z9",
+      "x10",
+      "y10",
+      "z10",
+      "x11",
+      "y11",
+      "z11",
+      "x12",
+      "y12",
+      "z12",
+      "x13",
+      "y13",
+      "z13",
+      "x14",
+      "y14",
+      "z14",
+      "x15",
+      "y15",
+      "z15",
+      "x16",
+      "y16",
+      "z16",
+      "x17",
+      "y17",
+      "z17",
+      "x18",
+      "y18",
+      "z18",
+      "x19",
+      "y19",
+      "z19",
+      "x20",
+      "y20",
+      "z20",
+      "dist_thumb_wrist",
+      "dist_index_wrist",
+      "dist_middle_wrist",
+      "dist_ring_wrist",
+      "dist_pinky_wrist",
+      "dist_thumb_index",
+      "dist_thumb_middle",
+      "dist_thumb_ring",
+      "dist_thumb_pinky",
+      "dist_index_middle",
+      "dist_index_ring",
+      "dist_index_pinky",
+      "dist_middle_ring",
+      "dist_middle_pinky",
+      "dist_ring_pinky"
+    ],
+    "seed": 42,
+    "best_config": {
+      "hidden_layer_sizes": [
+        128,
+        64
+      ],
+      "alpha": 0.0001
+    },
+    "split_sizes": {
+      "train": 303,
+      "train_with_mirrored": 606,
+      "validation": 101,
+      "test": 102
+    },
+    "dataset_report": {
+      "images_in_selected_classes": 600,
+      "with_detected_hand": 515,
+      "dropped_same_file_in_two_classes": 0,
+      "dropped_exact_duplicates": 9,
+      "dropped_invalid_landmarks": 0,
+      "final_samples": 506
+    },
+    "grid_results": [
+      {
+        "hidden_layer_sizes": [
+          64
+        ],
+        "alpha": 0.0001,
+        "val_macro_f1": 0.8913589119858468,
+        "val_accuracy": 0.8910891089108911
+      },
+      {
+        "hidden_layer_sizes": [
+          64
+        ],
+        "alpha": 0.001,
+        "val_macro_f1": 0.8913589119858468,
+        "val_accuracy": 0.8910891089108911
+      },
+      {
+        "hidden_layer_sizes": [
+          64
+        ],
+        "alpha": 0.01,
+        "val_macro_f1": 0.902065416809999,
+        "val_accuracy": 0.900990099009901
+      },
+      {
+        "hidden_layer_sizes": [
+          128,
+          64
+        ],
+        "alpha": 0.0001,
+        "val_macro_f1": 0.9320899266139205,
+        "val_accuracy": 0.9306930693069307
+      },
+      {
+        "hidden_layer_sizes": [
+          128,
+          64
+        ],
+        "alpha": 0.001,
+        "val_macro_f1": 0.9320899266139205,
+        "val_accuracy": 0.9306930693069307
+      },
+      {
+        "hidden_layer_sizes": [
+          128,
+          64
+        ],
+        "alpha": 0.01,
+        "val_macro_f1": 0.9130267457860338,
+        "val_accuracy": 0.9108910891089109
+      }
+    ],
+    "versions": {
+      "python": "3.13.7",
+      "scikit-learn": "1.8.0",
+      "numpy": "2.4.6",
+      "pandas": "3.0.3"
+    },
+    "limitations": [
+      "Image-level split; no performer ids, so performer generalisation is untested.",
+      "Static images only; not validated on webcam video.",
+      "MLP scores are raw model outputs, not calibrated probabilities."
+    ]
+  }
+}

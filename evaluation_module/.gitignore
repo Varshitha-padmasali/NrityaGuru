@@ -1,0 +1,3 @@
+hand_landmarker.task
+data/hand_landmarks*.csv
+models/*.joblib
