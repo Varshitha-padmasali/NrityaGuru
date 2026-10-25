@@ -1,0 +1,20 @@
+# Local development database only. Change the password for anything beyond your laptop.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: nrityaguru
+      POSTGRES_PASSWORD: change_me_local_only
+      POSTGRES_DB: nrityaguru
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nrityaguru -d nrityaguru"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

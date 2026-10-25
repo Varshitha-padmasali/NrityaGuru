@@ -1,0 +1,24 @@
+[
+  {
+    "id": "src_wikipedia_mudra_list",
+    "source_name": "List of mudras (dance) - Wikipedia",
+    "source_url": "https://en.wikipedia.org/wiki/List_of_mudras_(dance)",
+    "source_type": "encyclopedia_secondary",
+    "author_or_organization": "Wikipedia contributors",
+    "publication_date": null,
+    "access_date": "2026-10-23",
+    "license_or_usage_notes": "Wikipedia text is generally under CC BY-SA; confirm the attribution requirements before redistributing.",
+    "reliability_notes": "Secondary, crowd-edited source. The page carries a 'multiple issues' banner. Use only until cross-checked with a primary text or a qualified teacher."
+  },
+  {
+    "id": "src_mirror_of_gesture_1917",
+    "source_name": "The Mirror of Gesture, being the Abhinaya Darpana of Nandikesvara",
+    "source_url": "https://dn721904.ca.archive.org/0/items/mirrorgesture00nand/mirrorgesture00nand.pdf",
+    "source_type": "primary_text_translation",
+    "author_or_organization": "Ananda Coomaraswamy and Gopala Kristnayya Duggirala (translators), Harvard University Press",
+    "publication_date": "1917",
+    "access_date": "2026-10-23",
+    "license_or_usage_notes": "1917 publication. Confirm copyright status for your jurisdiction before redistributing any part.",
+    "reliability_notes": "English translation of a traditional primary text, widely used as a reference. NO seeded record has been checked against it yet; it is listed as the intended verification source."
+  }
+]

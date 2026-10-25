@@ -1,0 +1,44 @@
+[
+  {
+    "id": "mudra_pataka",
+    "name": "Pataka",
+    "alternate_names": [],
+    "category": "Asamyuta Hasta",
+    "meaning": "Flag",
+    "usage": ["beginning a dance", "forest", "river", "sprinkling water", "cloud", "night", "forbidding things", "horse"],
+    "description": null,
+    "practice_instructions": null,
+    "reference_image_path": null,
+    "source_id": "src_wikipedia_mudra_list",
+    "verification_status": "source_cited",
+    "verification_notes": "Meaning and usages copied as facts from the Wikipedia list (secondary source). Not yet cross-checked against Abhinaya Darpana or a teacher. Hand-position description and image intentionally left empty until verified."
+  },
+  {
+    "id": "mudra_tripataka",
+    "name": "Tripataka",
+    "alternate_names": [],
+    "category": "Asamyuta Hasta",
+    "meaning": "Three parts of the flag",
+    "usage": ["tree", "arrow", "vajra weapon", "Indra", "crown", "light rising", "union"],
+    "description": null,
+    "practice_instructions": null,
+    "reference_image_path": null,
+    "source_id": "src_wikipedia_mudra_list",
+    "verification_status": "source_cited",
+    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check."
+  },
+  {
+    "id": "mudra_ardhapataka",
+    "name": "Ardhapataka",
+    "alternate_names": [],
+    "category": "Asamyuta Hasta",
+    "meaning": "Half flag",
+    "usage": ["flag", "temple tower", "horn", "riverbank", "tender shoots", "writing panel", "knife"],
+    "description": null,
+    "practice_instructions": null,
+    "reference_image_path": null,
+    "source_id": "src_wikipedia_mudra_list",
+    "verification_status": "source_cited",
+    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check."
+  }
+]
