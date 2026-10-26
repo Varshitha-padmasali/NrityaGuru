@@ -1,0 +1,6 @@
+# NrityaGuru Computer Vision Module Dependencies (Member 3)
+pydantic>=2.7,<3.0
+numpy>=1.26.0
+opencv-python>=4.9.0
+mediapipe>=0.10.0
+pytest>=8.0.0
