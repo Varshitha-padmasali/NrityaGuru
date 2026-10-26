@@ -1,8 +1,8 @@
 """Database access for the knowledge base. No Gemini or HTTP code belongs here.
 
-Rule: by default only `verified` records are returned. Pass include_unverified=True
-to also see `source_cited` and `unverified` records (for admin/dev use and clearly
-labelled output only).
+Rule: direct repository calls return `verified` records by default. Knowledge retrieval
+may explicitly include `source_cited` records, which must remain labelled with provenance.
+Pass include_unverified=True only for configured development/admin workflows.
 """
 import json
 from functools import lru_cache
@@ -39,8 +39,12 @@ def normalize_concept(text: str) -> str:
     return normalize_text(text)
 
 
-def _allowed(include_unverified: bool) -> list[VerificationStatus]:
-    return list(VerificationStatus) if include_unverified else [VerificationStatus.VERIFIED]
+def _allowed(include_unverified: bool, include_source_cited: bool = False) -> list[VerificationStatus]:
+    if include_unverified:
+        return list(VerificationStatus)
+    if include_source_cited:
+        return [VerificationStatus.VERIFIED, VerificationStatus.SOURCE_CITED]
+    return [VerificationStatus.VERIFIED]
 
 
 # ---------- sources ----------
@@ -49,18 +53,24 @@ def get_source(db: Session, source_id: str) -> Source | None:
 
 
 # ---------- mudras ----------
-def get_mudra(db: Session, mudra_id: str, *, include_unverified: bool = False) -> Mudra | None:
+def get_mudra(
+    db: Session, mudra_id: str, *, include_unverified: bool = False,
+    include_source_cited: bool = False,
+) -> Mudra | None:
     mudra = db.get(Mudra, mudra_id)
-    if mudra is None or mudra.verification_status not in _allowed(include_unverified):
+    if mudra is None or mudra.verification_status not in _allowed(include_unverified, include_source_cited):
         return None
     return mudra
 
 
-def get_mudra_by_name(db: Session, name: str, *, include_unverified: bool = False) -> Mudra | None:
+def get_mudra_by_name(
+    db: Session, name: str, *, include_unverified: bool = False,
+    include_source_cited: bool = False,
+) -> Mudra | None:
     key = normalize_concept(name)
     if not key:
         return None
-    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
+    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified, include_source_cited)))
     for mudra in db.scalars(stmt):
         names = [mudra.name, *(mudra.alternate_names or []), *_dataset_labels_by_mudra().get(mudra.id, [])]
         if any(normalize_concept(candidate) == key for candidate in names):
@@ -72,12 +82,13 @@ def list_mudras(
     db: Session,
     *,
     include_unverified: bool = False,
+    include_source_cited: bool = False,
     category: str | None = None,
     query: str | None = None,
     limit: int = 100,
     offset: int = 0,
 ) -> list[Mudra]:
-    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
+    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified, include_source_cited)))
     if category:
         stmt = stmt.where(Mudra.category == category)
     records = list(db.scalars(stmt.order_by(Mudra.name)))
@@ -94,10 +105,11 @@ def list_mudras(
 
 # ---------- movements ----------
 def get_movement(
-    db: Session, movement_id: str, *, include_unverified: bool = False
+    db: Session, movement_id: str, *, include_unverified: bool = False,
+    include_source_cited: bool = False,
 ) -> Movement | None:
     movement = db.get(Movement, movement_id)
-    if movement is None or movement.verification_status not in _allowed(include_unverified):
+    if movement is None or movement.verification_status not in _allowed(include_unverified, include_source_cited):
         return None
     return movement
 
@@ -106,11 +118,12 @@ def list_movements(
     db: Session,
     *,
     include_unverified: bool = False,
+    include_source_cited: bool = False,
     category: str | None = None,
     limit: int = 50,
     offset: int = 0,
 ) -> list[Movement]:
-    stmt = select(Movement).where(Movement.verification_status.in_(_allowed(include_unverified)))
+    stmt = select(Movement).where(Movement.verification_status.in_(_allowed(include_unverified, include_source_cited)))
     if category:
         stmt = stmt.where(Movement.movement_category == category)
     stmt = stmt.order_by(Movement.name).limit(limit).offset(offset)
@@ -119,7 +132,8 @@ def list_movements(
 
 # ---------- concept mappings ----------
 def get_mappings_for_concept(
-    db: Session, concept: str, *, include_unverified: bool = False
+    db: Session, concept: str, *, include_unverified: bool = False,
+    include_source_cited: bool = False,
 ) -> list[ConceptMapping]:
     """All explicit mappings for one concept (there may be several interpretations).
 
@@ -130,7 +144,7 @@ def get_mappings_for_concept(
         select(ConceptMapping)
         .where(
             ConceptMapping.concept == normalize_concept(concept),
-            ConceptMapping.verification_status.in_(_allowed(include_unverified)),
+            ConceptMapping.verification_status.in_(_allowed(include_unverified, include_source_cited)),
         )
         .order_by(ConceptMapping.id)
     )

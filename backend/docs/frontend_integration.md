@@ -8,7 +8,7 @@ CORS: the browser origin must be listed in `CORS_ALLOW_ORIGINS` (default `http:/
 | Step | Call | Notes |
 |---|---|---|
 | 1. learner types a sentence/lyrics | `POST /api/tutor/explain` | returns the AI explanation AND the retrieved records |
-| (optional) browse references | `GET /api/mudras`, `GET /api/mudras/{id}`, `GET /api/movements` | verified-only by default |
+| (optional) browse references | `GET /api/mudras`, `GET /api/mudras/{id}`, `GET /api/movements` | source-cited and verified by default; unsupported rows require server opt-in |
 | 2. learner practises on camera | not this backend | camera, MediaPipe, MLP, DTW belong to the evaluation module, which stores a result for a session id |
 | 3. show feedback | `POST /api/feedback/generate` `{"session_id": "..."}` | reuses stored feedback unless `"regenerate": true` |
 | 4. show it again later / progress | `GET /api/feedback/{session_id}` | no generation, no cost; 404 if none yet |

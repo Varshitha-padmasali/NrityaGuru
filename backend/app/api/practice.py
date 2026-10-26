@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.core.config import Settings, get_settings
 from app.core.reviewer_auth import reviewer_token_matches
-from app.api.deps import require_development_session_access
+from app.api.deps import enforce_tutor_rate_limit, get_feedback_workflow, require_development_session_access
 from app.db.database import get_db
 from app.db.models import EvaluationRecord, FeedbackRecord, Movement, Mudra, PracticeSession, ReferenceSequence
 from app.repositories import session_repository
@@ -31,7 +31,10 @@ from app.schemas.practice import (
     ProgressResponse,
 )
 from app.schemas.references import ReferenceSequenceIn, ReferenceSequenceOut
+from app.services.frontend_contract import external_id, external_session_id, resolve_reference_id, resolve_session_id
 from app.services.practice_evaluator import PracticeEvaluationUnavailable, evaluate_video
+from app.services.feedback_workflow import FeedbackWorkflow
+from app.services.knowledge_retrieval import media_url_path
 
 router = APIRouter(prefix="/api", tags=["practice"])
 SAMPLE_FPS = 5
@@ -76,12 +79,13 @@ def list_practice_references(
             continue
         seen.add(mudra.id)
         output.append(PracticeReferenceOut(
-            id=mudra.id,
+            id=external_id("mudra", mudra.id),
+            canonical_id=mudra.id,
             name=mudra.name,
             reference_type="mudra",
             description=mudra.practice_instructions,
-            mudra_ids=[mudra.id],
-            image_url=mudra.reference_image_path,
+            mudra_ids=[external_id("mudra", mudra.id)],
+            image_url=media_url_path(mudra.reference_image_path),
             max_duration_seconds=settings.max_video_duration_seconds,
         ))
     return output
@@ -91,11 +95,17 @@ def list_practice_references(
 def create_practice_session(
     body: CreatePracticeSessionIn, db: Session = Depends(get_db)
 ) -> PracticeSessionOut:
-    mudra = db.get(Mudra, body.reference_id)
-    movement = db.get(Movement, body.reference_id)
+    resolved = resolve_reference_id(db, body.reference_id)
+    if resolved is None:
+        raise HTTPException(status_code=404, detail={"code": "reference_not_found", "message": "The requested practice target does not exist."})
+    kind, canonical_id = resolved
+    mudra = db.get(Mudra, canonical_id) if kind == "mudra" else None
+    movement = db.get(Movement, canonical_id) if kind == "movement" else None
     if (mudra is None) == (movement is None):
         raise HTTPException(status_code=404, detail={"code": "reference_not_found", "message": "The requested practice target does not exist."})
-    session_id = secrets.token_urlsafe(24)
+    session_id = str(secrets.randbelow((1 << 48) - 1) + 1)
+    while db.get(PracticeSession, session_id) is not None:
+        session_id = str(secrets.randbelow((1 << 48) - 1) + 1)
     session = session_repository.create_session(
         db,
         session_id,
@@ -104,7 +114,7 @@ def create_practice_session(
     )
     return PracticeSessionOut(
         session_id=session.id,
-        reference_id=body.reference_id,
+        reference_id=external_id(kind, canonical_id),
         status="created",
         created_at=session.created_at,
     )
@@ -147,16 +157,18 @@ def _decode_video(path: Path, settings: Settings) -> tuple[int, float]:
 
 async def upload_practice_video(
     session_id: str,
-    reference_id: str = Form(...),
+    reference_id: int = Form(...),
     video: UploadFile = File(...),
     db: Session = Depends(get_db),
     settings: Settings = Depends(get_settings),
 ) -> PracticeSessionOut:
-    session = db.get(PracticeSession, session_id)
+    stored_session_id = resolve_session_id(db, session_id)
+    session = db.get(PracticeSession, stored_session_id) if stored_session_id else None
     if session is None:
         raise HTTPException(status_code=404, detail={"code": "session_not_found", "message": "Practice session was not found."})
     actual_reference_id = session.mudra_id or session.movement_id
-    if actual_reference_id != reference_id:
+    actual_reference = resolve_reference_id(db, reference_id)
+    if actual_reference is None or actual_reference[1] != actual_reference_id:
         raise HTTPException(status_code=409, detail={"code": "reference_mismatch", "message": "The uploaded clip target does not match this session."})
     allowed_types = {"video/mp4", "video/webm", "video/quicktime"}
     if video.content_type not in allowed_types:
@@ -215,7 +227,7 @@ async def upload_practice_video(
 
     return PracticeSessionOut(
         session_id=session.id,
-        reference_id=actual_reference_id,
+        reference_id=external_id("mudra" if session.mudra_id else "movement", actual_reference_id),
         status=session.status,
         created_at=session.created_at,
     )
@@ -249,7 +261,8 @@ else:
 
 @router.post("/practice/sessions/{session_id}/evaluate", dependencies=[Depends(require_development_session_access)])
 def evaluate_practice_session(session_id: str, db: Session = Depends(get_db)) -> dict:
-    session = db.get(PracticeSession, session_id)
+    stored_session_id = resolve_session_id(db, session_id)
+    session = db.get(PracticeSession, stored_session_id) if stored_session_id else None
     if session is None:
         raise HTTPException(status_code=404, detail={"code": "session_not_found", "message": "Practice session was not found."})
     if session.status == "failed":
@@ -261,13 +274,14 @@ def evaluate_practice_session(session_id: str, db: Session = Depends(get_db)) ->
             result = _frontend_evaluation(EvaluationResult.model_validate(stored.result_json), target, session.mudra_id or session.movement_id)
         except Exception as exc:
             raise HTTPException(status_code=500, detail={"code": "stored_result_invalid", "message": "The stored evaluation result does not match a supported schema."}) from exc
-        return {"session_id": session_id, "status": "evaluated", "result": result, "error": None}
+        return {"session_id": external_session_id(session_id), "status": "evaluated", "result": result, "error": None}
     raise HTTPException(status_code=409, detail={"code": "video_not_processed", "message": "Upload a valid recording before requesting evaluation."})
 
 
 @router.get("/practice/sessions/{session_id}/results", dependencies=[Depends(require_development_session_access)])
 def get_session_results(session_id: str, db: Session = Depends(get_db)) -> dict:
-    session = db.get(PracticeSession, session_id)
+    stored_session_id = resolve_session_id(db, session_id)
+    session = db.get(PracticeSession, stored_session_id) if stored_session_id else None
     if session is None:
         raise HTTPException(status_code=404, detail={"code": "session_not_found", "message": "Practice session was not found."})
     evaluation = db.scalars(
@@ -295,13 +309,40 @@ def get_session_results(session_id: str, db: Session = Depends(get_db)) -> dict:
             feedback_payload = {"text": summary, "model_name": feedback.model or "evidence_only", "created_at": feedback.created_at}
     return {
         "session": {
-            "session_id": session.id,
-            "reference_id": reference_id,
+            "session_id": external_session_id(session.id),
+            "reference_id": external_id("mudra" if session.mudra_id else "movement", reference_id),
             "status": "evaluated" if evaluation is not None else session.status,
             "created_at": session.created_at,
         },
         "result": result_payload,
         "feedback": feedback_payload,
+    }
+
+
+@router.post(
+    "/practice/sessions/{session_id}/feedback",
+    dependencies=[Depends(require_development_session_access), Depends(enforce_tutor_rate_limit)],
+)
+def request_session_feedback(
+    session_id: str,
+    db: Session = Depends(get_db),
+    workflow: FeedbackWorkflow = Depends(get_feedback_workflow),
+) -> dict:
+    """Frontend contract adapter over the existing evidence-grounded workflow."""
+    stored_session_id = resolve_session_id(db, session_id)
+    if stored_session_id is None:
+        raise HTTPException(status_code=404, detail={"code": "session_not_found", "message": "Practice session was not found."})
+    result = workflow.run(db, stored_session_id)
+    latest = db.scalars(
+        select(FeedbackRecord)
+        .where(FeedbackRecord.session_id == stored_session_id)
+        .order_by(FeedbackRecord.created_at.desc(), FeedbackRecord.id.desc())
+        .limit(1)
+    ).first()
+    return {
+        "text": result.feedback.overall_summary,
+        "model_name": result.model or "evidence_only",
+        "created_at": latest.created_at if latest else None,
     }
 
 
@@ -322,7 +363,7 @@ def _frontend_evaluation(result: EvaluationResult, target: Mudra | Movement | No
             "frame_end": prediction.interval.end_frame,
         })
     return {
-        "reference": {"id": reference_id, "name": target.name},
+        "reference": {"id": external_id("mudra" if isinstance(target, Mudra) else "movement", reference_id), "name": target.name},
         "predictions": predictions,
         "dtw": ({
             "distance": result.dtw.distance,
@@ -452,8 +493,8 @@ def get_progress(
 
         entries.append(
             ProgressEntryOut(
-                session_id=session.id,
-                reference_id=reference_id,
+                session_id=external_session_id(session.id),
+                reference_id=external_id("mudra" if session.mudra_id else "movement", reference_id),
                 reference_name=reference.name if reference is not None else reference_id,
                 status="evaluated" if evaluation else (session.status if session.status in {"created", "uploaded", "processing", "failed"} else "created"),
                 created_at=session.created_at,

@@ -53,7 +53,7 @@ curl -s -X POST http://127.0.0.1:8000/api/tutor/explain -H "Content-Type: applic
 curl -s -X POST http://127.0.0.1:8000/api/feedback/generate -H "Content-Type: application/json" \
   -d '{"session_id":"mock-session-deviation"}'
 ```
-The seed mudras are `source_cited`, not `verified`, so they are hidden unless `ALLOW_UNVERIFIED_RECORDS=true` (set in `.env.example` for development).
+The seed mudras are `source_cited`, not `verified`. Source-cited records are available with their provenance and verification labels; records with no source remain opt-in through `ALLOW_UNVERIFIED_RECORDS`.
 
 ## Configuration (`.env`, loaded by `app/core/config.py`)
 | Variable | Default | Meaning |
@@ -66,7 +66,7 @@ The seed mudras are `source_cited`, not `verified`, so they are hidden unless `A
 | GEMINI_THINKING_LEVEL | unset | optional LOW / MEDIUM / HIGH (MINIMAL is rejected by the model) |
 | TUTOR_RATE_LIMIT_PER_MINUTE | 20 | per client IP, shared by tutor and feedback endpoints |
 | DATABASE_URL | unset | secret; e.g. postgresql+psycopg://user:password@localhost:5432/nrityaguru |
-| ALLOW_UNVERIFIED_RECORDS | false (example file: true) | development only: let callers see source_cited/unverified records, clearly labelled |
+| ALLOW_UNVERIFIED_RECORDS | false (example file: true) | let callers include records with no supporting source; source-cited records are available by default and labelled |
 | USE_MOCK_EVALUATION | false | development only: serve clearly labelled feedback test fixtures |
 | CORS_ALLOW_ORIGINS | http://localhost:3000 | browser origins allowed to call the API, comma separated |
 | REFERENCE_REVIEW_TOKEN | unset | server-only credential required for sequence intake |

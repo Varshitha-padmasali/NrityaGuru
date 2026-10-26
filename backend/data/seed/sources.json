@@ -13,13 +13,13 @@
   {
     "id": "src_mirror_of_gesture_1917",
     "source_name": "The Mirror of Gesture, being the Abhinaya Darpana of Nandikesvara",
-    "source_url": "https://dn721904.ca.archive.org/0/items/mirrorgesture00nand/mirrorgesture00nand.pdf",
+    "source_url": "https://www.wisdomlib.org/hinduism/book/the-mirror-of-gesture",
     "source_type": "primary_text_translation",
     "author_or_organization": "Ananda Coomaraswamy and Gopala Kristnayya Duggirala (translators), Harvard University Press",
     "publication_date": "1917",
-    "access_date": "2026-10-23",
+    "access_date": "2026-10-26",
     "license_or_usage_notes": "1917 publication. Confirm copyright status for your jurisdiction before redistributing any part.",
-    "reliability_notes": "English translation of a traditional primary text, widely used as a reference. NO seeded record has been checked against it yet; it is listed as the intended verification source."
+    "reliability_notes": "English translation of Nandikesvara’s Abhinaya Darpana, Ananda Coomaraswamy and Gopala Kristnayya Duggirala translation/editing, Harvard University Press, 1917. Chapters 12 and 13 were checked: 28 single and 24 combined hands, matching project categories; source entry Lāṅgula differs from catalogue Kangula and remains unresolved. Selected first-form descriptions/usages are source-cited; alternative “According to another book” forms stay distinct. No entry is teacher-verified."
   },
   {
     "id": "src_ncert_kriti_i_dance",
@@ -31,5 +31,16 @@
     "access_date": "2026-10-26",
     "license_or_usage_notes": "NCERT textbook is copyrighted. This project stores names and category citations only; do not redistribute textbook pages or images without permission.",
     "reliability_notes": "The chapter lists 28 Asamyukta and 24 Samyukta hand gestures by name and identifies them as hasta mudras. It cites Abhinaya Darpana for some gestures. Source citation verifies the catalogue name/category only, not every spelling lineage, hand configuration, meaning, or usage."
+  },
+  {
+    "id": "src_user_mudra_meanings_xl2",
+    "source_name": "User-provided Bharatanatyam Hasta Mudras workbook (xl2.xlsx)",
+    "source_url": null,
+    "source_type": "user_supplied_spreadsheet",
+    "author_or_organization": "User-provided workbook; its rows attribute demonstrations to Dr. Rajashree Warrier on Natyasutra Online",
+    "publication_date": null,
+    "access_date": "2026-10-26",
+    "license_or_usage_notes": "Internal project source supplied by the user. The workbook attributes demonstrations; the underlying demonstration pages and reuse rights were not independently verified.",
+    "reliability_notes": "Used as the supplied source for primary English meanings and listed usages. This records workbook provenance and does not imply teacher verification or independent validation."
   }
 ]

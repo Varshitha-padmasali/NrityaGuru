@@ -4,11 +4,13 @@ import logging
 from starlette.responses import JSONResponse
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.api import feedback, health, knowledge, practice, tutor
+from app.api import feedback, health, knowledge, practice, sequences, tutor
 from app.core.config import Settings, get_settings
 from app.core.errors import register_exception_handlers
 from app.core.logging import configure_logging
+from app.db.seed import DEFAULT_ASSETS_DIR
 
 logger = logging.getLogger(__name__)
 MAX_UPLOAD_REQUEST_BYTES = 101 * 1024 * 1024
@@ -81,6 +83,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     configure_logging(settings.log_level)
 
     app = FastAPI(title=settings.app_name, version=settings.app_version)
+    app.mount("/static", StaticFiles(directory=DEFAULT_ASSETS_DIR), name="static-assets")
     app.add_middleware(
         PracticeUploadSizeLimit,
         max_request_bytes=settings.max_video_upload_mb * 1024 * 1024 + 1024 * 1024,
@@ -100,6 +103,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(knowledge.router)
+    app.include_router(sequences.router)
     app.include_router(tutor.router)
     app.include_router(feedback.router)
     app.include_router(practice.router)

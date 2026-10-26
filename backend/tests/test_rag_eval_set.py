@@ -16,12 +16,12 @@ def test_every_labelled_case_passes_its_automated_checks(db_session):
     assert failures == {}
 
 
-def test_spec_example_never_invents_a_mudra(db_session):
+def test_spec_example_returns_only_cited_mappings_without_gemini(db_session):
     load_seed(db_session)
     retrieve = partial(retrieve_for_text, db_session, include_unverified=True)
     report = next(
         r for r in evaluate(load_cases(), retrieve, TutorService(None))
         if r.case.id == "q02_spec_example_nothing_supported"
     )
-    assert report.retrieval.supported_count == 0
-    assert report.result.fallback_reason.value == "no_references"
+    assert report.retrieval.supported_count == 2
+    assert report.result.fallback_reason.value == "not_configured"

@@ -76,7 +76,7 @@ def test_fully_complete_verified_record_has_no_limitations():
 
 def test_unverified_and_source_cited_are_flagged():
     assert any("no supporting source" in n for n in _limits(status=V.UNVERIFIED))
-    assert any("not yet cross-checked" in n for n in _limits(status=V.SOURCE_CITED))
+    assert any("not been teacher-verified" in n for n in _limits(status=V.SOURCE_CITED))
 
 
 def test_missing_source_image_and_instructions_are_flagged():

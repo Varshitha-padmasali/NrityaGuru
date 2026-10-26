@@ -57,6 +57,9 @@ def test_ai_answer_with_retrieval(db_session, make_client):
     assert r.status_code == 200
     body = r.json()
     assert body["tutor"]["mode"] == "ai"
+    assert body["explanation"]
+    assert isinstance(body["used_mudra_ids"][0], int)
+    assert body["model_name"] == "test-model"
     assert body["retrieval"]["supported_count"] == 1
     assert body["retrieval"]["concepts"][0]["references"][0]["record_id"] == "mudra_pataka"
     assert "teacher" in body["disclaimer"]
@@ -80,13 +83,14 @@ def test_no_gemini_configured_still_answers(db_session, make_client):
     assert r.json()["tutor"]["fallback_reason"] == "not_configured"
 
 
-def test_default_verified_only_mode_finds_nothing_and_skips_gemini(db_session, make_client):
+def test_frozen_frontend_tutor_receives_source_cited_context_in_development(db_session, make_client):
     load_seed(db_session)
     gen = FakeGenerator(_ai_output())
     r = make_client(gen).post("/api/tutor/explain", json={"text": "river"})
     assert r.status_code == 200
-    assert r.json()["tutor"]["fallback_reason"] == "no_references"
-    assert gen.calls == 0
+    assert r.json()["tutor"]["mode"] == "ai"
+    assert r.json()["retrieval"]["supported_count"] == 1
+    assert gen.calls == 1
 
 
 def test_unverified_request_forbidden_when_server_disallows(db_session, make_client):

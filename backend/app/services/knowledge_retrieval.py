@@ -84,6 +84,13 @@ def media_available(path: str | None, assets_dir: Path = DEFAULT_ASSETS_DIR) -> 
     return candidate.is_file()
 
 
+def media_url_path(path: str | None, assets_dir: Path = DEFAULT_ASSETS_DIR) -> str | None:
+    """Return a same-backend static URL only for an existing, contained asset."""
+    if not media_available(path, assets_dir):
+        return None
+    return f"/static/{Path(path).as_posix().lstrip('/')}"
+
+
 def source_to_out(source: Source | None) -> SourceOut | None:
     if source is None:
         return None
@@ -113,7 +120,7 @@ def mudra_to_out(m: Mudra, assets_dir: Path = DEFAULT_ASSETS_DIR) -> MudraOut:
         usage=list(m.usage or []),
         description=m.description,
         practice_instructions=m.practice_instructions,
-        reference_image_path=m.reference_image_path if available else None,
+        reference_image_path=media_url_path(m.reference_image_path, assets_dir),
         dataset_image_count=image_count,
         dataset_images_available=image_count > 0,
         dataset_classes=[{
@@ -146,7 +153,7 @@ def movement_to_out(m: Movement, assets_dir: Path = DEFAULT_ASSETS_DIR) -> Movem
         description=m.description,
         movement_category=m.movement_category,
         practice_instructions=m.practice_instructions,
-        reference_media_path=m.reference_media_path if available else None,
+        reference_media_path=media_url_path(m.reference_media_path, assets_dir),
         source=source_to_out(m.source),
         verification_status=m.verification_status,
         verification_notes=m.verification_notes,
@@ -194,7 +201,7 @@ def _collect(
     #    can never smuggle in an untrusted (or missing) mudra/movement.
     for key in concept.lookup_keys:
         for mapping in repo.get_mappings_for_concept(
-            db, key, include_unverified=include_unverified
+            db, key, include_unverified=include_unverified, include_source_cited=True
         ):
             if mapping.id in seen_mappings:
                 continue
@@ -202,11 +209,11 @@ def _collect(
             targets = []
             if mapping.mudra_id:
                 targets.append(
-                    ("mudra", repo.get_mudra(db, mapping.mudra_id, include_unverified=include_unverified))
+                    ("mudra", repo.get_mudra(db, mapping.mudra_id, include_unverified=include_unverified, include_source_cited=True))
                 )
             if mapping.movement_id:
                 targets.append(
-                    ("movement", repo.get_movement(db, mapping.movement_id, include_unverified=include_unverified))
+                    ("movement", repo.get_movement(db, mapping.movement_id, include_unverified=include_unverified, include_source_cited=True))
                 )
             for record_type, record in targets:
                 if record is None:
@@ -268,7 +275,7 @@ def _to_reference(cand: _Candidate, assets_dir: Path) -> RetrievedReference:
         description=rec.description,
         usage=list(rec.usage or []) if is_mudra else [],
         practice_instructions=rec.practice_instructions,
-        reference_media_path=media_path if available else None,
+        reference_media_path=media_url_path(media_path, assets_dir),
         match_type=cand.match_type,
         mapping_ids=sorted(set(cand.mapping_ids)),
         relationships=cand.relationships,
@@ -291,8 +298,8 @@ def retrieve_for_text(
 ) -> RetrievalResponse:
     """Full Part 3 + Part 4 flow. Raises InputValidationError for unusable input."""
     extraction = extract_concepts(text)
-    mudras = repo.list_mudras(db, include_unverified=include_unverified, limit=MAX_RECORDS_SCANNED)
-    movements = repo.list_movements(db, include_unverified=include_unverified, limit=MAX_RECORDS_SCANNED)
+    mudras = repo.list_mudras(db, include_unverified=include_unverified, include_source_cited=True, limit=MAX_RECORDS_SCANNED)
+    movements = repo.list_movements(db, include_unverified=include_unverified, include_source_cited=True, limit=MAX_RECORDS_SCANNED)
 
     results: list[ConceptRetrieval] = []
     for concept in extraction.concepts:

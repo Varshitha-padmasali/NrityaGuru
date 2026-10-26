@@ -51,6 +51,7 @@ VERB_FORMS: dict[str, tuple[str, ...]] = {
     "cry": ("cries", "cried", "crying"),
     "laugh": ("laughs", "laughed", "laughing"),
     "fly": ("flies", "flying", "flew", "flown"),
+    "flow": ("flows", "flowed", "flowing"),
     "swim": ("swims", "swimming", "swam"),
     "pray": ("prays", "prayed", "praying"),
     "bow": ("bows", "bowed", "bowing"),

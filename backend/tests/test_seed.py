@@ -17,12 +17,29 @@ from app.repositories import knowledge_repository as repo
 def test_real_seed_files_are_valid():
     bundle = read_seed()
     validate_seed(bundle)  # raises if anything is inconsistent
-    assert len(bundle.sources) == 3
+    assert len(bundle.sources) == 4
     assert len(bundle.mudras) == 52
     assert len({mudra.id for mudra in bundle.mudras}) == 52
     assert len({mudra.name.casefold() for mudra in bundle.mudras}) == 52
     assert len(bundle.movements) == 0  # nothing verified yet; none invented
-    assert len(bundle.mappings) == 6
+    assert len(bundle.mappings) == 398
+    assert len({mapping.id for mapping in bundle.mappings}) == 398
+    assert all(mapping.source_id for mapping in bundle.mappings)
+
+
+def test_52_record_catalogue_audit_coverage_is_explicit():
+    bundle = read_seed()
+    assert sum(m.category == "Asamyuta Hasta" for m in bundle.mudras) == 28
+    assert sum(m.category == "Samyuta Hasta" for m in bundle.mudras) == 24
+    assert {m.verification_status.value for m in bundle.mudras} == {"source_cited"}
+    assert sum(bool(m.meaning) for m in bundle.mudras) == 49
+    assert sum(bool(m.usage) for m in bundle.mudras) == 52
+    assert sum(bool(m.description) for m in bundle.mudras) == 51
+    assert sum(bool(m.practice_instructions) for m in bundle.mudras) == 0
+    assert sum(bool(m.reference_image_path) for m in bundle.mudras) == 50
+    assert {mapping.mudra_id for mapping in bundle.mappings} >= {
+        "mudra_pataka", "mudra_tripataka", "mudra_ardhapataka", "mudra_allapadma"
+    }
 
 
 def test_dataset_crosswalk_maps_observed_folders_without_collapsing_variants():
@@ -48,13 +65,12 @@ def test_load_seed_is_idempotent(db_session):
     assert len(repo.list_mudras(db_session, include_unverified=True)) == 52
 
 
-def test_seeded_records_are_not_authoritative_yet(db_session):
+def test_direct_repository_calls_remain_verified_only(db_session):
     load_seed(db_session)
-    # They are 'source_cited', not 'verified', so default retrieval hides them.
     assert repo.list_mudras(db_session) == []
     assert repo.get_mappings_for_concept(db_session, "river") == []
     pataka = repo.get_mudra(db_session, "mudra_pataka", include_unverified=True)
-    assert pataka.source.source_name.startswith("List of mudras")
+    assert pataka.source.source_name.startswith("The Mirror of Gesture")
     assert pataka.practice_instructions is None  # not invented
 
 
@@ -105,3 +121,18 @@ def test_rejects_unknown_fields(seed_copy):
     _edit(seed_copy / "mudras.json", lambda d: d[0].update(mening="typo"))
     with pytest.raises(Exception):
         read_seed(seed_copy)
+
+
+def test_reference_image_attribution_matches_registered_seed_paths():
+    assets_dir = DEFAULT_SEED_DIR.parent / "assets" / "mudras"
+    manifest = json.loads((assets_dir / "attributions.json").read_text(encoding="utf-8"))
+    bundle = read_seed()
+    seeded = {m.id: m.reference_image_path for m in bundle.mudras if m.reference_image_path}
+    by_path = {item["local_asset_path"]: item for item in manifest}
+    assert set(seeded.values()) <= set(by_path)
+    assert all((DEFAULT_SEED_DIR.parent / "assets" / path).is_file() for path in seeded.values())
+    assert all(by_path[path]["sha256"] for path in seeded.values())
+    assert all(
+        by_path[path]["license"] and by_path[path]["attribution"]
+        for path in seeded.values()
+    )

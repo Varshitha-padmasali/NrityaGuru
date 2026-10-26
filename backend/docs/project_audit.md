@@ -16,8 +16,10 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
   extraction, sequence construction, and the Member 4 adapter.
 - `evaluation_module/` contains dataset validation, hand-landmark extraction from still images,
   a single-hand MLP training/inference pipeline, and DTW sequence comparison.
-- Docker Compose originally contained PostgreSQL only. Backend/frontend container definitions
-  and health checks have now been added, but Docker could not be run in this environment.
+- Docker Compose has PostgreSQL, backend, and frontend services. The backend image has a
+  Dockerfile; the restored `frontend/` source has no Dockerfile even though Compose references
+  one. An already-running frontend container remains healthy, but a clean frontend image build
+  cannot be reproduced without changing frontend build configuration.
 
 ## Baseline audit
 
@@ -25,10 +27,10 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
 |---|---|---|
 | Knowledge and RAG | Backend services, schemas, seed records, and API routes existed | 52 names/categories were source-cited; only three entries had sourced usage text; no teacher-verified entries |
 | Dataset and classifier | Dataset validator and MLP/DTW code existed | 50 folders / 28,431 images; 48 candidate canonical IDs; no MediaPipe task asset, trained model bundle, or evaluation reference sequences |
-| Frontend learning | Catalogue, text retrieval, tutor, and detail pages existed | Frontend knowledge contracts had already been aligned to backend; real Gemini was unconfigured |
+| Frontend learning | Restored approved pages and UI are the source of truth | The frozen frontend expects numeric IDs/compact response shapes; backend canonical IDs and schemas used strings/richer objects |
 | Webcam flow | Browser camera, recording, upload state machine, results and progress pages existed | Frontend called practice routes that FastAPI did not expose; it also treated string canonical reference IDs as numeric |
 | Session/progress | Persistence models, repository, and feedback workflow existed | No HTTP progress route; no capture-to-database evaluation service |
-| Database/deployment | SQLAlchemy `create_all`, repeatable seed, Postgres compose service | No migrations; Docker daemon absent; an existing local SQLite database has 52 mudras but zero movement/session rows |
+| Database/deployment | SQLAlchemy, idempotent seed, Alembic and Compose are present | Frontend build file is missing; local SQLite contains seed data, and Compose PostgreSQL was initialized and migrated in this pass |
 | QA | Backend/evaluation/vision/frontend test suites existed | Frontend lint had one actual error; docs overstated route completion and had stale test claims |
 
 ## Corrected in this pass
@@ -50,23 +52,28 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
   or a validated native runtime are absent. Temporary video files are removed after each request.
 - Disabled `/api/progress` in production while identity/ownership is absent; development/test
   progress remains installation-wide and is documented as shared.
-- Changed the frontend practice-reference client to use `/api/practice/references`, keeping the
-  existing knowledge-base `/api/movements` route distinct. Practice route IDs are now treated as
-  strings so canonical IDs work without numeric coercion.
-- Updated the practice empty state to explain the missing model/reference dependency.
-- Removed the TypeScript lint error and two unused-variable warnings found by `npm run lint`.
-- Added full-stack Dockerfiles and Compose services for API and frontend alongside PostgreSQL,
-  with startup seed and readiness checks. Docker execution remains unverified because the local
-  Docker daemon is unavailable.
+- Added backend-only adapters for the frozen frontend: deterministic numeric aliases over string
+  database IDs, the UI's mudra/detail/retrieval/tutor response shapes, numeric practice session
+  fields, `/api/movements` as the practice-target list, and the expected per-session feedback route.
+  Canonical IDs remain available as `canonical_id`; internal persistence IDs are unchanged.
+- Knowledge retrieval and catalogue endpoints include source-cited catalogue entries by default,
+  labelling them `needs_review` and including their source. Records with no source require the
+  explicit `ALLOW_UNVERIFIED_RECORDS` option. Practice-reference lookup remains verified-only. The UI receives no practice targets without valid
+  model/reference assets.
+- Made no changes to any file under `frontend/`; recorded SHA-256 hashes for all 133 frontend
+  source/config files and verified them after implementation.
+- Rebuilt and started the backend with PostgreSQL. Alembic revision `0002_practice_reference`
+  ran and the repeatable seed loaded 52 mudras, 3 sources, and 6 mappings. No volume was removed.
 
 ## Feature status
 
 | Feature | Status | Evidence / dependency |
 |---|---|---|
-| FastAPI imports and HTTP app startup | Complete and tested | Earlier local HTTP smoke covered health/readiness, catalogue, retrieval, tutor fallback, practice and progress. In the latest pass, Uvicorn TCP and Unix-socket binds were denied by the sandbox; route behavior was still exercised with TestClient. |
-| PostgreSQL persistence | Implemented, not verified here | Alembic revisions and Compose config exist; Docker daemon unavailable, tests use SQLite |
-| Idempotent knowledge seed | Complete and tested | Backend tests and existing local database contain 52 seeded records |
-| Knowledge retrieval and grounded fallback | Implemented and unit-tested | Real Gemini request not run; no API key was available |
+| FastAPI imports and HTTP app startup | Complete and live-tested | Running backend responds to health/readiness and frontend-shaped APIs inside Docker |
+| PostgreSQL persistence | Complete and live-tested | Compose readiness passed; migration revision `0002_practice_reference` and PostgreSQL catalog queries succeeded |
+| Idempotent knowledge seed | Complete and live-tested | PostgreSQL has 52 mudras, 3 sources, 6 mappings; startup seed is repeatable |
+| Frozen frontend contract integration | Implemented and tested | Numeric aliases, catalogue/detail/retrieval/tutor/session/progress/feedback shapes adapted in backend; no frontend files changed |
+| Knowledge retrieval and grounded fallback | Implemented and live-tested | River retrieved Pataka as `needs_review`; tutor returned knowledge-only fallback because no Gemini key is configured |
 | Dataset validation and canonical crosswalk | Complete for current local dataset scan | 50 directories, 28,431 readable JPGs, no corrupt images; candidate label crosswalk awaits expert review |
 | MLP/DTW algorithms | Implemented and unit-tested | No trained bundle or genuine reference sequences; no real prediction/evaluation claim |
 | Reference sequence format | Implemented and unit-tested | Version 1 validator exists; no reference recordings have been supplied/reviewed |
@@ -74,9 +81,10 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
 | Practice reference discovery | Complete as a safe capability boundary | Returns `[]` until model and validated reference sequences exist |
 | Session API and bounded video decoding | Implemented, partial | Creation/upload/results endpoints, temp cleanup, and resource limits exist; evaluation still returns a structured unavailable response without a compatible task/model/reference and verified runtime |
 | Reference persistence/intake | Implemented, partial | Versioned table and reviewer-token intake exist; no real recordings/reviews exist |
-| Progress API | Implemented and tested | Reads existing persistence schema; no authenticated account separation |
-| Frontend production build and live pages | Complete and tested | `next build --webpack` passed; production server returned 200 for home, learn, mudras, practice and progress; browser verified the catalogue, river → Pataka retrieval/fallback, practice unavailable state, and empty history |
-| Full Docker stack | Implemented, not verified | Docker CLI could not connect to local daemon |
+| Progress API | Implemented and tested | Numeric UI IDs; development history remains shared; no authenticated account separation |
+| Existing frontend container | Reachable, read-only verified | Container health is healthy and it returns HTTP 200; no browser camera/console workflow was run |
+| Fresh frontend image build | Blocked by strict frontend freeze | `frontend/Dockerfile` is absent while Compose points to it. Adding a build file or Tailwind PostCSS setup would change frontend build configuration and requires user approval |
+| Database/session camera workflow | Partially implemented | Current practice-target list is empty. No session was written during live verification because no real model/reference target exists |
 
 ## Data and ML constraints
 
@@ -112,27 +120,28 @@ npm run lint
 npm run build
 ```
 
-Latest results: backend 495 passed/1 deselected; evaluation 53 passed; vision 71 passed;
-frontend 58 passed plus typecheck, lint and production build. `docker compose config -q`
-passed. The full current detailed status is in [implementation_status.md](implementation_status.md).
+Latest results: backend 497 passed/1 deselected; evaluation 53 passed; vision 71 passed;
+frontend Vitest 58 passed without editing frontend files.
+The backend Docker image built and ran; PostgreSQL readiness and frontend HTTP 200 were verified.
 
 ## Reproducible local startup
 
 With Docker Desktop running:
 
 ```bash
-docker compose up --build
+docker compose up -d --build db backend
 ```
 
-PostgreSQL is available on port 5432, FastAPI on `http://localhost:8000` (Swagger at `/docs`),
-and Next.js on `http://localhost:3000`. Compose seeds the database on API startup. Set
+PostgreSQL is available on host port 5433, FastAPI on `http://localhost:8000` (Swagger at `/docs`),
+and the existing Next.js container on `http://localhost:3000`. Compose migrates and seeds PostgreSQL
+on backend startup. The current frontend container remains untouched. A clean frontend build cannot
+be performed until its missing Dockerfile is supplied. Set
 `GEMINI_API_KEY` in the shell before Compose if live Gemini explanations are desired; no key is
 required for retrieval or fallback explanations. The configured browser origin is
 `http://localhost:3000`.
 
-Alembic migrations now adopt the existing `create_all` schema and add practice/reference tables
-without dropping records. The local database was not reset, and migration execution was not
-verified because Alembic could not be installed without network access.
+Alembic migration execution was verified against the Compose PostgreSQL service. No Docker volume
+was removed and the local SQLite database was left untouched.
 
 ## Remaining work and order
 
@@ -143,5 +152,7 @@ verified because Alembic could not be installed without network access.
    teacher review, and ingest the approved sequences.
 3. Run the separate native-runtime smoke command with the produced artifacts; only then enable
    the evaluator gate and exercise the actual browser camera flow.
-4. Run PostgreSQL and Docker checks, real Gemini smoke test with user credentials, and a
-   deployment security review. Alembic migrations exist but were not run in this environment.
+4. Configure a Gemini key for an authorized real API smoke test, test the camera in a browser,
+   and supply authentic teacher references/model assets before enabling evaluation.
+5. Ask before adding a frontend Dockerfile/PostCSS build setup; the strict frontend freeze currently
+   prevents a clean frontend image build from source.

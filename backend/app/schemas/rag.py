@@ -8,6 +8,9 @@ from app.services.text_processing import MAX_INPUT_CHARS
 
 class TutorExplainRequest(BaseModel):
     text: str = Field(min_length=1, max_length=MAX_INPUT_CHARS)
+    # Numeric aliases supplied by the frozen frontend. The tutor can only use
+    # the subset also found in this request's fresh knowledge retrieval.
+    mudra_ids: list[int] = Field(default_factory=list, max_length=52)
     include_unverified: bool = False  # needs ALLOW_UNVERIFIED_RECORDS=true on the server
     include_keyword_matches: bool = False
 

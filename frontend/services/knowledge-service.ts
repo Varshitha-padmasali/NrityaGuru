@@ -1,10 +1,10 @@
 /** Knowledge base + AI tutor calls. All Gemini access happens on the backend. */
 import { apiRequest } from "@/lib/api-client";
 import { endpoints } from "@/lib/api-endpoints";
-import { isExplainResponse, isHealth, isMudraDetail, isMudraList, isRetrieveResponse } from "@/lib/validators";
+import { isExplainResponse, isHealth, isMudraDetail, isMudraList, isRetrieveResponse, isSequenceResponse } from "@/lib/validators";
 import { config } from "@/lib/config";
 import type { HealthResponse } from "@/types/api";
-import type { ExplainResponse, MudraDetail, MudraSummary, RetrieveResponse } from "@/types/knowledge";
+import type { ExplainResponse, MudraDetail, MudraSummary, RetrieveResponse, SequenceResponse } from "@/types/knowledge";
 
 export const MIN_QUERY_LENGTH = 3;
 export const MAX_QUERY_LENGTH = 500;
@@ -24,6 +24,16 @@ export function getHealth(signal?: AbortSignal): Promise<HealthResponse> {
 
 export function retrieveKnowledge(text: string, signal?: AbortSignal): Promise<RetrieveResponse> {
   return apiRequest(endpoints.retrieve(), { method: "POST", json: { text: text.trim() }, validate: isRetrieveResponse, signal });
+}
+
+export function generateMudraSequence(text: string, signal?: AbortSignal): Promise<SequenceResponse> {
+  return apiRequest(endpoints.sequence(), {
+    method: "POST",
+    json: { text: text.trim(), mode: "ai_assisted", catalogue_mode: "all" },
+    validate: isSequenceResponse,
+    timeoutMs: config.longRequestTimeoutMs,
+    signal,
+  });
 }
 
 export function listMudras(signal?: AbortSignal): Promise<MudraSummary[]> {

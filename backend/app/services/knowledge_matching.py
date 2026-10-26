@@ -75,9 +75,7 @@ def build_limitations(
     if status == VerificationStatus.UNVERIFIED:
         notes.append("This record has no supporting source and is not verified.")
     elif status == VerificationStatus.SOURCE_CITED:
-        notes.append(
-            "Taken from a cited source but not yet cross-checked by an expert or a primary text."
-        )
+        notes.append("This information has a cited source but has not been teacher-verified.")
     if not has_source:
         notes.append("No source is recorded for this record.")
     if not media_listed:

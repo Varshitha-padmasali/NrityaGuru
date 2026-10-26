@@ -1,7 +1,11 @@
+from types import SimpleNamespace
+
 from fastapi.testclient import TestClient
 
+from app.api.deps import get_feedback_workflow
 from app.core.config import Settings, get_settings
 from app.db.database import get_db
+from app.db.models import FeedbackRecord
 from app.db.seed import load_seed
 from app.main import create_app
 from app.repositories import session_repository
@@ -40,8 +44,8 @@ def test_progress_returns_persisted_results_without_fabricating_missing_fields(d
     response = _client(db_session).get("/api/progress")
     assert response.status_code == 200
     item = response.json()["sessions"][0]
-    assert item["session_id"] == "progress-session-1"
-    assert item["reference_id"] == "mudra_pataka"
+    assert isinstance(item["session_id"], int)
+    assert isinstance(item["reference_id"], int)
     assert item["reference_name"] == "Pataka"
     assert item["status"] == "evaluated"
     assert item["dtw_normalized"] == 0.2
@@ -62,10 +66,11 @@ def test_progress_includes_unscored_session_without_fabricated_evaluation(db_ses
 def test_practice_session_creation_and_empty_results(db_session):
     load_seed(db_session)
     client = _client(db_session)
-    created = client.post("/api/practice/sessions", json={"reference_id": "mudra_pataka"})
+    from app.services.frontend_contract import external_id
+    created = client.post("/api/practice/sessions", json={"reference_id": external_id("mudra", "mudra_pataka")})
     assert created.status_code == 201
     session = created.json()
-    assert session["reference_id"] == "mudra_pataka"
+    assert session["reference_id"] == external_id("mudra", "mudra_pataka")
     assert session["status"] == "created"
     results = client.get(f"/api/practice/sessions/{session['session_id']}/results")
     assert results.status_code == 200
@@ -73,8 +78,50 @@ def test_practice_session_creation_and_empty_results(db_session):
     assert results.json()["session"]["status"] == "created"
 
 
+def test_frozen_frontend_practice_and_feedback_routes_are_present(db_session):
+    load_seed(db_session)
+    client = _client(db_session)
+    assert client.get("/api/movements").status_code == 200
+    assert client.get("/api/movements").json() == []
+    feedback = client.post("/api/practice/sessions/123456789/feedback", json={})
+    assert feedback.status_code == 404
+    assert feedback.json()["detail"]["code"] == "session_not_found"
+
+
+def test_frontend_feedback_route_adapts_existing_workflow(db_session):
+    load_seed(db_session)
+    stored_id = "feedback-session-001"
+    session_repository.create_session(db_session, stored_id, mudra_id="mudra_pataka")
+
+    class FakeWorkflow:
+        def run(self, db, session_id):
+            record = FeedbackRecord(
+                session_id=session_id,
+                mode="evidence_only",
+                evidence_level="limited",
+                is_mock=False,
+                result_json={"feedback": {"overall_summary": "The saved result has limited evidence."}},
+            )
+            db.add(record)
+            db.commit()
+            db.refresh(record)
+            return SimpleNamespace(
+                feedback=SimpleNamespace(overall_summary="The saved result has limited evidence."),
+                model=None,
+            )
+
+    client = _client(db_session)
+    client.app.dependency_overrides[get_feedback_workflow] = lambda: FakeWorkflow()
+    from app.services.frontend_contract import external_session_id
+    response = client.post(f"/api/practice/sessions/{external_session_id(stored_id)}/feedback", json={})
+    assert response.status_code == 200
+    assert response.json()["text"] == "The saved result has limited evidence."
+    assert response.json()["model_name"] == "evidence_only"
+    assert response.json()["created_at"]
+
+
 def test_practice_session_rejects_missing_reference(db_session):
-    response = _client(db_session).post("/api/practice/sessions", json={"reference_id": "not-a-real-target"})
+    response = _client(db_session).post("/api/practice/sessions", json={"reference_id": 42424242424242})
     assert response.status_code == 404
     assert response.json()["detail"]["code"] == "reference_not_found"
 
@@ -160,7 +207,8 @@ def test_saved_evaluation_is_adapted_for_frontend_without_inventing_metrics(db_s
     client = _client(db_session)
     output = client.get("/api/practice/sessions/result-session-1/results").json()
     assert output["session"]["status"] == "evaluated"
-    assert output["result"]["reference"] == {"id": "mudra_pataka", "name": "Pataka"}
+    from app.services.frontend_contract import external_id
+    assert output["result"]["reference"] == {"id": external_id("mudra", "mudra_pataka"), "name": "Pataka"}
     assert output["result"]["predictions"][0]["frame_end"] == 8
     assert output["result"]["dtw"]["path_length"] == 8
     assert output["result"]["frames_with_landmarks"] == 5

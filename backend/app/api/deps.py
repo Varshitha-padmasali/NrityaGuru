@@ -11,6 +11,7 @@ from app.repositories.feedback_repository import SqlFeedbackStore
 from app.services.feedback_service import FeedbackService, build_feedback_service
 from app.services.feedback_workflow import FeedbackWorkflow
 from app.services.tutor_service import TutorService, build_tutor_service
+from app.services.multilingual_sequence import build_multilingual_sequence_generator
 
 
 def check_unverified_allowed(include_unverified: bool, settings: Settings) -> None:
@@ -41,6 +42,16 @@ def _cached_tutor_service() -> TutorService:
 def get_tutor_service() -> TutorService:
     """One shared service (and Gemini client) per process. Tests override this dependency."""
     return _cached_tutor_service()
+
+
+@lru_cache
+def _cached_sequence_generator():
+    return build_multilingual_sequence_generator(get_settings())
+
+
+def get_sequence_generator():
+    """One optional shared Gemini client for multilingual sequence requests."""
+    return _cached_sequence_generator()
 
 
 @lru_cache

@@ -11,12 +11,12 @@ def _by_norm(result):
     return {r.concept.normalized: r for r in result.concepts}
 
 
-def test_seeded_records_are_hidden_by_default(db_session):
+def test_source_cited_seeded_mappings_resolve_with_provenance_by_default(db_session):
     load_seed(db_session)
     result = resolve_concepts(db_session, extract_concepts("The river and the clouds"))
-    assert result.supported_count == 0
-    assert result.unsupported_count == 2
-    assert all(r.note for r in result.concepts)
+    assert result.supported_count == 2
+    assert result.unsupported_count == 0
+    assert all(r.contains_unverified for r in result.concepts)
 
 
 def test_include_unverified_resolves_seeded_mappings(db_session):
@@ -29,9 +29,10 @@ def test_include_unverified_resolves_seeded_mappings(db_session):
     assert r["cloud"].mapping_ids == ["map_cloud_pataka"]  # found via singular key
     assert r["river"].contains_unverified is True
     assert r["krishna"].status == ConceptSupportStatus.UNSUPPORTED
-    assert r["dance"].status == ConceptSupportStatus.UNSUPPORTED
-    assert result.supported_count == 2
-    assert result.unsupported_count == 2
+    assert r["dance"].status == ConceptSupportStatus.SUPPORTED
+    assert r["dance"].mudra_ids == ["mudra_allapadma"]
+    assert result.supported_count == 3
+    assert result.unsupported_count == 1
 
 
 def _add_verified_mudra(db, mid, name):

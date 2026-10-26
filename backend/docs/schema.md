@@ -24,7 +24,9 @@ interpretations are represented.
 - `source_cited` - copied from a named source, not yet cross-checked
 - `verified` - cross-checked against a primary text and/or a qualified teacher
 
-Repository functions return only `verified` records unless `include_unverified=True`.
+Direct repository functions return `verified` records by default. Knowledge retrieval
+explicitly includes `source_cited` rows so results can carry provenance and review labels;
+set `include_unverified=True` only to additionally include records without sources.
 
 ## Not yet created (added in later parts)
 reference_sequences (Part 7/9), practice_sessions, evaluation_results, feedback (Part 9).

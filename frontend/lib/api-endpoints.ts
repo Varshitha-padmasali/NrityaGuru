@@ -4,6 +4,7 @@ export const endpoints = {
   mudras: () => "/api/mudras",
   mudra: (id: number | string) => `/api/mudras/${encodeURIComponent(String(id))}`,
   retrieve: () => "/api/knowledge/retrieve",
+  sequence: () => "/api/knowledge/sequence",
   explain: () => "/api/tutor/explain",
   movements: () => "/api/movements",
   sessions: () => "/api/practice/sessions",

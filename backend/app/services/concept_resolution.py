@@ -35,7 +35,9 @@ def resolve_concepts(
         mappings = {}
         matched_keys: list[str] = []
         for key in concept.lookup_keys:
-            found = repo.get_mappings_for_concept(db, key, include_unverified=include_unverified)
+            found = repo.get_mappings_for_concept(
+                db, key, include_unverified=include_unverified, include_source_cited=True
+            )
             if found:
                 matched_keys.append(key)
             for m in found:

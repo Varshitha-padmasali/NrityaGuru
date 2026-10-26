@@ -6,18 +6,19 @@ from pydantic import BaseModel
 
 
 class PracticeReferenceOut(BaseModel):
-    id: str
+    id: int
+    canonical_id: str
     name: str
     reference_type: Literal["mudra", "sequence"]
     description: str | None = None
-    mudra_ids: list[str]
+    mudra_ids: list[int]
     image_url: str | None = None
     max_duration_seconds: int | None = None
 
 
 class ProgressEntryOut(BaseModel):
-    session_id: str
-    reference_id: str
+    session_id: int
+    reference_id: int
     reference_name: str
     status: Literal["created", "uploaded", "processing", "evaluated", "failed"]
     created_at: datetime
@@ -33,11 +34,11 @@ class ProgressResponse(BaseModel):
 
 
 class CreatePracticeSessionIn(BaseModel):
-    reference_id: str
+    reference_id: int | str
 
 
 class PracticeSessionOut(BaseModel):
-    session_id: str
-    reference_id: str
+    session_id: int
+    reference_id: int
     status: Literal["created", "uploaded", "processing", "evaluated", "failed"]
     created_at: datetime

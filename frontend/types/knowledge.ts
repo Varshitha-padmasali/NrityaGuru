@@ -61,3 +61,61 @@ export interface ExplainResponse {
   unsupported_concepts: string[];
   model_name: string;
 }
+
+/** POST /api/knowledge/sequence: ordered semantic interpretation of input text. */
+export interface SequenceTranslation {
+  position: number;
+  original_sentence: string;
+  english_translation: string | null;
+  translated: boolean;
+  note: string | null;
+}
+export interface SequenceCitation {
+  source_id: string;
+  title: string;
+  url: string | null;
+  claim_scope: string;
+}
+export interface SequenceStep {
+  position: number;
+  event_order: number;
+  original_text: string;
+  language: string;
+  phrase: string;
+  related_phrases: string[];
+  event_orders: number[];
+  concepts: string[];
+  mudra_id: string;
+  mudra_name: string;
+  alternate_names: string[];
+  hand_position_description: string | null;
+  selection_reason: string;
+  additional_selection_reasons: string[];
+  context: string;
+  source_citations: SequenceCitation[];
+  verification_status: string;
+  image_url: string | null;
+  selection_type: "teacher_verified" | "source_supported" | "ai_inferred";
+  confidence: number;
+  confidence_meaning: string;
+  uncertainty_notes: string[];
+}
+export interface UnmappedSequenceConcept {
+  event_order: number;
+  phrase: string;
+  concept: string;
+  reason: string;
+}
+export interface SequenceResponse {
+  original_input: string;
+  detected_language: { code: string; name: string; confidence: number | null; detection_method: string };
+  sentence_translations: SequenceTranslation[];
+  events: Array<{ order: number; phrase: string; event_type: string; concepts: string[]; lookup_terms: string[]; negated: boolean; tense: string; relations: string[]; context: string }>;
+  ordered_sequence: SequenceStep[];
+  unmapped_concepts: UnmappedSequenceConcept[];
+  interpretation_caveats: string[];
+  gemini_used: boolean;
+  mode: "knowledge_base" | "ai_assisted";
+  catalogue_mode: "all" | "eight_mudra";
+  disclaimer: string;
+}

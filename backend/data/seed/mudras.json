@@ -3,777 +3,1352 @@
     "id": "mudra_pataka",
     "name": "Pataka",
     "alternate_names": [
-      "pathaka"
+      "pathaka",
+      "Patāka",
+      "Patākā"
     ],
     "category": "Asamyuta Hasta",
     "meaning": "Flag",
     "usage": [
       "beginning a dance",
-      "forest",
-      "river",
-      "sprinkling water",
       "cloud",
+      "forest",
+      "forbidding",
       "night",
-      "forbidding things",
-      "horse"
+      "river",
+      "horse",
+      "wave",
+      "Beginning a dance",
+      "sprinkling water",
+      "forbidding things"
     ],
-    "description": null,
+    "description": "Fingers extended together; thumb bent toward them.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_wikipedia_mudra_list",
+    "reference_image_path": "mudras/pataka.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Meaning and usages copied as facts from the Wikipedia list (secondary source). Not yet cross-checked against Abhinaya Darpana or a teacher. Hand-position description and image intentionally left empty until verified. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_tripataka",
     "name": "Tripataka",
     "alternate_names": [
-      "tripathaka"
+      "tripathaka",
+      "Tripatāka",
+      "Tripatākā"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": "Three parts of the flag",
+    "meaning": "Three parts of a flag",
     "usage": [
-      "tree",
-      "arrow",
-      "vajra weapon",
-      "Indra",
       "crown",
-      "light rising",
-      "union"
+      "tree",
+      "vajra",
+      "Indra",
+      "arrow",
+      "flame",
+      "union",
+      "Tree",
+      "vajra weapon",
+      "light rising"
     ],
-    "description": null,
+    "description": "Third finger bent in the Patāka hand.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_wikipedia_mudra_list",
+    "reference_image_path": "mudras/tripataka.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_ardhapataka",
     "name": "Ardhapataka",
     "alternate_names": [
-      "arthapataka"
+      "arthapataka",
+      "Ardha-patāka",
+      "Ardhapatākā"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": "Half flag",
+    "meaning": "Half-flag",
     "usage": [
-      "flag",
-      "temple tower",
-      "horn",
-      "riverbank",
       "tender shoots",
       "writing panel",
-      "knife"
+      "riverbank",
+      "dagger",
+      "knife",
+      "flag",
+      "tower",
+      "horn",
+      "Flag",
+      "temple tower"
     ],
-    "description": null,
+    "description": "Little finger also bent in the Tripatāka hand.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_wikipedia_mudra_list",
+    "reference_image_path": "mudras/ardhapataka.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kartarimukha",
     "name": "Kartarimukha",
     "alternate_names": [
-      "kartharimukaham"
+      "kartharimukaham",
+      "Kartarī-mukha",
+      "Kartarīmukha"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Arrow-shaft face",
+    "usage": [
+      "separation",
+      "opposition",
+      "stealing",
+      "eye corner",
+      "death",
+      "disagreement",
+      "lightning",
+      "sleeping alone",
+      "falling",
+      "creeper",
+      "Separation of women and men",
+      "corner of the eye"
+    ],
+    "description": "Forefinger and little finger are spread apart in the described hand form.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kartarimukha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_mayura",
     "name": "Mayura",
     "alternate_names": [
-      "mayooram"
+      "mayooram",
+      "Mayūra"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Peacock",
+    "usage": [
+      "peacock beak",
+      "creeper",
+      "bird",
+      "forehead",
+      "brow mark",
+      "wiping tears",
+      "argument",
+      "renown",
+      "Bird of omen",
+      "stroking the hair"
+    ],
+    "description": "Third finger joins the thumb; remaining fingers are extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/mayura.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_ardhachandra",
     "name": "Ardhachandra",
     "alternate_names": [
-      "arthachandran"
+      "arthachandran",
+      "Ardha-candra",
+      "Ardhacandra"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Half-moon",
+    "usage": [
+      "moon",
+      "spear",
+      "platter",
+      "waist",
+      "anxiety",
+      "self",
+      "meditation",
+      "prayer",
+      "greeting",
+      "Spear"
+    ],
+    "description": "Thumb of the Patāka hand is extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/ardhachandra.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_arala",
     "name": "Arala",
-    "alternate_names": [],
+    "alternate_names": [
+      "Arāla"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Bent",
+    "usage": [
+      "drinking poison",
+      "nectar",
+      "sharp acid",
+      "Drinking poison",
+      "violent wind"
+    ],
+    "description": "First finger of the Patāka hand is curved.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/arala.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_sukhatunda",
     "name": "Sukhatunda",
-    "alternate_names": [],
+    "alternate_names": [
+      "Śuka-tuṇḍaka",
+      "Śukatuṇḍa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Parrot's beak",
+    "usage": [
+      "shooting an arrow",
+      "throwing a spear",
+      "mystery",
+      "ferocity",
+      "Shooting an arrow",
+      "violent mood"
+    ],
+    "description": "Third finger is additionally bent in the Arāla hand.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/shukatunda.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_mushti",
     "name": "Mushti",
     "alternate_names": [
-      "mushti"
+      "mushti",
+      "Muṣṭi",
+      "Mushthi / Muṣṭi"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Fist",
+    "usage": [
+      "steadiness",
+      "grasping",
+      "holding things",
+      "wrestling",
+      "Steadiness",
+      "grasping the hair",
+      "holding spear"
+    ],
+    "description": "Four fingers bend into the palm and the thumb is set on them.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/mushti.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_shikhara",
     "name": "Shikhara",
     "alternate_names": [
-      "shikaram"
+      "shikaram",
+      "Śikhara"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Spire",
+    "usage": [
+      "bow",
+      "pillar",
+      "silence",
+      "husband",
+      "tooth",
+      "questioning",
+      "saying no",
+      "embrace",
+      "bell",
+      "God of Love (Kamadeva)",
+      "sound of a bell",
+      "lover"
+    ],
+    "description": "Thumb is raised from the closed-finger hand described after Muṣṭi.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/shikhara.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kapitha",
     "name": "Kapitha",
     "alternate_names": [
-      "kapitham"
+      "kapitham",
+      "Kapittha",
+      "Kapitta / Kapiṭṭha"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Elephant-apple",
+    "usage": [
+      "Lakshmi",
+      "Saraswati",
+      "holding cymbals",
+      "milking cows",
+      "collyrium",
+      "holding flowers",
+      "offering incense",
+      "offering lights",
+      "Goddess Lakshmi",
+      "holding flowers at the time of flirting"
+    ],
+    "description": "Forefinger bends over the top of the thumb in the Śikhara hand.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kapittha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_katakamukha",
     "name": "Katakamukha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kaṭaka-mukha",
+      "Kaṭakāmukha"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Opening in a link",
+    "usage": [
+      "picking flowers",
+      "pearl necklace",
+      "flower garland",
+      "drawing a bow",
+      "betel leaves",
+      "applying scent",
+      "speech",
+      "glancing",
+      "Picking flowers",
+      "holding a pearl necklace or garland of flowers",
+      "drawing a bow slowly"
+    ],
+    "description": "Forefinger and middle finger are applied to the thumb.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/katakamukha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_suchi",
     "name": "Suchi",
     "alternate_names": [
-      "soochi"
+      "soochi",
+      "Sūci",
+      "Sūcī"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Needle",
+    "usage": [
+      "one",
+      "Parabrahma",
+      "demonstration",
+      "sun",
+      "city",
+      "world",
+      "fan",
+      "threatening",
+      "body",
+      "wheel",
+      "circle",
+      "one hundred",
+      "astonishment",
+      "umbrella",
+      "beating the drum"
+    ],
+    "description": "Forefinger of the Kaṭaka-mukha hand is raised.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/suchi.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_chandrakala",
     "name": "Chandrakala",
-    "alternate_names": [],
+    "alternate_names": [
+      "Candra-kalā",
+      "Candrakalā"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Digit of the moon",
+    "usage": [
+      "crescent moon",
+      "Digit of the moon",
+      "face",
+      "Shiva's crown",
+      "river Ganga"
+    ],
+    "description": "Thumb of the Sūci hand is released.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/chandrakala.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_padmakosha",
     "name": "Padmakosha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Padma-kośa",
+      "Padmakośa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Lotus bud",
+    "usage": [
+      "fruit",
+      "wood apple",
+      "breast",
+      "flower ball",
+      "bud",
+      "mango",
+      "rain of flowers",
+      "water lily",
+      "egg",
+      "Water lily",
+      "apple",
+      "circular movement",
+      "ball of flowers"
+    ],
+    "description": "Fingers are separated and slightly bent, with the palm hollowed.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/padmakosha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_sarpasirsha",
     "name": "Sarpasirsha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Sarpa-śīrṣa",
+      "Sarpashirsha / Sarpaśīrṣa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Snake-head",
+    "usage": [
+      "sandal paste",
+      "snake",
+      "sprinkling",
+      "cherishing",
+      "offering water",
+      "elephant ears",
+      "massage",
+      "Giving water to Gods and sages",
+      "the flapping of elephant's ears",
+      "slowness",
+      "serpent"
+    ],
+    "description": "Middle of the Patāka hand is hollowed.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/sarpashirsa.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_mrigasirsha",
     "name": "Mrigasirsha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Mṛga-śīrṣa",
+      "Mṛgaśīrṣa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Deer-head",
+    "usage": [
+      "women",
+      "cheek",
+      "fear",
+      "discussion",
+      "residence",
+      "umbrella",
+      "calling the beloved",
+      "roaming",
+      "Women",
+      "holding an umbrella",
+      "actor's costume",
+      "house"
+    ],
+    "description": "In the preceding Sarpa-śīrṣa form, thumb and little finger are extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/mrigashirsha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_simhamukham",
     "name": "Simhamukham",
     "alternate_names": [
-      "simhamugham"
+      "simhamugham",
+      "Siṃha-mukha",
+      "Siṃhamukha"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Lion-face",
+    "usage": [
+      "coral",
+      "pearl",
+      "fragrance",
+      "water drop",
+      "liberation",
+      "offering fire",
+      "hare",
+      "elephant",
+      "lotus garland",
+      "medicine",
+      "Elephant",
+      "lotus",
+      "garland",
+      "drop of water",
+      "salvation when placed on the heart",
+      "lion"
+    ],
+    "description": "Tips of middle and third fingers meet the thumb; other fingers remain extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/simhamukha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kangula",
     "name": "Kangula",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kangulashya / Kāṅgula"
+    ],
     "category": "Asamyuta Hasta",
     "meaning": null,
-    "usage": [],
+    "usage": [
+      "Lakuca fruit",
+      "water lily",
+      "breast",
+      "small bells",
+      "betel nut"
+    ],
     "description": null,
     "practice_instructions": null,
-    "reference_image_path": null,
+    "reference_image_path": "mudras/kangula.png",
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Name/category are cited to NCERT Kriti-I. The consulted 1917 Abhinaya Darpana translation has a similarly positioned list entry “Lāṅgula” (tail), whereas this catalogue spells the record Kangula. The equivalence is unresolved and needs a Bharatanatyam teacher/source review. No description or usage has been assigned."
   },
   {
     "id": "mudra_allapadma",
     "name": "Allapadma",
-    "alternate_names": [],
+    "alternate_names": [
+      "Sola-padma",
+      "Ala-padma",
+      "Solapadma / Alapallava"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Full-blown lotus",
+    "usage": [
+      "full-blown lotus",
+      "elephant apple",
+      "turning",
+      "yearning for the beloved",
+      "mirror",
+      "full moon",
+      "lake",
+      "village",
+      "praise",
+      "Yearning for the beloved",
+      "moon pavilion",
+      "murmuring sound",
+      "beauty"
+    ],
+    "description": "Fingers are spread apart; source equates Sola-padma with Ala-padma.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/alapadma.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_chatura",
     "name": "Chatura",
-    "alternate_names": [],
+    "alternate_names": [
+      "Catura"
+    ],
     "category": "Asamyuta Hasta",
     "meaning": null,
-    "usage": [],
-    "description": null,
+    "usage": [
+      "musk",
+      "gold",
+      "copper",
+      "wet",
+      "sorrow",
+      "eyes",
+      "oath",
+      "playful conversation",
+      "slow stepping",
+      "oil",
+      "ghee",
+      "Eyes",
+      "a little",
+      "breaking to pieces",
+      "slow movement"
+    ],
+    "description": "Thumb touches the base of the third finger; first two fingers extend together and the little finger separately.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/chatura.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_bhramara",
     "name": "Bhramara",
-    "alternate_names": [],
+    "alternate_names": [
+      "Bhramara"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Bee",
+    "usage": [
+      "bee",
+      "parrot",
+      "crane",
+      "cuckoo",
+      "union",
+      "Parrot"
+    ],
+    "description": "Second finger and thumb touch; forefinger is bent and the other fingers extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/bhramara.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_hamsasya",
     "name": "Hamsasya",
-    "alternate_names": [],
+    "alternate_names": [
+      "Haṃsāsya"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Swan-face",
+    "usage": [
+      "marriage thread",
+      "initiation",
+      "certainty",
+      "water drop",
+      "lamp wick",
+      "examining",
+      "garlands",
+      "saying no",
+      "accomplishing a task",
+      "Tying the marriage thread",
+      "painting",
+      "drop of water",
+      "pearl",
+      "jasmine flower"
+    ],
+    "description": "Forefinger and thumb touch; middle and following fingers extend and separate.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/hamsasya.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_hamsapaksha",
     "name": "Hamsapaksha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Haṃsa-pakṣa",
+      "Haṃsapakṣa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Swan-feather",
+    "usage": [
+      "six",
+      "constructing a bridge",
+      "nail marks",
+      "arranging",
+      "Arranging",
+      "making marks with the nails",
+      "number six",
+      "covering"
+    ],
+    "description": "Little finger of the Sarpa-śīrṣa hand is extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/hamsapaksha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_samdamsha",
     "name": "Samdamsha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Saṃdaṃsa",
+      "Sandamsha / Saṃdaṃśa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Grasping",
+    "usage": [
+      "generosity",
+      "sacrificial offerings",
+      "tumour",
+      "insect",
+      "apprehension",
+      "worship",
+      "five",
+      "Generosity",
+      "offering",
+      "number five",
+      "taking / holding"
+    ],
+    "description": "Fingers of the Padmakośa hand repeatedly open and close.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/samdamsha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_mukula",
     "name": "Mukula",
-    "alternate_names": [],
+    "alternate_names": [
+      "Mukula"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Bud",
+    "usage": [
+      "water lily",
+      "eating",
+      "holding a seal",
+      "navel",
+      "plantain flower",
+      "Water lily",
+      "the God of love",
+      "lotus blossom"
+    ],
+    "description": "Thumb and fingers are brought together so their tips meet.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/mukula.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_tamrachuda",
     "name": "Tamrachuda",
-    "alternate_names": [],
+    "alternate_names": [
+      "Tāmracūḍa"
+    ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Red-crest (cock)",
+    "usage": [
+      "cock",
+      "crane",
+      "camel",
+      "calf",
+      "writing",
+      "drawing",
+      "Crane",
+      "writing or drawing",
+      "crow"
+    ],
+    "description": "Forefinger of the Mukula hand is bent.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/tamrachuda.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_trishula",
     "name": "Trishula",
     "alternate_names": [
-      "trishoolam"
+      "trishoolam",
+      "Triśūla"
     ],
     "category": "Asamyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Trident",
+    "usage": [
+      "wood-apple leaf",
+      "three together",
+      "Three together",
+      "wood apple leaf",
+      "Lord Shiva's trident",
+      "holy trinity"
+    ],
+    "description": "Thumb and little finger are bent.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/trishula.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 12, “Twenty-eighth Single Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_anjali",
     "name": "Anjali",
-    "alternate_names": [],
+    "alternate_names": [
+      "Añjali",
+      "Añjali / Anjalihasta"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Salutation",
+    "usage": [
+      "saluting deities",
+      "saluting elders",
+      "saluting teachers",
+      "saluting brahmins",
+      "bowing",
+      "obedience",
+      "meditation",
+      "Greeting Gods",
+      "Gurus",
+      "and elders",
+      "reverence",
+      "devotion"
+    ],
+    "description": "Two Patāka hands are joined palm to palm.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/anjali.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kapota",
     "name": "Kapota",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kapotam / Kapota"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Dove",
+    "usage": [
+      "taking an oath",
+      "conversation with elders",
+      "humble acquiescence",
+      "Respectful salutation",
+      "conversation with teachers",
+      "acceptance",
+      "humility"
+    ],
+    "description": "Hands are joined at the sides, base, and top.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kapota.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_karkata",
     "name": "Karkata",
-    "alternate_names": [],
+    "alternate_names": [
+      "Karkaṭa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Crab",
+    "usage": [
+      "group",
+      "blowing a conch",
+      "stretching limbs",
+      "bending a tree bough",
+      "Arrival of crowds",
+      "blowing the conch",
+      "bending branches",
+      "twisting limbs"
+    ],
+    "description": "Fingers of both hands are interlocked; hands may turn inward or outward.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/karkata.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_swastika",
     "name": "Swastika",
-    "alternate_names": [],
+    "alternate_names": [
+      "Svastika",
+      "Swastikam / Svastika"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Crossed",
+    "usage": [
+      "crocodile",
+      "timid speech",
+      "dispute",
+      "praising",
+      "Crocodiles",
+      "disputation",
+      "sky",
+      "auspicious blessing"
+    ],
+    "description": "Two Patāka hands are held together at the wrists.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/svastika.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_dola",
     "name": "Dola",
-    "alternate_names": [],
+    "alternate_names": [
+      "Ḍola",
+      "Dola-Hastam / Dolā"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Swing",
+    "usage": [
+      "beginning a dance",
+      "Beginning of natya",
+      "relaxed posture",
+      "swing",
+      "abandonment"
+    ],
+    "description": "Two Patāka hands are placed on the thighs.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/dola.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_puspaputa",
     "name": "Puspaputa",
-    "alternate_names": [],
+    "alternate_names": [
+      "Puṣpapuṭa",
+      "Pushpaputam / Puṣpapuṭa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Flower-casket",
+    "usage": [
+      "offering lights",
+      "twilight water offering",
+      "flower offering",
+      "children receiving fruit",
+      "Offering lights (Aarti)",
+      "taking water/fruits",
+      "evening prayer",
+      "offering flowers"
+    ],
+    "description": "Two Sarpa-śīrṣa hands are pressed together.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/puspaputa.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_utsanga",
     "name": "Utsanga",
-    "alternate_names": [],
+    "alternate_names": [
+      "Utsaṅga",
+      "Utsangam / Utsaṅga"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Embrace",
+    "usage": [
+      "embrace",
+      "modesty",
+      "armlet",
+      "teaching children",
+      "Embracing",
+      "showing armlets/ornaments",
+      "teaching boys"
+    ],
+    "description": "Mṛga-śīrṣa hands are held at opposite armpits.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/utsanga.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_shivlinga",
     "name": "Shivlinga",
-    "alternate_names": [],
+    "alternate_names": [
+      "Śiva-liṅga",
+      "Shivalingam / Śivaliṅga"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Śiva-liṅga",
+    "usage": [
+      "Shiva-linga",
+      "Phallic symbol representing Lord Shiva",
+      "divine phallus"
+    ],
+    "description": "Left hand forms Ardha-candra; right hand forms Śikhara.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/sivalinga.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_katakavardana",
     "name": "Katakavardana",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kaṭaka-vardhana",
+      "Kataka-vardhanam / Kaṭakāvardhana"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Link of increase",
+    "usage": [
+      "coronation",
+      "ritual worship",
+      "marriage blessing",
+      "Coronation",
+      "marriage worship",
+      "ritual devotion",
+      "respect"
+    ],
+    "description": "Kaṭaka-mukha hands are held with crossed wrists.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/katakavardhana.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kartariswastika",
     "name": "Kartariswastika",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kartarī-svastika",
+      "Kartari-swastikam / Kartarīsvastika"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Crossed arrow-shafts",
+    "usage": [
+      "trees",
+      "tree boughs",
+      "hill summit",
+      "Branches of trees",
+      "summit of mountains",
+      "hilltops"
+    ],
+    "description": "Kartarī-mukha hands are crossed.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kartarisvastika.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_shakata",
     "name": "Shakata",
-    "alternate_names": [],
+    "alternate_names": [
+      "Śakaṭa",
+      "Shakatam / Śakaṭa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Car",
+    "usage": [
+      "Rākṣasa gestures",
+      "Demonic gestures",
+      "wheel",
+      "carriage",
+      "demons (Rakshasas)"
+    ],
+    "description": "Hands form Bhramara with thumb and middle finger extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/sakata.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_shanka",
     "name": "Shanka",
-    "alternate_names": [],
+    "alternate_names": [
+      "Śaṅkha",
+      "Shankha / Śaṅkha"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Conch",
+    "usage": [
+      "conch",
+      "Blowing a conch",
+      "sacred ritual conch",
+      "ocean shells"
+    ],
+    "description": "Thumbs of two Śikhara hands join and forefingers extend.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/sankha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_chakra",
     "name": "Chakra",
-    "alternate_names": [],
+    "alternate_names": [
+      "Cakra",
+      "Chakram / Cakra"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Discus",
+    "usage": [
+      "discus",
+      "Discus weapon of Vishnu",
+      "wheel of time",
+      "spinning disc"
+    ],
+    "description": "Two Ardha-candra hands are held askew with palms touching.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/chakra.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_samputa",
     "name": "Samputa",
-    "alternate_names": [],
+    "alternate_names": [
+      "Sampuṭa",
+      "Saṃpuṭa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Casket",
+    "usage": [
+      "concealing things",
+      "casket",
+      "Box",
+      "round container"
+    ],
+    "description": "Fingers of the Cakra form are bent.",
     "practice_instructions": null,
     "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_pasha",
     "name": "Pasha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Pāśa",
+      "Pasha / Pāśa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Noose",
+    "usage": [
+      "enmity",
+      "noose",
+      "manacles",
+      "Internal quarrels",
+      "ropes",
+      "chains"
+    ],
+    "description": "Forefingers of two Sūci hands are bent and interlocked.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/pasa.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_keelaka",
     "name": "Keelaka",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kīlaka"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Bond",
+    "usage": [
+      "affection",
+      "conversation of lovers",
+      "Affection",
+      "intimate talk",
+      "friendly bond",
+      "mutual love"
+    ],
+    "description": "Little fingers of two Mṛga-śīrṣa hands are interlocked.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kilaka.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_matsya",
     "name": "Matsya",
-    "alternate_names": [],
+    "alternate_names": [
+      "Matsya-hasta"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Fish",
+    "usage": [
+      "fish",
+      "Fish",
+      "Matsya avatar of Lord Vishnu",
+      "movement in water"
+    ],
+    "description": "Patāka hands face downward, with thumbs and little fingers extended.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/matsya.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_kurma",
     "name": "Kurma",
-    "alternate_names": [],
+    "alternate_names": [
+      "Kūrma"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Tortoise",
+    "usage": [
+      "tortoise",
+      "Tortoise",
+      "Kurma avatar of Lord Vishnu",
+      "covering",
+      "protection"
+    ],
+    "description": "Fingertips of the Cakra form are bent except thumbs and little fingers.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/kurma.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_varaha",
     "name": "Varaha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Varāha"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Boar",
+    "usage": [
+      "boar",
+      "Boar",
+      "Varaha avatar of Lord Vishnu",
+      "digging earth"
+    ],
+    "description": "Mṛga-śīrṣa hands are placed one over the other, back to back, with thumbs and little fingers linked.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/varaha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_garuda",
     "name": "Garuda",
-    "alternate_names": [],
+    "alternate_names": [
+      "Garuḍa"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Garuda",
+    "usage": [
+      "Garuda",
+      "Bird(s) flying",
+      "Lord Garuda",
+      "large birds"
+    ],
+    "description": "Ardha-candra hands are held askew with thumbs interlocked.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/garuda.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_nagabandha",
     "name": "Nagabandha",
-    "alternate_names": [],
+    "alternate_names": [
+      "Nāga-bandha",
+      "Nagabandham / Nāgabandha"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Serpent-tie",
+    "usage": [
+      "serpent pair",
+      "bower",
+      "Atharva Veda spells",
+      "Entwined serpents",
+      "pairs of snakes",
+      "chambers",
+      "Atharva spells"
+    ],
+    "description": "Sarpa-śīrṣa hands are crossed.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/nagabandha.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_khatwa",
     "name": "Khatwa",
-    "alternate_names": [],
+    "alternate_names": [
+      "Khaṭvā",
+      "Khattva / Khaṭvā"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Bed",
+    "usage": [
+      "bed",
+      "Bed",
+      "cot",
+      "litter",
+      "palanquin",
+      "bridge"
+    ],
+    "description": "Thumbs and forefingers of two Catura hands are left free.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/katva.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_berunda",
     "name": "Berunda",
-    "alternate_names": [],
+    "alternate_names": [
+      "Bheruṇḍa"
+    ],
     "category": "Samyuta Hasta",
     "meaning": null,
-    "usage": [],
-    "description": null,
+    "usage": [
+      "pair of Bheruṇḍas",
+      "Pair of birds",
+      "Bherunda mythical bird",
+      "fierce state"
+    ],
+    "description": "Wrists of two Kapittha hands are joined.",
     "practice_instructions": null,
-    "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "reference_image_path": "mudras/bherunda.png",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   },
   {
     "id": "mudra_avahitta",
     "name": "Avahitta",
-    "alternate_names": [],
+    "alternate_names": [
+      "Avahittha",
+      "Avahittham / Avahittha"
+    ],
     "category": "Samyuta Hasta",
-    "meaning": null,
-    "usage": [],
-    "description": null,
+    "meaning": "Dissimulation",
+    "usage": [
+      "erotic dance",
+      "holding a play-ball",
+      "breasts",
+      "Secret disclosure",
+      "holding things to chest",
+      "modest heart"
+    ],
+    "description": "Two Alapadma hands are held on the chest.",
     "practice_instructions": null,
     "reference_image_path": null,
-    "source_id": "src_ncert_kriti_i_dance",
+    "source_id": "src_mirror_of_gesture_1917",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
+    "verification_notes": "Source-cited, not teacher-verified. Description and selected usages paraphrase Coomaraswamy & Duggirala (trans.), The Mirror of Gesture / Abhinaya Darpana (1917), Chapter 13, “Twenty-four Combined Hands,” Nandikesvara first-form entry. “According to another book” variants are kept separate; this selected list is not exhaustive."
   }
 ]

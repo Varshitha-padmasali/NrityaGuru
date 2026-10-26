@@ -8,7 +8,7 @@
  * validation library is needed.
  */
 import type { HealthResponse } from "@/types/api";
-import type { MudraDetail, MudraSummary, RetrieveResponse, ExplainResponse } from "@/types/knowledge";
+import type { MudraDetail, MudraSummary, RetrieveResponse, ExplainResponse, SequenceResponse } from "@/types/knowledge";
 import type { PracticeReference, PracticeSession } from "@/types/practice";
 import type { EvaluateResponse, EvaluationResult, Feedback, SessionResults } from "@/types/evaluation";
 import type { ProgressResponse } from "@/types/progress";
@@ -42,6 +42,14 @@ export const isRetrieveResponse: Validator<RetrieveResponse> = (v): v is Retriev
 
 export const isExplainResponse: Validator<ExplainResponse> = (v): v is ExplainResponse =>
   isObj(v) && isStr(v.explanation) && Array.isArray(v.used_mudra_ids) && Array.isArray(v.unsupported_concepts);
+
+export const isSequenceResponse: Validator<SequenceResponse> = (v): v is SequenceResponse =>
+  isObj(v) &&
+  isStr(v.original_input) && isObj(v.detected_language) && isStr(v.detected_language.code) && isStr(v.detected_language.name) &&
+  Array.isArray(v.sentence_translations) && v.sentence_translations.every((t) => isObj(t) && isNum(t.position) && isStr(t.original_sentence) && isNullable(isStr)(t.english_translation) && typeof t.translated === "boolean") &&
+  Array.isArray(v.ordered_sequence) && v.ordered_sequence.every((s) => isObj(s) && isNum(s.position) && isStr(s.mudra_id) && isStr(s.mudra_name) && isStr(s.phrase) && isStr(s.selection_reason) && isStr(s.selection_type) && isNum(s.confidence) && Array.isArray(s.source_citations) && s.source_citations.every((c) => isObj(c) && isStr(c.title))) &&
+  Array.isArray(v.unmapped_concepts) && v.unmapped_concepts.every((c) => isObj(c) && isStr(c.concept) && isStr(c.reason)) &&
+  Array.isArray(v.interpretation_caveats) && v.interpretation_caveats.every(isStr) && typeof v.gemini_used === "boolean" && isStr(v.disclaimer);
 
 export const isPracticeReference: Validator<PracticeReference> = (v): v is PracticeReference =>
   isObj(v) && isNum(v.id) && isStr(v.name) && (v.reference_type === "mudra" || v.reference_type === "sequence") && Array.isArray(v.mudra_ids);

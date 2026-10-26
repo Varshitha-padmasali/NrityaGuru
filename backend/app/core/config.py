@@ -49,8 +49,8 @@ class Settings(BaseSettings):
     # http://localhost:3000. Add the real frontend URL for deployment.
     cors_allow_origins: str = "http://localhost:3000"
 
-    # When False, API callers cannot request unverified/source_cited records.
-    # Enable only in development while the knowledge base is still being verified.
+    # When False, API callers cannot request records without supporting sources.
+    # Source-cited and verified records remain available and visibly labelled.
     allow_unverified_records: bool = False
 
     @property

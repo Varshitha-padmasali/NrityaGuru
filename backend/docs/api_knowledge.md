@@ -9,10 +9,11 @@ Base URL (dev): http://127.0.0.1:8000  -  interactive docs at /docs
 | GET | /api/mudras/{mudra_id} | one mudra |
 | GET | /api/movements | list movements (currently empty: none verified yet) |
 
-## Verified-only by default
-Every endpoint returns only `verified` records. `include_unverified=true` also returns
-`source_cited` / `unverified` records, clearly labelled, but only when the server has
-`ALLOW_UNVERIFIED_RECORDS=true`. Otherwise the answer is **403**.
+## Source-cited and verified records by default
+Endpoints return `verified` and `source_cited` records by default. Source-cited results
+include their source and verification status; they are not represented as teacher-verified.
+`include_unverified=true` additionally exposes records without supporting sources, and is
+allowed only when the server has `ALLOW_UNVERIFIED_RECORDS=true`. Otherwise the answer is **403**.
 
 ## POST /api/knowledge/retrieve
 Request:

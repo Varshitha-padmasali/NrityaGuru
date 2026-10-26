@@ -22,7 +22,7 @@ def test_mudra_reference_with_flag(db_session):
     assert ref.record_type == "mudra" and ref.name == "Pataka"
     assert ref.verification_status == V.SOURCE_CITED
     assert ref.instructions_available is False  # seed has no practice instructions yet
-    assert ref.source.id == "src_wikipedia_mudra_list"
+    assert ref.source.id == "src_mirror_of_gesture_1917"
 
 
 def test_unverified_reference_is_hidden_by_default_with_same_message_as_missing(db_session):

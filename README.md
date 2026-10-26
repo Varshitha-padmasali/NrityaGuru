@@ -19,8 +19,11 @@ See `backend/docs/project_audit.md` for verified status and remaining external d
 For MacBook Air M1 startup, dataset preparation, evaluator setup, and reviewer-managed reference
 intake, follow [the M1 runbook](backend/docs/mac_m1_runbook.md).
 
-With Docker Desktop running, start the local stack using `docker compose up --build`. The backend
-can create practice sessions and safely decode bounded uploads; real landmark inference remains
-disabled until a compatible MediaPipe task, trained model bundle, reviewed sequence references,
-and a successful isolated runtime smoke test are available. Development progress is shared and
-production session endpoints remain disabled until authentication/ownership is implemented.
+With Docker Desktop running, start PostgreSQL and the backend without disturbing the frozen
+frontend using `docker compose up -d --build db backend`. The current frontend container is already
+running from its existing image. A fresh frontend image rebuild is blocked because the restored
+`frontend/` directory has no Dockerfile; no frontend files were changed. Practice targets remain
+empty until compatible MediaPipe/model artifacts and teacher-reviewed reference sequences exist.
+Development progress is shared and production session endpoints remain disabled until
+authentication/ownership is implemented. See [the audit](backend/docs/project_audit.md) for the
+verified runtime status and the exact frontend rebuild blocker.

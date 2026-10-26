@@ -24,9 +24,9 @@ SID = "integ-session-1"
 TUTOR_OUTPUT = json.dumps({
     "summary": "River is listed for Pataka in a cited source that is not yet verified.",
     "concepts": [{"concept": "river", "supported": True, "explanation": "Listed usage.",
-                  "source_ids": ["mudra_pataka"]}],
+                  "source_ids": ["src_mirror_of_gesture_1917"]}],
     "suggestions": [], "alternatives": [],
-    "source_ids": ["mudra_pataka", "src_wikipedia_mudra_list"], "limitations": ["not yet verified"],
+    "source_ids": ["mudra_pataka", "src_mirror_of_gesture_1917"], "limitations": ["not yet verified"],
 })
 FEEDBACK_OUTPUT = json.dumps({
     "overall_summary": "The top prediction matched the expected label. The reference is from a cited source and is not yet verified.",
@@ -74,10 +74,10 @@ def test_knowledge_to_tutor_flow_cites_only_real_database_ids(db_session):
         assert db_session.get(Mudra, cited) is not None or db_session.get(Source, cited) is not None
 
 
-def test_knowledge_to_tutor_flow_without_support_never_calls_gemini(db_session):
+def test_knowledge_to_tutor_flow_without_supported_mapping_never_calls_gemini(db_session):
     load_seed(db_session)
     gen = FakeGenerator(output=TUTOR_OUTPUT)
-    retrieval = retrieve_for_text(db_session, "Krishna is singing and dancing in the garden.", include_unverified=True)
+    retrieval = retrieve_for_text(db_session, "A zephyr meets a quux.", include_unverified=True)
     result = TutorService(gen).explain(retrieval)
     assert gen.calls == 0 and result.fallback_reason.value == "no_references"
 

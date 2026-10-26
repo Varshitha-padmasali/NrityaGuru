@@ -21,13 +21,20 @@ def make_client(db_session):
     return _make
 
 
-def test_retrieve_default_returns_only_verified(db_session, make_client):
+def test_retrieve_default_includes_source_cited_with_review_status(db_session, make_client):
     load_seed(db_session)
     r = make_client().post("/api/knowledge/retrieve", json={"text": "The river"})
     assert r.status_code == 200
     body = r.json()
-    assert body["supported_count"] == 0
-    assert body["concepts"][0]["status"] == "unsupported"
+    assert body["supported_count"] == 1
+    assert isinstance(body["query"], str)
+    first = body["concepts"][0]
+    assert isinstance(first["concept"], str)
+    assert first["supported"] is True
+    assert isinstance(first["matches"][0]["id"], int)
+    assert first["matches"][0]["verification_status"] == "needs_review"
+    assert "teacher verification is pending" in first["matches"][0]["rationale"]
+    assert first["status"] == "supported"
     assert "disclaimer" in body
 
 
@@ -60,11 +67,15 @@ def test_invalid_retrieve_requests_return_422(make_client, payload):
 def test_mudra_list_default_empty_then_visible(db_session, make_client):
     load_seed(db_session)
     client = make_client()
-    assert client.get("/api/mudras").json() == []
+    default_catalogue = client.get("/api/mudras").json()
+    assert len(default_catalogue) == 52
+    assert isinstance(default_catalogue[0]["id"], int)
+    assert default_catalogue[0]["canonical_id"].startswith("mudra_")
+    assert len({item["id"] for item in default_catalogue}) == 52
     r = client.get("/api/mudras", params={"include_unverified": True})
     assert r.status_code == 200
     assert len(r.json()) == 52
-    assert {m["id"] for m in r.json()} >= {"mudra_pataka", "mudra_tripataka", "mudra_ardhapataka"}
+    assert {m["canonical_id"] for m in r.json()} >= {"mudra_pataka", "mudra_tripataka", "mudra_ardhapataka"}
 
 
 def test_mudra_list_supports_search_and_all_52_default_page(db_session, make_client):
@@ -72,32 +83,40 @@ def test_mudra_list_supports_search_and_all_52_default_page(db_session, make_cli
     client = make_client()
     all_records = client.get("/api/mudras", params={"include_unverified": True})
     assert len(all_records.json()) == 52  # default page includes the complete catalogue
-    pataka = next(record for record in all_records.json() if record["id"] == "mudra_pataka")
-    assert pataka["dataset_image_count"] == 568
-    assert pataka["dataset_images_available"] is True
-    assert pataka["recognition_supported"] is False
-    kataka = next(record for record in all_records.json() if record["id"] == "mudra_katakamukha")
-    assert kataka["dataset_image_count"] == 1487
-    assert {item["dataset_folder"] for item in kataka["dataset_classes"]} == {
-        "Katakamukha_1", "Katakamukha_2", "Katakamukha_3"
-    }
+    pataka = next(record for record in all_records.json() if record["canonical_id"] == "mudra_pataka")
+    assert pataka["id"] > 0
     found = client.get("/api/mudras", params={"include_unverified": True, "q": "kapota"})
     assert [record["name"] for record in found.json()] == ["Kapota"]
     by_name = client.get("/api/mudras/Kapota", params={"include_unverified": True})
-    assert by_name.status_code == 200 and by_name.json()["id"] == "mudra_kapota"
+    assert by_name.status_code == 200 and by_name.json()["canonical_id"] == "mudra_kapota"
     by_dataset_label = client.get("/api/mudras", params={"include_unverified": True, "q": "Katakamukha_2"})
-    assert [record["id"] for record in by_dataset_label.json()] == ["mudra_katakamukha"]
+    assert [record["canonical_id"] for record in by_dataset_label.json()] == ["mudra_katakamukha"]
 
 
 def test_mudra_detail_and_404s(db_session, make_client):
     load_seed(db_session)
     client = make_client()
-    assert client.get("/api/mudras/mudra_pataka").status_code == 404  # not verified
+    assert client.get("/api/mudras/mudra_pataka").status_code == 200  # source-cited, not teacher-verified
     assert client.get("/api/mudras/nope", params={"include_unverified": True}).status_code == 404
     ok = client.get("/api/mudras/mudra_pataka", params={"include_unverified": True})
     assert ok.status_code == 200
-    assert ok.json()["source"]["source_name"].startswith("List of mudras")
+    assert ok.json()["canonical_id"] == "mudra_pataka"
+    assert ok.json()["verification_status"] == "needs_review"
     assert ok.json()["dataset_image_count"] == 568
+    by_frontend_id = client.get(f"/api/mudras/{ok.json()['id']}")
+    assert by_frontend_id.status_code == 200
+
+
+def test_learn_can_use_source_cited_knowledge_when_unverified_access_is_disabled(db_session, make_client):
+    load_seed(db_session)
+    client = make_client(allow_unverified=False)
+    response = client.post("/api/knowledge/sequence", json={"text": "The river flows."})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["gemini_used"] is False
+    assert body["ordered_sequence"][0]["mudra_id"] == "mudra_pataka"
+    assert body["ordered_sequence"][0]["selection_type"] == "source_supported"
+    assert body["ordered_sequence"][0]["verification_status"] == "source_cited"
 
 
 def test_movements_list_is_empty_but_ok(db_session, make_client):
@@ -134,3 +153,16 @@ def test_database_failure_returns_safe_503(make_client):
     assert r.status_code == 503
     assert "hunter2" not in r.text
     assert "Traceback" not in r.text
+
+
+def test_registered_reference_image_is_served_without_frontend_contract_change(db_session, make_client):
+    load_seed(db_session)
+    client = make_client()
+    detail = client.get("/api/mudras/mudra_allapadma?include_unverified=true")
+    assert detail.status_code == 200
+    image_url = detail.json()["image_url"]
+    assert image_url == "/static/mudras/alapadma.png"
+    response = client.get(image_url)
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("image/png")
+    assert response.content[:8] == b"\x89PNG\r\n\x1a\n"

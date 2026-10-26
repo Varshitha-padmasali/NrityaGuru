@@ -32,11 +32,33 @@ def _map(db, mapid, concept, mudra_id, status=V.VERIFIED):
     db.flush()
 
 
-def test_seeded_records_hidden_by_default(db_session):
+def test_source_cited_seeded_records_are_visible_by_default(db_session):
     load_seed(db_session)
     resp = retrieve_for_text(db_session, "The river and the clouds")
-    assert resp.supported_count == 0
-    assert resp.unsupported_count == 2
+    assert resp.supported_count == 2
+    assert resp.unsupported_count == 0
+
+
+@pytest.mark.parametrize(
+    ("text", "supported"),
+    [
+        ("The river flows.", {"river": "mudra_pataka"}),
+        ("A tree and a crown.", {"tree": "mudra_tripataka", "crown": "mudra_tripataka"}),
+        ("The lotus blooms by the river.", {"river": "mudra_pataka"}),
+        (
+            "Krishna is singing and dancing in the garden.",
+            {"sing": "mudra_hamsasya", "dance": "mudra_allapadma"},
+        ),
+    ],
+)
+def test_audit_sentence_examples_use_only_explicit_seeded_evidence(db_session, text, supported):
+    load_seed(db_session)
+    response = retrieve_for_text(db_session, text, include_unverified=True)
+    for concept, mudra_id in supported.items():
+        assert _concept(response, concept).references[0].record_id == mudra_id
+    if text.startswith("Krishna"):
+        assert _concept(response, "krishna").status == ConceptSupportStatus.UNSUPPORTED
+        assert _concept(response, "garden").status == ConceptSupportStatus.UNSUPPORTED
 
 
 def test_explicit_mapping_returns_reference_with_provenance(db_session):
@@ -47,10 +69,10 @@ def test_explicit_mapping_returns_reference_with_provenance(db_session):
     assert ref.match_type == MatchType.CONCEPT_MAPPING
     assert ref.mapping_ids == ["map_river_pataka"]
     assert ref.verification_status == V.SOURCE_CITED
-    assert ref.source.source_name.startswith("List of mudras")
-    assert ref.mapping_source.id == "src_wikipedia_mudra_list"
-    assert any("not yet cross-checked" in n for n in ref.limitations)
-    assert any("No reference image" in n for n in ref.limitations)
+    assert ref.source.source_name.startswith("The Mirror of Gesture")
+    assert ref.mapping_source.id == "src_mirror_of_gesture_1917"
+    assert any("not been teacher-verified" in n for n in ref.limitations)
+    assert ref.reference_media_path == "/static/mudras/pataka.png"
     assert _concept(resp, "river").contains_unverified is True
 
 
@@ -64,19 +86,19 @@ def test_listed_usage_without_mapping(db_session):
     load_seed(db_session)
     resp = retrieve_for_text(db_session, "horse", include_unverified=True)
     ref = _concept(resp, "horse").references[0]
-    assert ref.match_type == MatchType.USAGE_LISTED
-    assert ref.mapping_ids == []
-    assert any("listed usages" in n for n in ref.limitations)
+    assert ref.match_type == MatchType.CONCEPT_MAPPING
+    assert ref.mapping_ids == ["map_horse_pataka"]
+    assert ref.mapping_source.id == "src_mirror_of_gesture_1917"
 
 
 def test_keyword_matching_needs_opt_in(db_session):
     load_seed(db_session)
-    without = retrieve_for_text(db_session, "dancing", include_unverified=True)
-    assert _concept(without, "dance").status == ConceptSupportStatus.UNSUPPORTED
+    without = retrieve_for_text(db_session, "hill", include_unverified=True)
+    assert _concept(without, "hill").status == ConceptSupportStatus.UNSUPPORTED
     with_kw = retrieve_for_text(
-        db_session, "dancing", include_unverified=True, include_keyword_matches=True
+        db_session, "hill", include_unverified=True, include_keyword_matches=True
     )
-    ref = _concept(with_kw, "dance").references[0]
+    ref = _concept(with_kw, "hill").references[0]
     assert ref.match_type == MatchType.USAGE_KEYWORD
     assert any("weaker" in n for n in ref.limitations)
 
@@ -106,12 +128,14 @@ def test_multiple_interpretations_returned_with_note(db_session):
     assert c.contains_unverified is False
 
 
-def test_trusted_mapping_cannot_expose_untrusted_target(db_session):
+def test_source_cited_target_is_visible_with_source_cited_status(db_session):
     _src(db_session)
     _mudra(db_session, "m1", "TestOne", status=V.SOURCE_CITED)
     _map(db_session, "map1", "lamp", "m1", status=V.VERIFIED)
     resp = retrieve_for_text(db_session, "lamp")
-    assert _concept(resp, "lamp").status == ConceptSupportStatus.UNSUPPORTED
+    concept = _concept(resp, "lamp")
+    assert concept.status == ConceptSupportStatus.SUPPORTED
+    assert concept.references[0].verification_status == V.SOURCE_CITED
 
 
 def test_reference_status_is_weakest_of_record_and_mapping(db_session):
@@ -137,7 +161,7 @@ def test_existing_image_file_is_kept(db_session, tmp_path):
     _mudra(db_session, "m1", "TestOne", reference_image_path="ok.png")
     _map(db_session, "map1", "lamp", "m1")
     ref = _concept(retrieve_for_text(db_session, "lamp", assets_dir=tmp_path), "lamp").references[0]
-    assert ref.reference_media_path == "ok.png"
+    assert ref.reference_media_path == "/static/ok.png"
 
 
 def test_path_traversal_is_not_treated_as_available(db_session, tmp_path):

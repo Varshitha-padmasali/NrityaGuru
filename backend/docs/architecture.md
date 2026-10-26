@@ -54,7 +54,7 @@ Services receive their dependencies (retrieval function, Gemini generator, store
 
 ## Principles
 1. **Grounding:** Gemini explains retrieved or evaluated facts; it is not a source of Bharatanatyam knowledge.
-2. **Verified by default:** `unverified` / `source_cited` / `verified`; only `verified` is served unless explicitly allowed.
+2. **Evidence-labelled by default:** `source_cited` and `verified` records are served with status and provenance; records with no source require explicit configuration.
 3. **Graceful degradation:** a Gemini or save failure never loses the learner's information.
 4. **Trust boundary:** the browser sends text and a session id, nothing else; evaluation results come only from the trusted store.
 5. **Honest limits:** every answer carries limitations and a disclaimer; mock data is labelled everywhere it appears and never stored.
