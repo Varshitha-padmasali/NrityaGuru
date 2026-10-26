@@ -20,6 +20,8 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import json
+import os
 from collections import defaultdict
 from pathlib import Path
 
@@ -28,6 +30,11 @@ import mediapipe as mp
 import numpy as np
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision
+
+if __package__ and __package__.startswith("evaluation_module."):
+    from ..mudra_mlp.catalogue import dataset_record
+else:  # Support the documented module invocation from evaluation_module/.
+    from mudra_mlp.catalogue import dataset_record
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png"}
 N_LANDMARKS = 21
@@ -39,7 +46,8 @@ def coord_columns(prefix: str) -> list[str]:
 
 
 HEADER = (
-    ["label", "file", "md5", "width", "height", "padded", "n_hands"]
+    ["label", "mudra_id", "dataset_folder", "variant_id", "file", "md5", "phash",
+     "width", "height", "padded", "n_hands"]
     + ["h0_side", "h0_score"] + coord_columns("h0")
     + ["h1_side", "h1_score"] + coord_columns("h1")
 )
@@ -102,8 +110,19 @@ def process_image(landmarker, bgr):
     return hands, pw, ph, 1
 
 
-def build_row(label, path, md5, width, height, padded, hands):
-    row = [label, path.name, md5, width, height, padded, len(hands)]
+def perceptual_hash(bgr) -> str:
+    """64-bit DCT perceptual hash used to keep near-identical photos in one split group."""
+    gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+    small = cv2.resize(gray, (32, 32), interpolation=cv2.INTER_AREA).astype(np.float32)
+    low = cv2.dct(small)[:8, :8]
+    values = low.flatten()
+    median = float(np.median(values[1:]))
+    return "".join("1" if value > median else "0" for value in values)
+
+
+def build_row(label, mudra_id, dataset_folder, variant_id, path, md5, phash, width, height, padded, hands):
+    row = [label, mudra_id, dataset_folder, variant_id or "", path.name, md5, phash,
+           width, height, padded, len(hands)]
     for k in range(2):
         if k < len(hands):
             score, side, coords = hands[k]
@@ -122,11 +141,19 @@ def run(dataset: Path, landmarker, out_csv: Path, failed_csv: Path | None = None
     no_hand: list[tuple[str, str]] = []
 
     class_dirs = sorted(p for p in dataset.iterdir() if p.is_dir())
+    unknown = [p.name for p in class_dirs if dataset_record(p.name) is None]
+    if unknown:
+        raise ValueError(
+            "unknown dataset class folders: " + ", ".join(unknown)
+            + "; add an exact reviewed folder mapping to backend/data/seed/dataset_mapping.json"
+        )
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(HEADER)
         for class_dir in class_dirs:
-            label = class_dir.name
+            record, mapping = dataset_record(class_dir.name)
+            label, mudra_id = record["name"], record["id"]
+            variant_id = mapping.get("variant_id")
             files = sorted(p for p in class_dir.rglob("*") if p.suffix.lower() in IMAGE_EXTS)
             for path in files:
                 per_class[label][0] += 1
@@ -138,12 +165,14 @@ def run(dataset: Path, landmarker, out_csv: Path, failed_csv: Path | None = None
                 if bgr is None:
                     unreadable.append(str(path))
                     continue
+                phash = perceptual_hash(bgr)
                 hands, w, h, padded = process_image(landmarker, bgr)
                 if hands:
                     per_class[label][1] += 1
                 else:
                     no_hand.append((label, path.name))
-                writer.writerow(build_row(label, path, md5, w, h, padded, hands))
+                writer.writerow(build_row(label, mudra_id, class_dir.name, variant_id,
+                                          path, md5, phash, w, h, padded, hands))
 
     if failed_csv is not None:
         with open(failed_csv, "w", newline="", encoding="utf-8") as f:
@@ -176,18 +205,24 @@ def print_summary(summary: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("--dataset", required=True, type=Path, help="folder that contains one sub-folder per class")
+    parser.add_argument("--dataset", type=Path, default=None, help="folder that contains one sub-folder per class; defaults to NRITYAGURU_DATASET_DIR or the local development cache")
     parser.add_argument("--model", required=True, type=Path, help="path to hand_landmarker.task")
     parser.add_argument("--out", required=True, type=Path, help="output CSV path")
     parser.add_argument("--min-conf", type=float, default=0.3)
     args = parser.parse_args()
     if not args.model.exists():
         raise SystemExit(f"Model file not found: {args.model}")
-    if not args.dataset.is_dir():
-        raise SystemExit(f"Dataset folder not found: {args.dataset}")
+    mapping_path = Path(__file__).resolve().parents[2] / "backend" / "data" / "seed" / "dataset_mapping.json"
+    mapping_doc = json.loads(mapping_path.read_text(encoding="utf-8"))
+    default_dataset = Path(mapping_doc["dataset"]["local_development_default"])
+    if not default_dataset.is_dir():
+        default_dataset = Path(__file__).resolve().parents[1] / "data" / "mudra_dataset"
+    dataset = args.dataset or Path(os.environ.get("NRITYAGURU_DATASET_DIR", str(default_dataset)))
+    if not dataset.is_dir():
+        raise SystemExit(f"Dataset folder not found: {dataset}; set NRITYAGURU_DATASET_DIR or pass --dataset")
     landmarker = make_landmarker(args.model, args.min_conf)
     failed = args.out.with_name(args.out.stem + "_failed.csv")
-    summary = run(args.dataset, landmarker, args.out, failed)
+    summary = run(dataset, landmarker, args.out, failed)
     print_summary(summary)
     print(f"\nSaved: {args.out}\nImages without a detected hand: {failed}")
 

@@ -21,6 +21,14 @@ class SourceOut(BaseModel):
     reliability_notes: str | None = None
 
 
+class DatasetClassOut(BaseModel):
+    dataset_folder: str
+    original_label: str
+    variant_id: str | None = None
+    image_count: int = 0
+    mapping_status: str
+
+
 class MudraOut(BaseModel):
     id: str
     name: str
@@ -31,6 +39,10 @@ class MudraOut(BaseModel):
     description: str | None = None
     practice_instructions: str | None = None
     reference_image_path: str | None = None  # None if absent OR the file does not exist
+    dataset_image_count: int = 0
+    dataset_images_available: bool = False
+    dataset_classes: list[DatasetClassOut] = Field(default_factory=list)
+    recognition_supported: bool = False
     source: SourceOut | None = None
     verification_status: VerificationStatus
     verification_notes: str | None = None

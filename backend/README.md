@@ -4,11 +4,15 @@ The knowledge and AI layer of NrityaGuru, an AI-assisted Bharatanatyam learning 
 PostgreSQL, concept extraction, retrieval, a Gemini RAG tutor, and evidence-grounded corrective feedback for results produced by the
 evaluation module (OpenCV, MediaPipe, MLP, DTW).
 
-**Not in this module:** the frontend, the camera/landmark pipeline, MLP training and DTW. They belong to teammates; this module defines
-a typed contract for their output and uses clearly labelled MOCK data until they deliver.
+The frontend, vision pipeline, and MLP/DTW code live in sibling directories. The backend reads
+trusted evaluation results from PostgreSQL; a complete capture-to-storage runtime path and
+production model assets are not present in this checkout.
 
-**Honest status:** every part is implemented, but only part of the test suite has been executed so far, the knowledge base holds just
-three unverified seed mudras, and the Gemini code has never been run against the real API. Read `docs/implementation_status.md`.
+**Honest status:** the knowledge seed contains 52 source-cited names/categories, not 52 fully
+verified gesture descriptions. The local Kaggle archive scan found 50 folders and 28,431 readable
+images mapping to 48 canonical IDs; a compatible recognition model is not currently loaded. The
+Gemini code has not been run against the real API. Read
+`docs/implementation_status.md` and `docs/mudra_catalogue.md`.
 
 ## How it fits together
 ```

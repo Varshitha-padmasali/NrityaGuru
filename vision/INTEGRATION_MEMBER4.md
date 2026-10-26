@@ -7,7 +7,7 @@ This document defines the formal data contract, coordinate conventions, missing-
 ## 1. Executive Summary
 
 Member 3 extracts time-ordered 260-dimensional landmark feature sequences from dance videos.
-Member 4 evaluates single-hand mudras (12 classes) using an MLP and compares temporal movement sequences using Dynamic Time Warping (DTW).
+The historical checked-in MLP metadata covers 12 classes. Current dataset inspection maps 27 Asamyuta labels for training, but no compatible trained model is included or loaded. The evaluator compares temporal movement sequences using Dynamic Time Warping (DTW).
 
 The vision module provides two primary interfaces for Member 4:
 1. **Offline / Batch**: Compressed `.npz` sequence archives + companion `.json` metadata files.
@@ -201,6 +201,6 @@ print(f"Alignment cost: {dtw_res.normalized_cost:.4f}")
 | **Vector Dimension** | 260 features per frame (`132` pose + `64` left hand + `64` right hand) | **Verified** | None. Fully verified by tests. |
 | **Missing Hands** | `None` in `learner_frames`; `NaN` in feature matrices | **Verified** | None. Preserved by exporter and adapter. |
 | **Pixel Coordinates** | Scaled by $(x \cdot W, y \cdot H, z \cdot W)$ | **Verified** | Automated by `sequence_to_member4_frames`. |
-| **Single-Hand Selection** | Member 4 MLP only supports 12 single-hand classes. Adapter provides `side="auto"` (dominant/higher confidence) or explicit `"Right"` / `"Left"`. | **Functional** | Confirm with Member 4 if auto-selection by confidence is acceptable for two-handed gestures. |
+| **Single-Hand Selection** | The current trainer supports mapped Asamyuta labels only; model artifact is absent. Adapter provides `side="auto"` (dominant/higher confidence) or explicit `"Right"` / `"Left"`. | **Functional** | Retrain and check the requested canonical label against model metadata before reporting support. |
 | **DTW Thresholds** | DTW calculates normalized distance, but `threshold` and `within_threshold` remain `null` in Member 4's output. | **Open** | Needs calibration against real expert recordings. |
 | **Pose DTW** | Member 4 currently evaluates DTW only over 78 hand features. Vision provides full 132-dim pose sequences. | **Available** | Backend/Member 4 can incorporate pose DTW when full-body evaluation is enabled. |

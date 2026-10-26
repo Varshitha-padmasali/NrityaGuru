@@ -17,17 +17,35 @@ from app.repositories import knowledge_repository as repo
 def test_real_seed_files_are_valid():
     bundle = read_seed()
     validate_seed(bundle)  # raises if anything is inconsistent
-    assert len(bundle.sources) == 2
-    assert len(bundle.mudras) == 3
+    assert len(bundle.sources) == 3
+    assert len(bundle.mudras) == 52
+    assert len({mudra.id for mudra in bundle.mudras}) == 52
+    assert len({mudra.name.casefold() for mudra in bundle.mudras}) == 52
     assert len(bundle.movements) == 0  # nothing verified yet; none invented
     assert len(bundle.mappings) == 6
+
+
+def test_dataset_crosswalk_maps_observed_folders_without_collapsing_variants():
+    mapping_path = DEFAULT_SEED_DIR / "dataset_mapping.json"
+    document = json.loads(mapping_path.read_text(encoding="utf-8"))
+    rows = document["class_folders"]
+    catalogue_ids = {mudra.id for mudra in read_seed().mudras}
+    assert len(rows) == 50
+    assert len({row["dataset_folder"] for row in rows}) == 50
+    assert len({row["mudra_id"] for row in rows}) == 48
+    assert sum(row["image_count"] for row in rows) == 28_431
+    assert all(row["mudra_id"] in catalogue_ids for row in rows)
+    variants = [row for row in rows if row["dataset_folder"].startswith("Katakamukha_")]
+    assert {row["dataset_folder"] for row in variants} == {"Katakamukha_1", "Katakamukha_2", "Katakamukha_3"}
+    assert {row["variant_id"] for row in variants} == {"katakamukha_1", "katakamukha_2", "katakamukha_3"}
+    assert {row["mudra_id"] for row in variants} == {"mudra_katakamukha"}
 
 
 def test_load_seed_is_idempotent(db_session):
     first = load_seed(db_session)
     second = load_seed(db_session)
     assert first == second
-    assert len(repo.list_mudras(db_session, include_unverified=True)) == 3
+    assert len(repo.list_mudras(db_session, include_unverified=True)) == 52
 
 
 def test_seeded_records_are_not_authoritative_yet(db_session):

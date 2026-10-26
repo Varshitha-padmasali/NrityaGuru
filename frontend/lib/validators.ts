@@ -8,7 +8,7 @@
  * validation library is needed.
  */
 import type { HealthResponse } from "@/types/api";
-import type { MudraDetail, MudraSummary, RetrieveResponse, ExplainResponse } from "@/types/knowledge";
+import type { BackendRetrievalResponse, CatalogueMudra, MudraDetail, MudraSummary, RetrieveResponse, ExplainResponse } from "@/types/knowledge";
 import type { PracticeReference, PracticeSession } from "@/types/practice";
 import type { EvaluateResponse, EvaluationResult, Feedback, SessionResults } from "@/types/evaluation";
 import type { ProgressResponse } from "@/types/progress";
@@ -24,9 +24,19 @@ const isArrOf = <T>(guard: (v: unknown) => boolean) => (v: unknown): v is T[] =>
 export const isHealth: Validator<HealthResponse> = (v): v is HealthResponse => isObj(v) && isStr(v.status);
 
 export const isMudraSummary: Validator<MudraSummary> = (v): v is MudraSummary =>
-  isObj(v) && isNum(v.id) && isStr(v.name) && isNullable(isStr)(v.meaning ?? null) && isNullable(isStr)(v.image_url ?? null);
+  isObj(v) && (isNum(v.id) || isStr(v.id)) && isStr(v.name) && isNullable(isStr)(v.meaning ?? null) && isNullable(isStr)(v.image_url ?? null);
 
 export const isMudraList: Validator<MudraSummary[]> = (v): v is MudraSummary[] => isArrOf<MudraSummary>(isMudraSummary)(v);
+
+export const isCatalogueMudra: Validator<CatalogueMudra> = (v): v is CatalogueMudra =>
+  isObj(v) && isStr(v.id) && isStr(v.name) && Array.isArray(v.alternate_names) &&
+  isStr(v.category) && isNullable(isStr)(v.meaning) && Array.isArray(v.usage) &&
+  isNullable(isStr)(v.reference_image_path) && isNum(v.dataset_image_count) &&
+  typeof v.dataset_images_available === "boolean" && Array.isArray(v.dataset_classes) &&
+  typeof v.recognition_supported === "boolean" && isStr(v.verification_status);
+
+export const isCatalogueMudraList: Validator<CatalogueMudra[]> =
+  (v): v is CatalogueMudra[] => isArrOf<CatalogueMudra>(isCatalogueMudra)(v);
 
 export const isMudraDetail: Validator<MudraDetail> = (v): v is MudraDetail =>
   isMudraSummary(v) &&
@@ -40,8 +50,20 @@ export const isRetrieveResponse: Validator<RetrieveResponse> = (v): v is Retriev
   Array.isArray(v.concepts) &&
   v.concepts.every((c) => isObj(c) && isStr(c.concept) && typeof c.supported === "boolean" && isArrOf(isMudraSummary)(c.matches));
 
+export const isBackendRetrievalResponse: Validator<BackendRetrievalResponse> = (v): v is BackendRetrievalResponse =>
+  isObj(v) && isStr(v.original_text) && Array.isArray(v.concepts) && v.concepts.every((item) =>
+    isObj(item) && isObj(item.concept) && isStr(item.concept.text) && isStr(item.status) &&
+    Array.isArray(item.references) && item.references.every((ref) =>
+      isObj(ref) && isStr(ref.record_type) && isStr(ref.record_id) && isStr(ref.name) &&
+      isStr(ref.category) && isNullable(isStr)(ref.meaning) && isNullable(isStr)(ref.reference_media_path) &&
+      isStr(ref.match_type) && Array.isArray(ref.evidence_notes))
+  );
+
 export const isExplainResponse: Validator<ExplainResponse> = (v): v is ExplainResponse =>
-  isObj(v) && isStr(v.explanation) && Array.isArray(v.used_mudra_ids) && Array.isArray(v.unsupported_concepts);
+  isObj(v) && isStr(v.original_text) && isObj(v.tutor) &&
+  (v.tutor.mode === "ai" || v.tutor.mode === "knowledge_only") &&
+  isObj(v.tutor.explanation) && isStr(v.tutor.explanation.summary) &&
+  isObj(v.retrieval) && isStr(v.disclaimer);
 
 export const isPracticeReference: Validator<PracticeReference> = (v): v is PracticeReference =>
   isObj(v) && isNum(v.id) && isStr(v.name) && (v.reference_type === "mudra" || v.reference_type === "sequence") && Array.isArray(v.mudra_ids);

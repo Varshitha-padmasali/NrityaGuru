@@ -1,6 +1,6 @@
 # Implementation status, evidence, limitations and final summary
 
-Date of this review: 25 October 2026. Scope: the Member 2 backend (Parts 1-10). The mudra-dataset integration is a separate task and is **not** included.
+Date of this update: 26 October 2026. The catalogue now includes the 52 names/categories from the referenced NCERT teaching list. This is not evidence that the Kaggle image dataset contains all 52 classes or that a model recognizes them.
 
 ## Evidence levels (what "tested" means here)
 | Tag | Meaning |
@@ -67,14 +67,14 @@ Format `file::test`. These names are checked against the test files by a script.
 Static-check validation: faults deliberately injected into a throwaway copy (bad import name, a genuine import cycle, undocumented setting, key-shaped string, logging an exception/prompt, `print`, SQL built from a string, misspelled/missing/extra arguments, stale override) were all reported.
 
 ## Known limitations and unverified functionality
-**Knowledge base:** only 3 seed mudras (Pataka, Tripataka, Ardhapataka), all `source_cited` from a Wikipedia list (secondary source), none verified against the primary text or a teacher; no practice instructions, no images, no movements/adavus; 6 concept mappings; English-only word lists; multi-word concepts (e.g. "temple tower") are not detected; keyword matching is weak and opt-in; no semantic retrieval (a deliberate decision).
+**Knowledge base:** 52 source-cited names/categories: 28 Asamyuta and 24 Samyuta entries. Existing Pataka, Tripataka, and Ardhapataka meanings/usages and six concept mappings remain tied to their original secondary source. The other 49 have no invented meanings, usages, descriptions, instructions, or images. No record is teacher-verified; source-cited records remain excluded from default concept retrieval. A current local scan found 50 Kaggle folders, 28,431 readable images and 48 mapped canonical IDs; the distinct mapping and counts are in `data/seed/dataset_mapping.json`. See `mudra_catalogue.md`.
 **Gemini:** never called for real in this work; the SDK usage follows Google's docs but is unexecuted; the model id may change (default `gemini-3.8-flash`); guards are heuristics (English only, can reject harmless text); wording faithfulness is not measured (a human review sheet exists, unfilled); no automatic retry.
-**Evaluation integration:** the contract is a proposal not yet agreed with the evaluation teammate; only MOCK data exists; numeric cut-offs (confidence 0.5, detection rate 0.5) are Member 2's conservative defaults; MLP and DTW are not part of this module and nothing here measures their accuracy.
+**Evaluation integration:** the backend reads trusted stored results and retains the existing feedback guards. The adjacent evaluator trains a single-hand MLP with a 78-feature hand representation and DTW; training is bound to canonical Asamyuta labels, excludes Samyuta classes, and groups perceptual image hashes across splits. 27 mapped Asamyuta labels have data, but there is no compatible model bundle or MediaPipe task asset in this checkout. There is no complete capture-to-database runtime service here. Historical 12-class metrics are not current results.
 **Infrastructure and security:** see `security_checklist.md` (no auth, no TLS, in-memory limiter, no lockfile, no retention policy). `create_all` instead of migrations; the reference-sequence table does not exist yet; PostgreSQL itself has not been exercised with these models (tests use SQLite).
-**Testing:** 207 tests have not been executed; the executed ones used stand-ins; no coverage measurement, no load test, no browser/frontend test; the labelled RAG evaluation set has only 11 cases built from 3 unverified records, so no quality percentage is reported (none is claimed).
+**Testing:** the test counts above describe the previous backend-only audit and do not include the catalogue and dataset-manifest changes. Re-run the backend, evaluation, and frontend suites before relying on them. No dataset-dependent, PostgreSQL, Gemini-live, or full browser workflow was verified as part of the catalogue update.
 
 ## Not started / pending
-mudra-dataset integration (separate task, awaiting your dataset inspection); verification of knowledge records with a teacher; practice instructions and reference images; agreement and integration with the evaluation teammate; authentication; real frontend; production deployment (TLS, backend container, secrets management); human faithfulness review; dependency lockfile; migrations.
+Teacher verification of dataset label crosswalk and Katakamukha variants, trained and validated 27-label model, practice instructions and reference images, Samyuta/two-hand MLP support, full capture-to-database orchestration, authentication, production deployment (TLS, backend container, secrets management), human faithfulness review, dependency lockfile, migrations.
 
 ## Final summary: what is genuinely implemented and tested
 - **Implemented:** the full Member 2 backend described above: knowledge base and retrieval with provenance and verification status, a Gemini-based tutor and feedback generator that are grounded, validated and always fall back safely, an evaluation-evidence contract with a trusted store, persistence of sessions/results/feedback, and nine documented endpoints.

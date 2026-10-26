@@ -4,7 +4,11 @@ Rule: by default only `verified` records are returned. Pass include_unverified=T
 to also see `source_cited` and `unverified` records (for admin/dev use and clearly
 labelled output only).
 """
-from sqlalchemy import func, select
+import json
+from functools import lru_cache
+from pathlib import Path
+
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db.models import (
@@ -15,6 +19,20 @@ from app.db.models import (
     VerificationStatus,
 )
 from app.services.text_processing import normalize_text
+
+DATASET_MAPPING_PATH = Path(__file__).resolve().parents[2] / "data" / "seed" / "dataset_mapping.json"
+
+
+@lru_cache(maxsize=1)
+def _dataset_labels_by_mudra() -> dict[str, list[str]]:
+    try:
+        rows = json.loads(DATASET_MAPPING_PATH.read_text(encoding="utf-8"))["class_folders"]
+    except (OSError, KeyError, json.JSONDecodeError):
+        return {}
+    result: dict[str, list[str]] = {}
+    for row in rows:
+        result.setdefault(row["mudra_id"], []).extend([row["dataset_folder"], row["original_label"]])
+    return result
 
 
 def normalize_concept(text: str) -> str:
@@ -39,11 +57,15 @@ def get_mudra(db: Session, mudra_id: str, *, include_unverified: bool = False) -
 
 
 def get_mudra_by_name(db: Session, name: str, *, include_unverified: bool = False) -> Mudra | None:
-    stmt = select(Mudra).where(
-        func.lower(Mudra.name) == name.strip().lower(),
-        Mudra.verification_status.in_(_allowed(include_unverified)),
-    )
-    return db.scalars(stmt).first()
+    key = normalize_concept(name)
+    if not key:
+        return None
+    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
+    for mudra in db.scalars(stmt):
+        names = [mudra.name, *(mudra.alternate_names or []), *_dataset_labels_by_mudra().get(mudra.id, [])]
+        if any(normalize_concept(candidate) == key for candidate in names):
+            return mudra
+    return None
 
 
 def list_mudras(
@@ -51,14 +73,23 @@ def list_mudras(
     *,
     include_unverified: bool = False,
     category: str | None = None,
-    limit: int = 50,
+    query: str | None = None,
+    limit: int = 100,
     offset: int = 0,
 ) -> list[Mudra]:
     stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
     if category:
         stmt = stmt.where(Mudra.category == category)
-    stmt = stmt.order_by(Mudra.name).limit(limit).offset(offset)
-    return list(db.scalars(stmt))
+    records = list(db.scalars(stmt.order_by(Mudra.name)))
+    if query and query.strip():
+        key = normalize_concept(query)
+        records = [
+            record for record in records
+            if any(key in normalize_concept(name) for name in [
+                record.name, *(record.alternate_names or []), *_dataset_labels_by_mudra().get(record.id, [])
+            ])
+        ]
+    return records[offset : offset + limit]
 
 
 # ---------- movements ----------
