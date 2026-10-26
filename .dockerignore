@@ -1,0 +1,14 @@
+.git
+.venv
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+**/.next
+backend/.env
+backend/*.db
+evaluation_module/data
+evaluation_module/models/*.joblib
+evaluation_module/models/*.pkl
+evaluation_module/hand_landmarker.task
+**/*.task

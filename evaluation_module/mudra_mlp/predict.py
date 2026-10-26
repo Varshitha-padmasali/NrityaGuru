@@ -8,6 +8,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
+import sklearn
 
 if __package__ and __package__.startswith("evaluation_module."):
     from .catalogue import canonical_record, catalogue_digest, dataset_mapping_digest
@@ -24,6 +25,10 @@ def load_bundle(path: Path | str, *, allow_non_catalogue: bool = False) -> dict:
     if bundle["metadata"].get("feature_schema_version") != FEATURE_SCHEMA_VERSION:
         raise ValueError("model was trained with a different feature schema version")
     metadata = bundle["metadata"]
+    runtime_versions = metadata.get("runtime_versions")
+    installed_versions = {"numpy": np.__version__, "scikit_learn": sklearn.__version__, "joblib": joblib.__version__}
+    if runtime_versions != installed_versions:
+        raise ValueError("model training dependency versions do not exactly match this inference environment; train and infer with the same locked requirements")
     pipeline_classes = [str(label) for label in bundle["pipeline"].classes_]
     if metadata.get("classes") != pipeline_classes:
         raise ValueError("model class metadata does not match the classifier class ordering")

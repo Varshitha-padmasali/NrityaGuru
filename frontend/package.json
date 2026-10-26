@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
@@ -38,5 +38,8 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^5.0.5"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

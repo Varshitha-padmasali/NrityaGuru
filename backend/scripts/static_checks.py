@@ -15,7 +15,7 @@ from pathlib import Path
 
 BACKEND = Path(__file__).resolve().parents[1]
 CODE_DIRS = ("app", "tests", "scripts")
-SECRET_ACCESS_ALLOWED = {"app/core/config.py", "app/db/database.py", "app/services/gemini_client.py"}
+SECRET_ACCESS_ALLOWED = {"app/core/config.py", "app/core/reviewer_auth.py", "app/db/database.py", "app/services/gemini_client.py"}
 SETTINGS_WITHOUT_ENV = {"app_name", "app_version"}  # fixed labels, not meant to be configured
 LOG_METHODS = {"debug", "info", "warning", "error", "critical", "exception"}
 BAD_LOG_NAMES = {"exc", "e", "err", "error", "ex"}

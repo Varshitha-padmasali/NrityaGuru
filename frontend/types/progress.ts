@@ -2,8 +2,8 @@
 import type { SessionStatus } from "./practice";
 
 export interface ProgressEntry {
-  session_id: number;
-  reference_id: number;
+  session_id: number | string;
+  reference_id: number | string;
   reference_name: string;
   status: SessionStatus;
   created_at: string;
@@ -15,5 +15,6 @@ export interface ProgressEntry {
 }
 
 export interface ProgressResponse {
+  scope: "shared_development";
   sessions: ProgressEntry[];
 }

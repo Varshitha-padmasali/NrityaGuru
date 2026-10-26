@@ -1,5 +1,5 @@
 import type { Prediction } from "@/types/evaluation";
-import { formatFrameRange, formatProbability } from "@/lib/utils";
+import { formatFrameRange, formatModelScore } from "@/lib/utils";
 
 const PALETTE = ["#6e1423", "#a8792c", "#2f6b4f", "#5b3a7a", "#8a5a00", "#1f4e79"];
 
@@ -26,7 +26,7 @@ export function PredictionTimeline({ predictions, framesTotal, fps }: { predicti
               key={i}
               className="absolute inset-y-0 border-r-2 border-paper"
               style={{ left: `${left}%`, width: `${width}%`, backgroundColor: colorFor(p.label) }}
-              title={`${p.label} · ${formatProbability(p.confidence)}`}
+              title={`${p.label} · raw score ${formatModelScore(p.confidence)}`}
             />
           );
         })}
@@ -37,7 +37,7 @@ export function PredictionTimeline({ predictions, framesTotal, fps }: { predicti
             <span className="h-3 w-3 rounded-sm" style={{ backgroundColor: colorFor(p.label) }} aria-hidden="true" />
             <span className="font-semibold text-ink">{p.label}</span>
             <span className="text-ink-muted">
-              {formatFrameRange(p.frame_start, p.frame_end, fps)} · model confidence {formatProbability(p.confidence)}
+              {formatFrameRange(p.frame_start, p.frame_end, fps)} · raw model score {formatModelScore(p.confidence)}
             </span>
           </li>
         ))}

@@ -69,12 +69,12 @@ def test_reliability_unknown_without_information():
 
 # ---- deviations ----
 def test_specific_vs_general_deviations():
-    specific = make_deviation(deviation_id="a", body_part="thumb")
-    measured = make_deviation(deviation_id="b", body_part=None, measured_value=3.0)
-    general = make_deviation(deviation_id="c", body_part=None)
+    specific = make_deviation(deviation_id="dev-a", body_part="thumb")
+    measured = make_deviation(deviation_id="dev-b", body_part=None, measured_value=3.0)
+    general = make_deviation(deviation_id="dev-c", body_part=None)
     s, g = split_deviations([specific, measured, general])
-    assert [d.deviation_id for d in s] == ["a", "b"]
-    assert [d.deviation_id for d in g] == ["c"]
+    assert [d.deviation_id for d in s] == ["dev-a", "dev-b"]
+    assert [d.deviation_id for d in g] == ["dev-c"]
 
 
 # ---- full assessment ----

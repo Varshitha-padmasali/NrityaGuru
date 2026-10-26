@@ -37,7 +37,7 @@ def test_same_major_version_is_accepted(version):
     check_schema_version(make_eval_result(schema_version=version))
 
 
-@pytest.mark.parametrize("version", ["2.0", "0.9", "x.y"])
+@pytest.mark.parametrize("version", ["2.0", "0.9", "3.0"])
 def test_other_major_versions_are_rejected(version):
     with pytest.raises(EvaluationValidationError) as e:
         check_schema_version(make_eval_result(schema_version=version))

@@ -13,14 +13,6 @@ import { ApiError } from "@/types/api";
 const NOW = () => new Date().toISOString();
 const PLACEHOLDER = "[Mock placeholder — real text comes from the knowledge base]";
 
-const mudras = [1, 2, 3].map((id) => ({
-  id,
-  name: `Sample Mudra ${String.fromCharCode(64 + id)}`,
-  hasta_type: "asamyuta" as const,
-  meaning: PLACEHOLDER,
-  image_url: null,
-}));
-
 const references = [
   { id: 101, name: "Sample Mudra A (hold)", reference_type: "mudra" as const, description: PLACEHOLDER, mudra_ids: [1], image_url: null, max_duration_seconds: 5 },
   { id: 102, name: "Sample sequence A → B → C", reference_type: "sequence" as const, description: PLACEHOLDER, mudra_ids: [1, 2, 3], image_url: null, max_duration_seconds: 8 },
@@ -72,7 +64,7 @@ export async function handleMockRequest(method: string, path: string, body: unkn
       unsupported_count: words.length,
       warnings: ["Mock mode has no knowledge catalogue."],
       disclaimer: "Mock response; connect the backend for sourced knowledge.",
-      concepts: words.map((w, i) => ({
+      concepts: words.map((w) => ({
         concept: { text: w.toLowerCase(), concept_type: "object" },
         status: "unsupported",
         references: [],
@@ -97,7 +89,7 @@ export async function handleMockRequest(method: string, path: string, body: unkn
     };
   }
 
-  if (path === endpoints.movements()) return references;
+  if (path === endpoints.practiceReferences()) return references;
 
   if (path === endpoints.sessions() && method === "POST") {
     const refId = Number((body as { reference_id?: number })?.reference_id);
@@ -127,6 +119,7 @@ export async function handleMockRequest(method: string, path: string, body: unkn
 
   if (path === endpoints.progress()) {
     return {
+      scope: "shared_development",
       sessions: [...sessions.values()].map((s) => ({
         session_id: s.session_id,
         reference_id: s.reference_id,

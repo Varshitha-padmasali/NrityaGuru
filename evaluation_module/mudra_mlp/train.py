@@ -38,7 +38,7 @@ else:
     from mudra_mlp.features import FEATURE_SCHEMA_VERSION, FeatureError, feature_names, hand_features, mirrored_hand_features
 
 SEED = 42
-MODEL_VERSION = "0.1-prototype"
+MODEL_VERSION = "0.2-prototype"
 HAND_COLS = [f"h0_{a}{i}" for i in range(21) for a in "xyz"]
 DEFAULT_CLASSES = None  # Infer all catalogue Asamyuta classes actually represented in the CSV.
 GRID = [{"hidden_layer_sizes": h, "alpha": a} for h in [(64,), (128, 64)] for a in [1e-4, 1e-3, 1e-2]]
@@ -92,6 +92,19 @@ def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue:
         "classes_selected": wanted,
     }
 
+    # Dataset folders carrying a disputed/teacher-review variant are retained in
+    # the extraction CSV for auditability but excluded from classifier training.
+    if "variant_id" in df.columns:
+        variant_ids = df["variant_id"].astype("string").fillna("").str.strip()
+        info["excluded_unreviewed_variant_rows"] = int((variant_ids != "").sum())
+        info["excluded_unreviewed_variant_folders"] = sorted(
+            df.loc[variant_ids != "", "dataset_folder"].dropna().astype(str).unique().tolist()
+        ) if "dataset_folder" in df.columns else []
+        df = df[variant_ids == ""]
+    else:
+        info["excluded_unreviewed_variant_rows"] = 0
+        info["excluded_unreviewed_variant_folders"] = []
+
     df = df[df["n_hands"] >= 1]
     info["with_detected_hand"] = int(len(df))
     conflicts = df.groupby("md5")["label_norm"].nunique()
@@ -103,6 +116,7 @@ def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue:
     info["dropped_exact_duplicates"] = int(before - len(df))
 
     raw, labels, groups = [], [], []
+    training_folders: dict[str, set[str]] = {}
     skipped = 0
     for _, row in df.iterrows():
         coords = row[HAND_COLS].to_numpy(dtype=float)
@@ -114,9 +128,12 @@ def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue:
         raw.append(coords)
         labels.append(row["label_norm"])
         groups.append(str(row["phash"]))
+        if "dataset_folder" in row and isinstance(row["dataset_folder"], str) and row["dataset_folder"]:
+            training_folders.setdefault(row["label_norm"], set()).add(row["dataset_folder"])
     info["dropped_invalid_landmarks"] = skipped
     info["final_samples"] = len(labels)
     info["unique_perceptual_groups"] = len(set(groups))
+    info["training_folders_by_class"] = {label: sorted(folders) for label, folders in training_folders.items()}
     if not labels:
         raise ValueError("no valid hand-landmark rows remain after filtering")
     return np.array(raw), np.array(labels), np.array(groups), info
@@ -179,6 +196,10 @@ def train(
     p, r, f1, _ = precision_recall_fscore_support(y[te], pred, average="macro", zero_division=0)
     _, _, wf1, _ = precision_recall_fscore_support(y[te], pred, average="weighted", zero_division=0)
     cm = confusion_matrix(y[te], pred, labels=labels_sorted)
+    class_mapping = model_class_mapping(labels_sorted) if strict_catalogue else {}
+    if strict_catalogue:
+        for label, mapping in class_mapping.items():
+            mapping["dataset_folders"] = info["training_folders_by_class"].get(label, [])
     metrics = {
         "test_accuracy": float(accuracy_score(y[te], pred)),
         "test_macro_precision": float(p), "test_macro_recall": float(r),
@@ -189,6 +210,11 @@ def train(
     }
     meta = {
         "model_version": MODEL_VERSION, "feature_schema_version": FEATURE_SCHEMA_VERSION,
+        "runtime_versions": {
+            "numpy": np.__version__,
+            "scikit_learn": sklearn.__version__,
+            "joblib": joblib.__version__,
+        },
         "trained_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "classes": labels_sorted, "feature_names": feature_names(), "seed": seed,
         "class_count": len(labels_sorted),
@@ -196,7 +222,9 @@ def train(
         "catalogue_digest": catalogue_digest() if strict_catalogue else None,
         "dataset_mapping_digest": dataset_mapping_digest() if strict_catalogue else None,
         "catalogue_class_count": len(asamyuta_names()) if strict_catalogue else None,
-        "class_mapping": model_class_mapping(labels_sorted) if strict_catalogue else {},
+        "class_mapping": class_mapping,
+        "training_folders_by_class": info["training_folders_by_class"],
+        "excluded_unreviewed_variant_folders": info["excluded_unreviewed_variant_folders"],
         "preprocessing_configuration": {
             "feature_schema_version": FEATURE_SCHEMA_VERSION,
             "input_hand_count": 1,

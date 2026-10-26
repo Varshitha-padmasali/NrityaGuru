@@ -20,6 +20,11 @@ class Settings(BaseSettings):
 
     # SecretStr hides the value in repr()/logs. Use .get_secret_value() to read it.
     gemini_api_key: SecretStr | None = None
+    reference_review_token: SecretStr | None = None
+    reference_reviewer_identity: str | None = None
+    nrityaguru_hand_task: str | None = None
+    nrityaguru_mlp_bundle: str | None = None
+    evaluation_runtime_verified: bool = False
     # Verified Oct 2026: Google recommends gemini-3.8-flash for new projects. gemini-2.5-flash
     # still exists but access is limited to existing users since 18 Sep 2026.
     gemini_model: str = "gemini-3.8-flash"
@@ -31,6 +36,10 @@ class Settings(BaseSettings):
 
     # Requests per minute per client IP for the tutor endpoint (it calls a paid API).
     tutor_rate_limit_per_minute: int = Field(default=20, ge=1, le=600)
+    max_video_upload_mb: int = Field(default=100, ge=1, le=100)
+    max_video_duration_seconds: int = Field(default=45, ge=1, le=180)
+    max_video_decoded_frames: int = Field(default=5000, ge=1, le=20000)
+    max_video_frame_pixels: int = Field(default=1920 * 1080, ge=4096, le=3840 * 2160)
 
     # Development only: serve clearly-labelled MOCK evaluation results until the real
     # evaluation module is connected. Must be false in production.
@@ -55,6 +64,10 @@ class Settings(BaseSettings):
     @property
     def database_configured(self) -> bool:
         return bool(self.database_url and self.database_url.get_secret_value())
+
+    @property
+    def reference_review_configured(self) -> bool:
+        return bool(self.reference_review_token and self.reference_review_token.get_secret_value())
 
 
 @lru_cache

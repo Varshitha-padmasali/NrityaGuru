@@ -6,10 +6,10 @@ import { extensionForMimeType } from "@/lib/media";
 import type { PracticeReference, PracticeSession } from "@/types/practice";
 
 export function listPracticeReferences(signal?: AbortSignal): Promise<PracticeReference[]> {
-  return apiRequest(endpoints.movements(), { validate: isPracticeReferenceList, signal });
+  return apiRequest(endpoints.practiceReferences(), { validate: isPracticeReferenceList, signal });
 }
 
-export function createPracticeSession(referenceId: number, signal?: AbortSignal): Promise<PracticeSession> {
+export function createPracticeSession(referenceId: number | string, signal?: AbortSignal): Promise<PracticeSession> {
   return apiRequest(endpoints.sessions(), { method: "POST", json: { reference_id: referenceId }, validate: isPracticeSession, signal });
 }
 
@@ -18,8 +18,8 @@ export function createPracticeSession(referenceId: number, signal?: AbortSignal)
  * from the "video" field and the reference from "reference_id".
  */
 export function uploadPracticeVideo(
-  sessionId: number,
-  referenceId: number,
+  sessionId: number | string,
+  referenceId: number | string,
   blob: Blob,
   onProgress?: (fraction: number) => void,
   signal?: AbortSignal,

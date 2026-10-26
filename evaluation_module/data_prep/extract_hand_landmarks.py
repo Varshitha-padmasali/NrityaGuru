@@ -63,7 +63,11 @@ def read_image(path: Path):
 
 def make_landmarker(model_path: Path, min_conf: float = 0.3):
     options = vision.HandLandmarkerOptions(
-        base_options=mp_python.BaseOptions(model_asset_path=str(model_path)),
+        # Request CPU explicitly; some MediaPipe builds still require a native GPU
+        # service internally, in which case this host must fail clearly at startup.
+        base_options=mp_python.BaseOptions(
+            model_asset_path=str(model_path), delegate=mp_python.BaseOptions.Delegate.CPU
+        ),
         running_mode=vision.RunningMode.IMAGE,
         num_hands=2,
         min_hand_detection_confidence=min_conf,

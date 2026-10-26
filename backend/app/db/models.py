@@ -155,11 +155,53 @@ class PracticeSession(Base):
             "(mudra_id IS NULL AND movement_id IS NOT NULL)",
             name="ck_session_one_reference",
         ),
+        CheckConstraint(
+            "status IN ('created', 'uploaded', 'processing', 'evaluated', 'failed')",
+            name="ck_practice_session_status",
+        ),
     )
 
     id: Mapped[str] = mapped_column(String(64), primary_key=True)  # the session_id
     mudra_id: Mapped[str | None] = mapped_column(ForeignKey("mudras.id"), index=True)
     movement_id: Mapped[str | None] = mapped_column(ForeignKey("movements.id"), index=True)
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="created", server_default="created", index=True)
+    failure_reason: Mapped[str | None] = mapped_column(String(80))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ReferenceSequence(Base):
+    """A provenance-bearing reference sequence; only teacher-reviewed rows are publishable."""
+
+    __tablename__ = "reference_sequences"
+    __table_args__ = (
+        CheckConstraint(
+            "(mudra_id IS NOT NULL AND movement_id IS NULL) OR "
+            "(mudra_id IS NULL AND movement_id IS NOT NULL)",
+            name="ck_reference_sequence_one_target",
+        ),
+        CheckConstraint("schema_version = 1", name="ck_reference_sequence_schema_v1"),
+        CheckConstraint(
+            "review_status IN ('candidate', 'teacher_verified', 'rejected')",
+            name="ck_reference_sequence_review_status",
+        ),
+        Index("ix_reference_sequences_review_target", "review_status", "mudra_id", "movement_id"),
+    )
+
+    id: Mapped[str] = mapped_column(String(80), primary_key=True)
+    mudra_id: Mapped[str | None] = mapped_column(ForeignKey("mudras.id", ondelete="CASCADE"))
+    movement_id: Mapped[str | None] = mapped_column(ForeignKey("movements.id", ondelete="CASCADE"))
+    schema_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    feature_schema: Mapped[str] = mapped_column(String(80), nullable=False)
+    evaluator_version: Mapped[str] = mapped_column(String(80), nullable=False)
+    normalization: Mapped[str] = mapped_column(String(120), nullable=False)
+    frames: Mapped[list] = mapped_column(JSONType, nullable=False)
+    feature_dimensions: Mapped[int] = mapped_column(Integer, nullable=False)
+    source: Mapped[str] = mapped_column(String(1000), nullable=False)
+    performer_consent_reference: Mapped[str] = mapped_column(String(200), nullable=False)
+    review_status: Mapped[str] = mapped_column(String(30), nullable=False, index=True)
+    reviewer_identity: Mapped[str | None] = mapped_column(String(200))
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    threshold: Mapped[float | None] = mapped_column()
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
 
 

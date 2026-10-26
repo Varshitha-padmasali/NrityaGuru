@@ -66,13 +66,13 @@ export const isExplainResponse: Validator<ExplainResponse> = (v): v is ExplainRe
   isObj(v.retrieval) && isStr(v.disclaimer);
 
 export const isPracticeReference: Validator<PracticeReference> = (v): v is PracticeReference =>
-  isObj(v) && isNum(v.id) && isStr(v.name) && (v.reference_type === "mudra" || v.reference_type === "sequence") && Array.isArray(v.mudra_ids);
+  isObj(v) && (isNum(v.id) || isStr(v.id)) && isStr(v.name) && (v.reference_type === "mudra" || v.reference_type === "sequence") && Array.isArray(v.mudra_ids);
 
 export const isPracticeReferenceList: Validator<PracticeReference[]> = (v): v is PracticeReference[] =>
   isArrOf<PracticeReference>(isPracticeReference)(v);
 
 export const isPracticeSession: Validator<PracticeSession> = (v): v is PracticeSession =>
-  isObj(v) && isNum(v.session_id) && isNum(v.reference_id) && isStr(v.status);
+  isObj(v) && (isNum(v.session_id) || isStr(v.session_id)) && (isNum(v.reference_id) || isStr(v.reference_id)) && isStr(v.status);
 
 export const isEvaluationResult: Validator<EvaluationResult> = (v): v is EvaluationResult =>
   isObj(v) &&
@@ -86,7 +86,7 @@ export const isEvaluationResult: Validator<EvaluationResult> = (v): v is Evaluat
 
 export const isEvaluateResponse: Validator<EvaluateResponse> = (v): v is EvaluateResponse =>
   isObj(v) &&
-  isNum(v.session_id) &&
+  (isNum(v.session_id) || isStr(v.session_id)) &&
   (v.status === "evaluated" || v.status === "processing" || v.status === "failed") &&
   (v.result === null || v.result === undefined || isEvaluationResult(v.result));
 
@@ -99,4 +99,4 @@ export const isSessionResults: Validator<SessionResults> = (v): v is SessionResu
   (v.feedback === null || v.feedback === undefined || isFeedback(v.feedback));
 
 export const isProgressResponse: Validator<ProgressResponse> = (v): v is ProgressResponse =>
-  isObj(v) && Array.isArray(v.sessions) && v.sessions.every((s) => isObj(s) && isNum(s.session_id) && isStr(s.reference_name) && isStr(s.created_at));
+  isObj(v) && v.scope === "shared_development" && Array.isArray(v.sessions) && v.sessions.every((s) => isObj(s) && (isNum(s.session_id) || isStr(s.session_id)) && isStr(s.reference_name) && isStr(s.created_at));

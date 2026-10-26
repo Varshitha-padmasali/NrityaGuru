@@ -2,11 +2,12 @@
 import numpy as np
 import pandas as pd
 import pytest
+import joblib
 
 from data_prep.extract_hand_landmarks import HEADER
 from mudra_mlp.features import FeatureError, hand_features, mirrored_hand_features
 from mudra_mlp.predict import load_bundle, predict_hand
-from mudra_mlp.train import train
+from mudra_mlp.train import load_dataset, train
 
 
 def template(seed):
@@ -64,6 +65,20 @@ def test_train_save_load_predict(tmp_path):
     out = predict_hand(bundle, template(100 + 1))      # a class1-shaped hand
     assert out["status"] == "success" and out["predicted_label"] == "class1"
     assert 0.0 <= out["confidence"] <= 1.0
+    assert set(bundle["metadata"]["runtime_versions"]) == {"numpy", "scikit_learn", "joblib"}
+
+
+def test_model_bundle_rejects_dependency_version_mismatch(tmp_path):
+    csv_path = tmp_path / "lm.csv"
+    synthetic_csv(csv_path)
+    train(csv_path, ["class0", "class1", "class2"], tmp_path / "models", verbose=False,
+          strict_catalogue=False)
+    model_path = tmp_path / "models" / "mudra_mlp.joblib"
+    bundle = joblib.load(model_path)
+    bundle["metadata"]["runtime_versions"]["scikit_learn"] = "0.0"
+    joblib.dump(bundle, model_path)
+    with pytest.raises(ValueError, match="dependency versions"):
+        load_bundle(model_path, allow_non_catalogue=True)
 
 
 def test_prediction_distinguishes_unavailable_and_low_confidence(tmp_path):
@@ -94,3 +109,31 @@ def test_unknown_class_is_reported(tmp_path):
     synthetic_csv(csv_path)
     with pytest.raises(SystemExit):
         train(csv_path, ["class0", "nope"], tmp_path / "m", verbose=False, strict_catalogue=False)
+
+
+def test_unreviewed_dataset_variants_are_excluded_from_training(tmp_path):
+    csv_path = tmp_path / "lm.csv"
+    synthetic_csv(csv_path)
+    frame = pd.read_csv(csv_path)
+    frame["variant_id"] = frame["variant_id"].astype(object)
+    frame.loc[0, "variant_id"] = "teacher_review_required"
+    frame.to_csv(csv_path, index=False)
+    _, labels, _, info = load_dataset(csv_path, ["class0", "class1", "class2"], strict_catalogue=False)
+    assert info["excluded_unreviewed_variant_rows"] == 1
+    assert len(labels) == 89
+
+
+def test_strict_model_metadata_lists_only_folders_contributing_valid_rows(tmp_path):
+    csv_path = tmp_path / "lm.csv"
+    synthetic_csv(csv_path)
+    frame = pd.read_csv(csv_path)
+    frame["variant_id"] = frame["variant_id"].astype(object)
+    canonical = {"class0": "Pataka", "class1": "Tripataka", "class2": "Ardhapataka"}
+    frame["label"] = frame["label"].map(canonical)
+    frame["dataset_folder"] = frame["label"].str.casefold() + "_folder"
+    frame.loc[0, "dataset_folder"] = "disputed_variant_folder"
+    frame.loc[0, "variant_id"] = "teacher_review_required"
+    frame.to_csv(csv_path, index=False)
+    _, _, _, info = load_dataset(csv_path, None, strict_catalogue=True)
+    assert info["excluded_unreviewed_variant_folders"] == ["disputed_variant_folder"]
+    assert info["training_folders_by_class"]["Pataka"] == ["pataka_folder"]

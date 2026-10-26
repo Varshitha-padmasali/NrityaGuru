@@ -87,7 +87,7 @@ describe("PredictionTimeline", () => {
   it("renders predictions with time ranges from fps", () => {
     render(<PredictionTimeline predictions={[{ label: "Pataka", confidence: 0.91, frame_start: 0, frame_end: 29 }]} framesTotal={60} fps={30} />);
     expect(screen.getByText("Pataka")).toBeInTheDocument();
-    expect(screen.getByText(/0\.0 s – 1\.0 s · model confidence 91%/)).toBeInTheDocument();
+    expect(screen.getByText(/0\.0 s – 1\.0 s · raw model score 0\.91/)).toBeInTheDocument();
   });
 
   it("explains when there are no predictions", () => {

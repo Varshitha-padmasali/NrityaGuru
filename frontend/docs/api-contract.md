@@ -80,13 +80,17 @@ Conventions
 - The backend performs retrieval, then grounds and validates Gemini against those retrieved records. The retrieval is always returned, including when the tutor falls back to knowledge-only mode.
 - `include_unverified` is opt-in and requires the backend setting. The UI preserves source status and limitations.
 
-## 5. Practice references
+## 5. Movements and practice references
 
-`GET /api/movements` → `200` — `PracticeReference[]`
+`GET /api/movements` → `200` — knowledge-base `MovementOut[]`.
+
+`GET /api/practice/references` → `200` — only references backed by a teacher-verified,
+compatible sequence and a locally installed model/task with the runtime smoke-test gate enabled.
+It currently returns `[]`; dataset image folders alone do not qualify as performance references.
 ```json
 [{ "id": 101, "name": "Pataka (hold)", "reference_type": "mudra", "description": "…", "mudra_ids": [1], "image_url": "…", "max_duration_seconds": 5 }]
 ```
-- Only list references that the evaluation pipeline can actually evaluate.
+- The example above is a contract shape, not a current record.
 - `reference_type`: `"mudra" | "sequence"`; `mudra_ids` is ordered for sequences.
 - `max_duration_seconds` may be `null` (frontend default: 8 s).
 
@@ -94,37 +98,33 @@ Conventions
 
 `POST /api/practice/sessions`
 ```json
-{ "reference_id": 101 }
+{ "reference_id": "mudra_pataka" }
 ```
-→ `201` (or 200) — `PracticeSession`
+→ `201` — `PracticeSession`
 ```json
-{ "session_id": 12, "reference_id": 101, "status": "created", "created_at": "2026-10-24T14:30:00Z" }
+{ "session_id": "generated-session-id", "reference_id": "mudra_pataka", "status": "created", "created_at": "2026-10-24T14:30:00Z" }
 ```
 `status`: `"created" | "uploaded" | "processing" | "evaluated" | "failed"`
 
 `POST /api/practice/sessions/{session_id}/video` — `multipart/form-data`
 | field | type | notes |
 |---|---|---|
-| `video` | file | `video/webm` (Chrome/Edge/Firefox) or `video/mp4` (Safari). Max 10 MB, max ~8 s. |
-| `reference_id` | string (int) | must match the session's reference |
+| `video` | file | `video/webm`, `video/mp4`, or QuickTime. Configurable max 100 MB, default 45 s, 1920x1080, 5 fps sampling, and 5000 decoded frames. |
+| `reference_id` | string | must match the session's reference |
 
-→ `200` — `PracticeSession` with `status: "uploaded"`. `413` if too large, `422` if wrong type.
-The backend should accept **both WebM and MP4** (OpenCV can read both if FFmpeg is available).
+The backend bounds requests before multipart spooling, validates the container, decodes frames in
+a temporary directory, and removes the clip after processing. It returns a structured `503` and
+marks the attempt failed when the task/model assets or verified native runtime are unavailable.
+`413` is returned for size, duration, resolution or frame-count limits; `422` for malformed or
+empty video; `415` for unsupported content types. Requires installed backend requirements.
 
-`POST /api/practice/sessions/{session_id}/evaluate` (empty JSON body `{}`)
-→ `200`
+`POST /api/practice/sessions/{session_id}/evaluate` (empty JSON body `{}`) returns a stored
+evaluation using the frontend response adapter, or a structured dependency/runtime error.
+`GET /api/practice/sessions/{session_id}/results` returns the persisted result, or `null` while
+unevaluated. The main integration is not currently available because required assets are absent.
 ```json
 { "session_id": 12, "status": "evaluated", "result": { …EvaluationResult… }, "error": null }
 ```
-- May instead return `"status": "processing"` with `result: null`; the frontend then polls
-  `GET …/results` every 2 s for up to 90 s.
-- `"status": "failed"` with a human-readable `error` (e.g. "No hands detected in enough frames").
-
-`GET /api/practice/sessions/{session_id}/results` → `200`
-```json
-{ "session": { …PracticeSession… }, "result": { …EvaluationResult… } , "feedback": null }
-```
-`result` is `null` until evaluated; `feedback` is `null` until generated.
 
 ### EvaluationResult
 ```json
@@ -139,21 +139,21 @@ The backend should accept **both WebM and MP4** (OpenCV can read both if FFmpeg 
     { "kind": "wrong_label", "message": "Between 0.8 s and 1.4 s the model detected Tripataka instead of Pataka.", "frame_start": 24, "frame_end": 42, "expected_label": "Pataka", "predicted_label": "Tripataka" }
   ],
   "warnings": ["Hand was not detected in 3 frames."],
-  "model_version": "mlp-2026-10-20",
-  "feature_schema": "hand_v1",
+  "model_version": "0.2-prototype",
+  "feature_schema": "hand-v1",
   "created_at": "2026-10-24T14:31:02Z"
 }
 ```
-- `predictions`: contiguous stretches of frames with the same MLP label; `confidence` is the
-  model probability (0–1), **not** a correctness score.
+- `predictions`: contiguous stretches of frames with the same MLP label; `confidence` is a raw,
+  uncalibrated model score (0–1), **not** a probability or correctness score.
 - `dtw`: `null` if no sequence comparison was run. `normalized` is optional and must be defined
   in backend docs (e.g. distance ÷ path length).
-- `deviations[].kind`: `"wrong_label" | "feature_deviation" | "high_alignment_cost" | "insufficient_landmarks"`.
+- `deviations[].kind` follows the backend evidence contract; it is not a human artistic-quality judgement.
 - `fps` lets the UI show seconds instead of frame numbers (may be `null`).
 
 ## 7. Feedback
 
-`POST /api/practice/sessions/{session_id}/feedback` (empty JSON body `{}`)
+`POST /api/feedback/generate` with `{ "session_id": "..." }`
 → `200`
 ```json
 { "text": "Feedback paragraphs…", "model_name": "gemini-2.5-flash", "created_at": "…" }
@@ -165,9 +165,11 @@ The backend should accept **both WebM and MP4** (OpenCV can read both if FFmpeg 
 
 ## 8. Progress
 
-`GET /api/progress` → `200`
+`GET /api/progress` → `200` — development/test-only installation-wide history. Production returns
+`503 user_auth_not_configured`; no user identity or private ownership system exists.
 ```json
 {
+  "scope": "shared_development",
   "sessions": [
     { "session_id": 12, "reference_id": 101, "reference_name": "Pataka (hold)", "status": "evaluated", "created_at": "…",
       "dtw_normalized": 0.21, "top_label": "Pataka", "top_confidence": 0.91, "feedback_summary": "First line of feedback or null" }
@@ -178,9 +180,9 @@ Trends are drawn only from `dtw_normalized` and only for references with ≥ 2 e
 
 ---
 
-## Endpoints the backend still needs to build
-All of the above are proposals; none are confirmed implemented yet. Suggested order:
-`/health` → `/api/mudras` → `/api/knowledge/retrieve` → `/api/tutor/explain` →
-`/api/movements` → sessions + upload → evaluate + results → feedback → progress.
-Until an endpoint exists, the frontend shows a clear "couldn't reach the server" or
-"not found" state, or you can develop against `NEXT_PUBLIC_USE_MOCK_API=true`.
+## Current route implementation
+Health, catalogue, movement knowledge, retrieval, tutor, feedback, practice-reference discovery,
+session creation, bounded upload/frame decoding, result retrieval and progress routes are
+implemented. Landmark inference and persistence of real evaluation output are wired but blocked
+by missing model/task/reference assets and the unverified native runtime. The frontend shows the
+no-reference state until those requirements are met and reports structured API failures.
