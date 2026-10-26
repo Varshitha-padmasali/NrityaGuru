@@ -41,8 +41,8 @@ def test_extraction_counts_pixels_and_missing_values(tmp_path):
     assert summary["total_images"] == 4          # txt ignored
     assert summary["with_hand"] == 2
     assert summary["unreadable"] == 1
-    assert summary["per_class"]["pathaka"] == (2, 2)
-    assert summary["per_class"]["mushti"] == (2, 0)
+    assert summary["per_class"]["Pataka"] == (2, 2)
+    assert summary["per_class"]["Mushti"] == (2, 0)
 
     rows = list(csv.DictReader(open(out, encoding="utf-8")))
     assert list(rows[0].keys()) == HEADER

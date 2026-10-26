@@ -54,11 +54,12 @@ def test_bad_landmarks_rejected(bad):
 def test_train_save_load_predict(tmp_path):
     csv_path = tmp_path / "lm.csv"
     synthetic_csv(csv_path)
-    metrics = train(csv_path, ["class0", "class1", "class2"], tmp_path / "models", verbose=False)
+    metrics = train(csv_path, ["class0", "class1", "class2"], tmp_path / "models", verbose=False,
+                    strict_catalogue=False)
     assert metrics["test_accuracy"] > 0.9
     assert (tmp_path / "models" / "mudra_mlp.joblib").exists()
     assert (tmp_path / "models" / "mudra_mlp_metrics.json").exists()
-    bundle = load_bundle(tmp_path / "models" / "mudra_mlp.joblib")
+    bundle = load_bundle(tmp_path / "models" / "mudra_mlp.joblib", allow_non_catalogue=True)
     out = predict_hand(bundle, template(100 + 1))      # a class1-shaped hand
     assert out["status"] == "success" and out["predicted_label"] == "class1"
     assert 0.0 <= out["confidence"] <= 1.0
@@ -67,8 +68,9 @@ def test_train_save_load_predict(tmp_path):
 def test_predict_invalid_input_returns_status(tmp_path):
     csv_path = tmp_path / "lm.csv"
     synthetic_csv(csv_path)
-    train(csv_path, ["class0", "class1", "class2"], tmp_path / "m", verbose=False)
-    bundle = load_bundle(tmp_path / "m" / "mudra_mlp.joblib")
+    train(csv_path, ["class0", "class1", "class2"], tmp_path / "m", verbose=False,
+          strict_catalogue=False)
+    bundle = load_bundle(tmp_path / "m" / "mudra_mlp.joblib", allow_non_catalogue=True)
     assert predict_hand(bundle, np.zeros(10))["status"] == "invalid_input"
 
 
@@ -76,4 +78,4 @@ def test_unknown_class_is_reported(tmp_path):
     csv_path = tmp_path / "lm.csv"
     synthetic_csv(csv_path)
     with pytest.raises(SystemExit):
-        train(csv_path, ["class0", "nope"], tmp_path / "m", verbose=False)
+        train(csv_path, ["class0", "nope"], tmp_path / "m", verbose=False, strict_catalogue=False)

@@ -49,7 +49,7 @@ Point out: `verification_status: source_cited`, the limitations list, `is_mock: 
 **15. How is the API key protected?** Environment variable only, `SecretStr` so it never prints, used in one file, never returned by any endpoint, never logged; `.env` is git-ignored and a static check scans for leaked keys.
 
 ### Embeddings
-**16. What are embeddings and why not use them now?** Vectors that place similar texts close together, so "stream" can find "river". With three seed records, misses come from missing data, not vocabulary, and embeddings always return a nearest neighbour, which could produce a confident mudra for a word that has no supported mapping, the failure my rules forbid.
+**16. What are embeddings and why not use them now?** Vectors that place similar texts close together, so "stream" can find "river". The catalogue has 52 names/categories but only a few cited usages; embeddings always return a nearest neighbour, which could produce a confident mudra for a word that has no supported mapping, the failure my rules forbid.
 **17. When would you add them, and how?** With hundreds of verified records and a labelled query set that shows real synonym misses. Use pgvector inside the same PostgreSQL (no separate vector database), cosine similarity, top-k, and show results as a separate "possibly related" tier, never as a verified mapping.
 **18. How would you evaluate that?** Recall@k on the labelled set, plus checking that unsupported words still return nothing.
 
@@ -86,9 +86,9 @@ Point out: `verification_status: source_cited`, the limitations list, `is_mock: 
 
 ### Testing and honesty
 **40. How did you test, and what has not been run?** 477 tests exist. 270 were executed in my environment against small stand-ins for pytest and pydantic (the real libraries could not be installed there), and all passed; 207 (database, HTTP, strict Pydantic constraints, SDK, live) are written but not yet run. Eleven static checks also pass and were shown to catch deliberately injected faults. Nothing has been run against the real Gemini API.
-**41. What accuracy does the system have?** None is reported: no model of mine was trained or evaluated, and the knowledge base has three unverified seed records.
-**42. Is your knowledge base correct?** Not yet verified. The three mudras come from a Wikipedia list (a secondary source) and are marked `source_cited`, not `verified`; they stay hidden by default until checked against the primary text or a teacher.
-**43. Why only three mudras?** I only added records I could source; fabricating records to look complete would break the project's own rules. The structure is ready to grow as records are verified.
+**41. What accuracy does the system have?** The checked-in historical model metrics describe a 12-class image split only; the model artifact and dataset are absent, so no current recognition claim is made.
+**42. Is your knowledge base correct?** The 52 names/categories are source-cited to the NCERT Kriti-I teaching list, not teacher-verified. The original three meanings/usages remain secondary-source citations. All source-cited records stay hidden by default.
+**43. Why are many entries incomplete?** The source supports the list and categories, but not enough detail to safely invent meanings, usages, or hand configurations. Those fields remain empty pending stronger references and teacher review.
 
 ### Trade-offs and future work
 **44. Top three trade-offs.** (a) Reject suspicious AI text and show plainer fallback wording instead of risking an invented error. (b) A small deterministic extractor instead of an LLM extractor: predictable but limited vocabulary. (c) No embeddings or full-text search now: simpler and safer, less flexible.

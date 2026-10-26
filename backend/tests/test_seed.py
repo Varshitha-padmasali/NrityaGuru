@@ -17,8 +17,10 @@ from app.repositories import knowledge_repository as repo
 def test_real_seed_files_are_valid():
     bundle = read_seed()
     validate_seed(bundle)  # raises if anything is inconsistent
-    assert len(bundle.sources) == 2
-    assert len(bundle.mudras) == 3
+    assert len(bundle.sources) == 3
+    assert len(bundle.mudras) == 52
+    assert len({mudra.id for mudra in bundle.mudras}) == 52
+    assert len({mudra.name.casefold() for mudra in bundle.mudras}) == 52
     assert len(bundle.movements) == 0  # nothing verified yet; none invented
     assert len(bundle.mappings) == 6
 
@@ -27,7 +29,7 @@ def test_load_seed_is_idempotent(db_session):
     first = load_seed(db_session)
     second = load_seed(db_session)
     assert first == second
-    assert len(repo.list_mudras(db_session, include_unverified=True)) == 3
+    assert len(repo.list_mudras(db_session, include_unverified=True)) == 52
 
 
 def test_seeded_records_are_not_authoritative_yet(db_session):

@@ -9,6 +9,7 @@ Running the script twice is safe (records are upserted by id).
 """
 import json
 import logging
+import unicodedata
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -127,6 +128,24 @@ def validate_seed(bundle: SeedBundle, assets_dir: Path = DEFAULT_ASSETS_DIR) -> 
         ids = [i.id for i in items]
         if len(ids) != len(set(ids)):
             errors.append(f"duplicate {label} ids")
+
+    canonical_names: dict[str, str] = {}
+    lookup_names: dict[str, str] = {}
+    for mudra in bundle.mudras:
+        normalized = "".join(
+            char for char in unicodedata.normalize("NFKC", mudra.name).casefold() if char.isalnum()
+        )
+        if normalized in canonical_names:
+            errors.append(f"{mudra.id}: canonical name duplicates {canonical_names[normalized]}")
+        canonical_names[normalized] = mudra.id
+        for candidate in [mudra.name, *mudra.alternate_names]:
+            key = "".join(
+                char for char in unicodedata.normalize("NFKC", candidate).casefold() if char.isalnum()
+            )
+            owner = lookup_names.get(key)
+            if owner is not None and owner != mudra.id:
+                errors.append(f"{mudra.id}: name or alias is ambiguous with {owner}")
+            lookup_names[key] = mudra.id
 
     for rec in [*bundle.mudras, *bundle.movements, *bundle.mappings]:
         if rec.source_id is not None and rec.source_id not in source_ids:

@@ -29,6 +29,11 @@ import numpy as np
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision
 
+if __package__ and __package__.startswith("evaluation_module."):
+    from ..mudra_mlp.catalogue import canonical_record
+else:  # Support the documented module invocation from evaluation_module/.
+    from mudra_mlp.catalogue import canonical_record
+
 IMAGE_EXTS = {".jpg", ".jpeg", ".png"}
 N_LANDMARKS = 21
 PAD_FRACTION = 0.30
@@ -122,11 +127,17 @@ def run(dataset: Path, landmarker, out_csv: Path, failed_csv: Path | None = None
     no_hand: list[tuple[str, str]] = []
 
     class_dirs = sorted(p for p in dataset.iterdir() if p.is_dir())
+    unknown = [p.name for p in class_dirs if canonical_record(p.name) is None]
+    if unknown:
+        raise ValueError(
+            "unknown dataset class folders: " + ", ".join(unknown)
+            + "; add reviewed spellings to backend/data/seed/mudras.json before extraction"
+        )
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(HEADER)
         for class_dir in class_dirs:
-            label = class_dir.name
+            label = canonical_record(class_dir.name)["name"]
             files = sorted(p for p in class_dir.rglob("*") if p.suffix.lower() in IMAGE_EXTS)
             for path in files:
                 per_class[label][0] += 1

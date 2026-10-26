@@ -63,7 +63,19 @@ def test_mudra_list_default_empty_then_visible(db_session, make_client):
     assert client.get("/api/mudras").json() == []
     r = client.get("/api/mudras", params={"include_unverified": True})
     assert r.status_code == 200
-    assert {m["id"] for m in r.json()} == {"mudra_pataka", "mudra_tripataka", "mudra_ardhapataka"}
+    assert len(r.json()) == 52
+    assert {m["id"] for m in r.json()} >= {"mudra_pataka", "mudra_tripataka", "mudra_ardhapataka"}
+
+
+def test_mudra_list_supports_search_and_all_52_default_page(db_session, make_client):
+    load_seed(db_session)
+    client = make_client()
+    all_records = client.get("/api/mudras", params={"include_unverified": True})
+    assert len(all_records.json()) == 52  # default page includes the complete catalogue
+    found = client.get("/api/mudras", params={"include_unverified": True, "q": "kapota"})
+    assert [record["name"] for record in found.json()] == ["Kapota"]
+    by_name = client.get("/api/mudras/Kapota", params={"include_unverified": True})
+    assert by_name.status_code == 200 and by_name.json()["id"] == "mudra_kapota"
 
 
 def test_mudra_detail_and_404s(db_session, make_client):

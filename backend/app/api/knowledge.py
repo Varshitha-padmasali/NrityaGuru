@@ -30,15 +30,21 @@ def retrieve_knowledge(
 @router.get("/mudras", response_model=list[MudraOut])
 def list_mudras(
     category: str | None = None,
+    q: str | None = Query(default=None, min_length=1, max_length=120),
     include_unverified: bool = False,
-    limit: int = Query(50, ge=1, le=200),
+    limit: int = Query(100, ge=1, le=200),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
     settings: Settings = Depends(get_settings),
 ) -> list[MudraOut]:
     check_unverified_allowed(include_unverified, settings)
     rows = repo.list_mudras(
-        db, include_unverified=include_unverified, category=category, limit=limit, offset=offset
+        db,
+        include_unverified=include_unverified,
+        category=category,
+        query=q,
+        limit=limit,
+        offset=offset,
     )
     return [mudra_to_out(m) for m in rows]
 
@@ -52,6 +58,8 @@ def get_mudra(
 ) -> MudraOut:
     check_unverified_allowed(include_unverified, settings)
     mudra = repo.get_mudra(db, mudra_id, include_unverified=include_unverified)
+    if mudra is None:
+        mudra = repo.get_mudra_by_name(db, mudra_id, include_unverified=include_unverified)
     if mudra is None:
         # Same answer for "does not exist" and "exists but not verified": no information leak.
         raise HTTPException(status_code=404, detail="Mudra not found.")

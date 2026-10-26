@@ -1,3 +1,5 @@
 hand_landmarker.task
 data/hand_landmarks*.csv
+data/mudra_dataset/
+data/mudra_dataset_manifest.json
 models/*.joblib

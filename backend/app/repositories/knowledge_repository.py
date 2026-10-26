@@ -4,7 +4,7 @@ Rule: by default only `verified` records are returned. Pass include_unverified=T
 to also see `source_cited` and `unverified` records (for admin/dev use and clearly
 labelled output only).
 """
-from sqlalchemy import func, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db.models import (
@@ -39,11 +39,15 @@ def get_mudra(db: Session, mudra_id: str, *, include_unverified: bool = False) -
 
 
 def get_mudra_by_name(db: Session, name: str, *, include_unverified: bool = False) -> Mudra | None:
-    stmt = select(Mudra).where(
-        func.lower(Mudra.name) == name.strip().lower(),
-        Mudra.verification_status.in_(_allowed(include_unverified)),
-    )
-    return db.scalars(stmt).first()
+    key = normalize_concept(name)
+    if not key:
+        return None
+    stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
+    for mudra in db.scalars(stmt):
+        names = [mudra.name, *(mudra.alternate_names or [])]
+        if any(normalize_concept(candidate) == key for candidate in names):
+            return mudra
+    return None
 
 
 def list_mudras(
@@ -51,14 +55,21 @@ def list_mudras(
     *,
     include_unverified: bool = False,
     category: str | None = None,
-    limit: int = 50,
+    query: str | None = None,
+    limit: int = 100,
     offset: int = 0,
 ) -> list[Mudra]:
     stmt = select(Mudra).where(Mudra.verification_status.in_(_allowed(include_unverified)))
     if category:
         stmt = stmt.where(Mudra.category == category)
-    stmt = stmt.order_by(Mudra.name).limit(limit).offset(offset)
-    return list(db.scalars(stmt))
+    records = list(db.scalars(stmt.order_by(Mudra.name)))
+    if query and query.strip():
+        key = normalize_concept(query)
+        records = [
+            record for record in records
+            if any(key in normalize_concept(name) for name in [record.name, *(record.alternate_names or [])])
+        ]
+    return records[offset : offset + limit]
 
 
 # ---------- movements ----------

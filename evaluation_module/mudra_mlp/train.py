@@ -30,37 +30,67 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from mudra_mlp.features import (
-    FEATURE_SCHEMA_VERSION,
-    FeatureError,
-    feature_names,
-    hand_features,
-    mirrored_hand_features,
-)
+if __package__ and __package__.startswith("evaluation_module."):
+    from .catalogue import asamyuta_names, canonical_record, catalogue_digest
+    from .features import FEATURE_SCHEMA_VERSION, FeatureError, feature_names, hand_features, mirrored_hand_features
+else:
+    from mudra_mlp.catalogue import asamyuta_names, canonical_record, catalogue_digest
+    from mudra_mlp.features import FEATURE_SCHEMA_VERSION, FeatureError, feature_names, hand_features, mirrored_hand_features
 
 SEED = 42
 MODEL_VERSION = "0.1-prototype"
 HAND_COLS = [f"h0_{a}{i}" for i in range(21) for a in "xyz"]
-DEFAULT_CLASSES = [
-    "pathaka", "tripathaka", "arthapataka", "mushti", "shikaram", "soochi",
-    "simhamugham", "trishoolam", "kapitham", "mayooram", "arthachandran", "kartharimukaham",
-]
+DEFAULT_CLASSES = None  # Infer all catalogue Asamyuta classes actually represented in the CSV.
 GRID = [{"hidden_layer_sizes": h, "alpha": a} for h in [(64,), (128, 64)] for a in [1e-4, 1e-3, 1e-2]]
 
 
-def load_dataset(csv_path: Path, classes: list[str]):
+def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue: bool = True):
     df = pd.read_csv(csv_path).copy()
     required = {"label", "n_hands", "md5", *HAND_COLS}
     missing_columns = sorted(required - set(df.columns))
     if missing_columns:
         raise ValueError(f"landmark CSV is missing required columns: {missing_columns}")
-    df["label_norm"] = df["label"].astype(str).str.strip().str.lower()
-    wanted = [c.strip().lower() for c in classes]
-    missing = sorted(set(wanted) - set(df["label_norm"]))
+    raw_labels = df["label"].astype(str).str.strip()
+    mapped = [canonical_record(label) for label in raw_labels]
+    if strict_catalogue:
+        unknown = sorted({label for label, record in zip(raw_labels, mapped) if record is None})
+        if unknown:
+            raise ValueError(f"dataset contains labels absent from the canonical catalogue: {unknown}")
+        df["label_norm"] = [record["name"] for record in mapped]
+        df["mudra_category"] = [record["category"] for record in mapped]
+        unsupported = int((df["mudra_category"] != "Asamyuta Hasta").sum())
+        df = df[df["mudra_category"] == "Asamyuta Hasta"]
+    else:
+        df["label_norm"] = raw_labels.str.casefold()
+        df["mudra_category"] = "synthetic_test_label"
+        unsupported = 0
+
+    available = sorted(df["label_norm"].unique())
+    if classes is None:
+        wanted = available
+    elif strict_catalogue:
+        requested = []
+        for label in classes:
+            record = canonical_record(label)
+            if record is None:
+                raise SystemExit(f"Class not found in canonical catalogue: {label}")
+            if record["category"] != "Asamyuta Hasta":
+                raise ValueError(f"The single-hand MLP cannot train on two-hand class {label!r}")
+            requested.append(record["name"])
+        if len(set(requested)) != len(requested):
+            raise ValueError("classes contain duplicate labels after canonical alias resolution")
+        wanted = requested
+    else:
+        wanted = [c.strip().casefold() for c in classes]
+    missing = sorted(set(wanted) - set(available))
     if missing:
-        raise SystemExit(f"Classes not found in CSV: {missing}\nAvailable: {sorted(df['label_norm'].unique())}")
+        raise SystemExit(f"Classes not found in CSV: {missing}\nAvailable: {available}")
     df = df[df["label_norm"].isin(wanted)]
-    info = {"images_in_selected_classes": int(len(df))}
+    info = {
+        "images_in_selected_classes": int(len(df)),
+        "excluded_two_hand_class_rows": unsupported,
+        "classes_selected": wanted,
+    }
 
     df = df[df["n_hands"] >= 1]
     info["with_detected_hand"] = int(len(df))
@@ -98,12 +128,20 @@ def make_pipeline(hidden, alpha, seed: int = SEED) -> Pipeline:
     ])
 
 
-def train(csv_path: Path, classes: list[str], out_dir: Path, seed: int = SEED, verbose: bool = True) -> dict:
-    if not classes or len({c.strip().lower() for c in classes}) != len(classes):
-        raise ValueError("classes must be a non-empty list of unique labels")
-    raw, y, info = load_dataset(csv_path, classes)
+def train(
+    csv_path: Path,
+    classes: list[str] | None,
+    out_dir: Path,
+    seed: int = SEED,
+    verbose: bool = True,
+    *,
+    strict_catalogue: bool = True,
+) -> dict:
+    if classes is not None and (not classes or len({c.strip().casefold() for c in classes}) != len(classes)):
+        raise ValueError("classes must be omitted or be a non-empty list of unique labels")
+    raw, y, info = load_dataset(csv_path, classes, strict_catalogue=strict_catalogue)
     counts = {label: int(np.sum(y == label)) for label in np.unique(y)}
-    too_small = sorted(label for label in classes if counts.get(label.strip().lower(), 0) < 3)
+    too_small = sorted(label for label in np.unique(y) if counts.get(label, 0) < 3)
     if too_small:
         raise ValueError(f"at least 3 valid samples per class are required for stratified train/validation/test splits: {too_small}")
     idx = np.arange(len(y))
@@ -146,6 +184,10 @@ def train(csv_path: Path, classes: list[str], out_dir: Path, seed: int = SEED, v
         "model_version": MODEL_VERSION, "feature_schema_version": FEATURE_SCHEMA_VERSION,
         "trained_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "classes": labels_sorted, "feature_names": feature_names(), "seed": seed,
+        "class_count": len(labels_sorted),
+        "strict_catalogue": strict_catalogue,
+        "catalogue_digest": catalogue_digest() if strict_catalogue else None,
+        "catalogue_class_count": len(asamyuta_names()) if strict_catalogue else None,
         "best_config": {"hidden_layer_sizes": list(best_cfg["hidden_layer_sizes"]), "alpha": best_cfg["alpha"]},
         "split_sizes": {"train": int(len(tr)), "train_with_mirrored": int(len(X_train)),
                         "validation": int(len(va)), "test": int(len(te))},
@@ -181,7 +223,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("--csv", required=True, type=Path)
     ap.add_argument("--out", required=True, type=Path)
-    ap.add_argument("--classes", nargs="+", default=DEFAULT_CLASSES)
+    ap.add_argument("--classes", nargs="+", default=DEFAULT_CLASSES,
+                    help="optional subset of catalogue class names/approved aliases (defaults to all represented single-hand classes)")
     args = ap.parse_args()
     train(args.csv, args.classes, args.out)
 

@@ -120,8 +120,9 @@ def synthetic_csv(path, n_classes=3, per_class=30):
 def bundle(tmp_path_factory):
     d = tmp_path_factory.mktemp("m")
     synthetic_csv(d / "lm.csv")
-    train(d / "lm.csv", ["class0", "class1", "class2"], d / "models", verbose=False)
-    return load_bundle(d / "models" / "mudra_mlp.joblib")
+    train(d / "lm.csv", ["class0", "class1", "class2"], d / "models", verbose=False,
+          strict_catalogue=False)
+    return load_bundle(d / "models" / "mudra_mlp.joblib", allow_non_catalogue=True)
 
 
 def frames_of(cls, n, seed=0):
