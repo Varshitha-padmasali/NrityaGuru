@@ -6,3 +6,27 @@ __pycache__/
 node_modules/
 .next/
 eval_output/
+
+# MediaPipe model binaries
+vision/models/*.task
+
+# Generated computer vision outputs
+vision/output/
+
+# Video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# MediaPipe model binaries
+vision/models/*.task
+
+# Generated computer vision outputs
+vision/output/
+
+# Video files
+*.mp4
+*.mov
+*.avi
+*.mkv
