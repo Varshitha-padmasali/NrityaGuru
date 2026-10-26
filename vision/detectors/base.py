@@ -207,7 +207,9 @@ class MediaPipeHandBackend(BaseHandBackend):
         from mediapipe.tasks.python import vision
 
         self._mp = mp
-        base_options = mp_python.BaseOptions(model_asset_path=str(path))
+        base_options = mp_python.BaseOptions(
+            model_asset_path=str(path), delegate=mp_python.BaseOptions.Delegate.CPU
+        )
         options = vision.HandLandmarkerOptions(
             base_options=base_options,
             running_mode=vision.RunningMode.VIDEO,
@@ -300,7 +302,9 @@ class MediaPipePoseBackend(BasePoseBackend):
         from mediapipe.tasks.python import vision
 
         self._mp = mp
-        base_options = mp_python.BaseOptions(model_asset_path=str(path))
+        base_options = mp_python.BaseOptions(
+            model_asset_path=str(path), delegate=mp_python.BaseOptions.Delegate.CPU
+        )
         options = vision.PoseLandmarkerOptions(
             base_options=base_options,
             running_mode=vision.RunningMode.VIDEO,

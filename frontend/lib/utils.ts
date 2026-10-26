@@ -15,6 +15,11 @@ export function formatProbability(value: number): string {
   return `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%`;
 }
 
+/** Display an uncalibrated classifier score without presenting it as a probability. */
+export function formatModelScore(value: number): string {
+  return Number.isFinite(value) ? value.toFixed(2) : "—";
+}
+
 /** Frame range → "0.7 s – 1.2 s" when fps is known, else "frames 20–36". */
 export function formatFrameRange(start: number | null, end: number | null, fps: number | null): string | null {
   if (start === null || end === null) return null;

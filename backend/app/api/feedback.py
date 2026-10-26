@@ -6,6 +6,7 @@ from app.api.deps import (
     enforce_tutor_rate_limit,
     get_feedback_store,
     get_feedback_workflow,
+    require_development_session_access,
 )
 from app.db.database import get_db
 from app.repositories.feedback_repository import SqlFeedbackStore
@@ -19,7 +20,7 @@ router = APIRouter(prefix="/api", tags=["feedback"])
 @router.post(
     "/feedback/generate",
     response_model=FeedbackResult,
-    dependencies=[Depends(enforce_tutor_rate_limit)],
+    dependencies=[Depends(enforce_tutor_rate_limit), Depends(require_development_session_access)],
 )
 def generate_feedback(
     body: FeedbackRequest,
@@ -31,7 +32,7 @@ def generate_feedback(
     return workflow.run(db, body.session_id, regenerate=body.regenerate)
 
 
-@router.get("/feedback/{session_id}", response_model=FeedbackResult)
+@router.get("/feedback/{session_id}", response_model=FeedbackResult, dependencies=[Depends(require_development_session_access)])
 def get_stored_feedback(
     session_id: str = Path(pattern=SESSION_ID_PATTERN),
     db: Session = Depends(get_db),

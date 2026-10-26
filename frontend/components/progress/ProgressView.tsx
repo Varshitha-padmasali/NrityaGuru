@@ -11,7 +11,7 @@ import { getProgress } from "@/services/progress-service";
 import type { ProgressEntry } from "@/types/progress";
 import { Card } from "@/components/ui/Card";
 import { ButtonLink, buttonClasses } from "@/components/ui/Button";
-import { EmptyState, ErrorState, LoadingState } from "@/components/ui/StatusStates";
+import { EmptyState, ErrorState, LoadingState, Notice } from "@/components/ui/StatusStates";
 import { IconArrowRight, IconChart } from "@/components/ui/Icons";
 import { formatDateTime, formatProbability } from "@/lib/utils";
 import { StatusBadge } from "./StatusBadge";
@@ -19,12 +19,12 @@ import { TrendSparkline } from "./TrendSparkline";
 
 export function ProgressView() {
   const { data, error, loading, reload } = useApiQuery((signal) => getProgress(signal), []);
-  const [referenceFilter, setReferenceFilter] = useState<number | "all">("all");
+  const [referenceFilter, setReferenceFilter] = useState<number | string | "all">("all");
 
   const sessions = useMemo(() => [...(data?.sessions ?? [])].sort((a, b) => b.created_at.localeCompare(a.created_at)), [data]);
 
   const byReference = useMemo(() => {
-    const groups = new Map<number, { name: string; entries: ProgressEntry[] }>();
+    const groups = new Map<number | string, { name: string; entries: ProgressEntry[] }>();
     for (const s of sessions) {
       const g = groups.get(s.reference_id) ?? { name: s.reference_name, entries: [] };
       g.entries.push(s);
@@ -37,12 +37,15 @@ export function ProgressView() {
   if (error) return <ErrorState error={error} title="Couldn't load your practice history" onRetry={reload} />;
   if (sessions.length === 0) {
     return (
-      <EmptyState
-        icon={<IconChart width={32} height={32} />}
-        title="No practice sessions yet"
-        description="Each time you record and submit a practice, it will show up here so you can see how you're progressing."
-        action={<ButtonLink href="/practice">Start practising</ButtonLink>}
-      />
+      <div className="space-y-5">
+        <Notice tone="warning">Development history is shared by everyone using this installation. It is not private user progress.</Notice>
+        <EmptyState
+          icon={<IconChart width={32} height={32} />}
+          title="No practice sessions yet"
+          description="Each time you record and submit a practice, it will show up here so you can see how you're progressing."
+          action={<ButtonLink href="/practice">Start practising</ButtonLink>}
+        />
+      </div>
     );
   }
 
@@ -56,10 +59,11 @@ export function ProgressView() {
     }))
     .filter((g) => g.points.length >= 2);
 
-  const visible = referenceFilter === "all" ? sessions : sessions.filter((s) => s.reference_id === referenceFilter);
+  const visible = referenceFilter === "all" ? sessions : sessions.filter((s) => String(s.reference_id) === String(referenceFilter));
 
   return (
     <div className="space-y-10">
+      <Notice tone="warning">Development history is shared by everyone using this installation. It is not private user progress.</Notice>
       <section aria-labelledby="trends-heading">
         <h2 id="trends-heading" className="mb-1 font-display text-3xl font-semibold text-maroon-dark">
           Trends
@@ -103,7 +107,7 @@ export function ProgressView() {
               <select
                 id="ref-filter"
                 value={referenceFilter}
-                onChange={(e) => setReferenceFilter(e.target.value === "all" ? "all" : Number(e.target.value))}
+                onChange={(e) => setReferenceFilter(e.target.value === "all" ? "all" : e.target.value)}
                 className="h-10 rounded-full border border-line bg-paper px-4 text-sm text-ink focus:border-gold focus:outline-none"
               >
                 <option value="all">All references</option>

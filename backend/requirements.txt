@@ -6,6 +6,14 @@ pydantic-settings>=2.3,<3.0
 # database (Part 2)
 sqlalchemy>=2.0,<3.0
 psycopg[binary]>=3.1,<4.0
+alembic>=1.13,<2.0
+python-multipart>=0.0.9,<1.0
+numpy==1.26.4
+opencv-contrib-python==4.11.0.86
+mediapipe==0.10.21
+scipy==1.14.1
+scikit-learn==1.5.2
+joblib==1.4.2
 
 # Gemini (Part 5). Official Google Gen AI SDK. Python 3.11+ recommended.
 google-genai>=2.3,<3.0

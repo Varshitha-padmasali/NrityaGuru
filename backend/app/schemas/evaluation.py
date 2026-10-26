@@ -54,6 +54,7 @@ class DtwSummary(BaseModel):
     within_threshold: bool | None = None  # decided by the evaluation module, not by us
     reference_sequence_id: str | None = Field(default=None, pattern=REFERENCE_ID_PATTERN)
     feature_schema_version: str | None = Field(default=None, max_length=40)
+    path_length: int | None = Field(default=None, ge=0)
 
 
 class Deviation(BaseModel):
@@ -76,6 +77,7 @@ class LandmarkQuality(BaseModel):
     pose_detection_rate: float | None = Field(default=None, ge=0, le=1)
     frames_total: int | None = Field(default=None, ge=0)
     frames_analysed: int | None = Field(default=None, ge=0)
+    frames_with_landmarks: int | None = Field(default=None, ge=0)
     # Preferred: the evaluation module states whether landmarks were reliable enough.
     reliable: bool | None = None
     notes: list[str] = Field(default_factory=list, max_length=10)
@@ -94,6 +96,7 @@ class EvaluationResult(BaseModel):
     landmark_quality: LandmarkQuality | None = None
     warnings: list[str] = Field(default_factory=list, max_length=20)
     mlp_model_version: str | None = Field(default=None, max_length=60)
+    source_fps: float | None = Field(default=None, gt=0)
     created_at: datetime | None = None
     is_mock: bool = False  # True for test data. Must never be shown as a real evaluation.
 

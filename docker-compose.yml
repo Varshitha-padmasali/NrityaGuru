@@ -1,4 +1,3 @@
-# Local development database only. Change the password for anything beyond your laptop.
 services:
   db:
     image: postgres:16
@@ -15,6 +14,57 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  backend:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql+psycopg://nrityaguru:change_me_local_only@db:5432/nrityaguru
+      CORS_ALLOW_ORIGINS: http://localhost:3000
+      ALLOW_UNVERIFIED_RECORDS: "true"
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.8-flash}
+      REFERENCE_REVIEW_TOKEN: ${REFERENCE_REVIEW_TOKEN:-}
+      REFERENCE_REVIEWER_IDENTITY: ${REFERENCE_REVIEWER_IDENTITY:-}
+      NRITYAGURU_HAND_TASK: /artifacts/hand_landmarker.task
+      NRITYAGURU_MLP_BUNDLE: /artifacts/mudra_mlp.joblib
+      EVALUATION_RUNTIME_VERIFIED: ${EVALUATION_RUNTIME_VERIFIED:-false}
+    volumes:
+      - ${NRITYAGURU_ARTIFACT_DIR:-./artifacts}:/artifacts:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["/bin/sh", "-c", "alembic upgrade head && python -m app.db.seed && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://localhost:8000
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   pgdata:

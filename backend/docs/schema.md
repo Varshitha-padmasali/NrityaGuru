@@ -41,9 +41,10 @@ practice_sessions 1 ──< 1 evaluation_results      (unique per session)
 ```
 | Table | Purpose | Key columns |
 |---|---|---|
-| practice_sessions | one practice attempt against one reference | id (= session_id), mudra_id / movement_id (FKs, exactly one), created_at |
+| practice_sessions | one practice attempt against one reference | id (= session_id), mudra_id / movement_id (FKs, exactly one), status, failure_reason, created_at |
 | evaluation_results | the evaluation module's result | session_id (FK, UNIQUE, ON DELETE CASCADE), schema_version, is_mock, result_json (JSONB on PostgreSQL), created_at |
 | feedback | feedback generated for a session | session_id (FK, ON DELETE CASCADE), mode, evidence_level, fallback_reason, model, is_mock, result_json, created_at; index (session_id, created_at) |
+| reference_sequences | consented recorded feature sequence | target FK, schema/evaluator versions, finite frame matrix, provenance, reviewer identity/timestamp, review status, threshold |
 
 **Why JSON for the two result documents?** Their schemas are versioned and always read whole. They are re-validated with
 Pydantic on every read, so a corrupted or tampered row is rejected rather than trusted. The few fields queries need are real columns.
@@ -64,5 +65,12 @@ Created by Member 2 under the "avoid duplicates" rule, but **who writes `practic
 the evaluation module (or whoever starts a session) should call `session_repository.create_session()` and
 `save_evaluation_result()`. If a teammate already owns a sessions table, keep theirs and change the two foreign keys.
 
-## Creating the new tables
-`python -m app.db.init_db` creates only missing tables, so an existing database gets the three new ones safely.
+## Creating and upgrading the schema
+Run `alembic upgrade head` from `backend/`. Revision 0001 adopts the existing SQLAlchemy schema
+using non-destructive `create_all`; revision 0002 adds practice status and reference-sequence
+storage to installations initialized before migrations. It preserves existing rows. The local
+database was not migrated during this implementation pass.
+
+Reference sequence intake requires `REFERENCE_REVIEW_TOKEN`. Teacher-verified records additionally
+require the reviewer identity to match `REFERENCE_REVIEWER_IDENTITY`. Only verified rows are
+discoverable; candidate rows remain review-only. No reference performance is currently stored.

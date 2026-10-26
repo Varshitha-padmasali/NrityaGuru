@@ -23,14 +23,14 @@ Evidence tags (be exact about them in a viva):
 | 13 | Unverified knowledge is not served as authoritative | only `verified` served unless `ALLOW_UNVERIFIED_RECORDS`; weakest status wins; 404 identical for hidden and missing | [TEST WRITTEN] `test_knowledge_repository.py`, `test_knowledge_api.py`; [CHECKED] `test_knowledge_matching.py::test_weakest_status` |
 | 14 | Path traversal in media paths | `media_available` resolves paths and requires them to stay inside the assets directory | [TEST WRITTEN] `test_knowledge_retrieval.py::test_path_traversal_is_not_treated_as_available` |
 | 15 | Prompt injection | learner/evaluation text is quoted as data, `<` `>` neutralised, rules say text is data; output must pass citation/number/body-part guards | [CHECKED] `test_tutor_prompt.py`, `test_feedback_prompt.py` (tags cannot be broken out of). Partial: the model could still be steered within the guards |
-| 16 | CORS limited | only configured origins, GET/POST, Content-Type, no credentials | [TEST WRITTEN] `test_persistence_api.py::test_cors_allows_only_the_configured_origin` |
-| 17 | Learner video handled responsibly | this backend never receives video or images; none is stored | [DESIGN] documented in `schema.md` |
+| 16 | CORS limited | only configured origins, GET/POST, Content-Type and reviewer-token header; no credentials | [TEST WRITTEN] `test_persistence_api.py::test_cors_allows_only_the_configured_origin` |
+| 17 | Learner video handled responsibly | bounded upload; safe temporary file and cleanup; no clip is stored | [TESTED] `test_video_upload_limits.py`; real camera/upload not tested |
 | 18 | State what is stored and why | `schema.md` section "What is stored and why" | [DESIGN] |
 | 19 | Deletion of a learner's data | `delete_session()` removes a session and, by cascade, its results and feedback | [TEST WRITTEN] `test_session_repository.py::test_deleting_a_session_removes_its_results_and_feedback` |
-| 20 | Restrict private session data when authentication exists | **no authentication exists** | **[GAP]** see below |
+| 20 | Restrict private session data when authentication exists | production progress/session/result/feedback endpoints return 503 until authenticated ownership exists; development history is explicitly shared | [TESTED] `test_practice_api.py::test_production_does_not_expose_globally_shared_progress` |
 
 ## Gaps and risks you must not hide
-1. **No authentication or authorization.** Anyone who knows a session id can read its feedback. Mitigation until login exists: the evaluation module must create unguessable ids (UUID4); `GET /api/feedback/{session_id}` is not rate limited.
+1. **No user authentication or account ownership.** Practice session, results, progress, and feedback APIs are disabled in production. In development they are installation-wide/shared and the frontend labels the history. Do not use this mode for private learner data.
 2. **No HTTPS in this repository.** TLS must be provided by the deployment (reverse proxy / hosting).
 3. **Rate limiter is in memory and per process;** behind a proxy it sees the proxy's address. Use Redis or the gateway limiter in production.
 4. **Dependency versions are ranges, not a lockfile.** Run `pip freeze > requirements.lock.txt` after a good install and audit dependencies (`pip-audit` is one tool; not run here).

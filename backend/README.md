@@ -4,14 +4,18 @@ The knowledge and AI layer of NrityaGuru, an AI-assisted Bharatanatyam learning 
 PostgreSQL, concept extraction, retrieval, a Gemini RAG tutor, and evidence-grounded corrective feedback for results produced by the
 evaluation module (OpenCV, MediaPipe, MLP, DTW).
 
-The frontend, vision pipeline, and MLP/DTW code live in sibling directories. The backend reads
-trusted evaluation results from PostgreSQL; a complete capture-to-storage runtime path and
-production model assets are not present in this checkout.
+The frontend, vision pipeline, and MLP/DTW code live in sibling directories. The backend can
+persist sessions, safely bound and decode video uploads, and retrieve stored results. Live
+landmark inference, trained model assets, and genuine reference sequences are not available in
+this checkout, so evaluation returns an explicit unavailable response.
 
 **Honest status:** the knowledge seed contains 52 source-cited names/categories, not 52 fully
 verified gesture descriptions. The local Kaggle archive scan found 50 folders and 28,431 readable
 images mapping to 48 canonical IDs; a compatible recognition model is not currently loaded. The
-Gemini code has not been run against the real API. Read
+Gemini code has not been run against the real API. Practice reference discovery currently returns
+an empty list because this checkout has neither a validated reference sequence nor a trained
+classifier. Progress reads persisted session/result/feedback rows; authentication is not present.
+Read
 `docs/implementation_status.md` and `docs/mudra_catalogue.md`.
 
 ## How it fits together
@@ -24,7 +28,7 @@ Evaluation module (separate) --writes--> PostgreSQL (practice_sessions, evaluati
 Details: `docs/architecture.md`.
 
 ## Requirements
-- Python 3.11 or newer recommended (3.10 minimum)
+- Python 3.12 recommended for the backend and MediaPipe ecosystem
 - Docker (for the local PostgreSQL) or your own PostgreSQL
 - Optional: a Gemini API key from https://aistudio.google.com/apikey (without one, the tutor and feedback return the retrieved/evidence-only answer)
 
@@ -36,7 +40,7 @@ cd backend
 python3 -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt              # 2. dependencies (version ranges; run `pip freeze > requirements.lock.txt` to record exact versions)
 cp .env.example .env                         # 3. settings (Windows: copy .env.example .env). Put your real key only in .env
-python -m app.db.init_db                     # 4. create the tables (safe to repeat; only creates missing ones)
+alembic upgrade head                         # 4. versioned, data-preserving schema setup/upgrade
 python -m app.db.seed                        # 5. load the validated seed data (safe to repeat)
 python -m scripts.smoke_gemini               # 6. optional: checks your key, model id and SDK with one tiny request
 uvicorn app.main:app --reload                # 7. run the API at http://127.0.0.1:8000 (interactive docs at /docs)
@@ -63,8 +67,12 @@ The seed mudras are `source_cited`, not `verified`, so they are hidden unless `A
 | TUTOR_RATE_LIMIT_PER_MINUTE | 20 | per client IP, shared by tutor and feedback endpoints |
 | DATABASE_URL | unset | secret; e.g. postgresql+psycopg://user:password@localhost:5432/nrityaguru |
 | ALLOW_UNVERIFIED_RECORDS | false (example file: true) | development only: let callers see source_cited/unverified records, clearly labelled |
-| USE_MOCK_EVALUATION | false (example file: true) | development only: serve five MOCK evaluation sessions until the real module exists |
+| USE_MOCK_EVALUATION | false | development only: serve clearly labelled feedback test fixtures |
 | CORS_ALLOW_ORIGINS | http://localhost:3000 | browser origins allowed to call the API, comma separated |
+| REFERENCE_REVIEW_TOKEN | unset | server-only credential required for sequence intake |
+| REFERENCE_REVIEWER_IDENTITY | unset | configured reviewer identity; must match teacher-verified intake metadata |
+| NRITYAGURU_HAND_TASK | unset | path to compatible MediaPipe hand task asset |
+| NRITYAGURU_MLP_BUNDLE | unset | path to locally trained, catalogue-bound MLP bundle |
 For production: `ALLOW_UNVERIFIED_RECORDS=false`, `USE_MOCK_EVALUATION=false`, a strong database password, your real frontend origin.
 
 ## Running the tests
@@ -78,7 +86,9 @@ Expected summary: **476 passed, 1 deselected** with `google-genai` installed; **
 (the whole SDK test file is skipped as one module). If your numbers differ, see `docs/implementation_status.md`.
 
 ## API
-Nine endpoints, listed in `docs/api_reference.md`.
+The API includes health/readiness, knowledge catalogue and retrieval, tutor, feedback, practice
+reference discovery, and progress routes; webcam session/upload/inference routes are not
+implemented. See `docs/api_reference.md` and the audit at `docs/project_audit.md`.
 
 ## Project layout
 ```
@@ -192,5 +202,6 @@ tests/   (one test_*.py per area, plus conftest.py and factories.py)
 | `auth_or_model_error` | wrong key or model id: run `python -m scripts.smoke_gemini`; try `GEMINI_MODEL=gemini-3.5-flash-lite` |
 | `rate_limited` / HTTP 429 | quota or per-IP limit reached: wait, or raise `TUTOR_RATE_LIMIT_PER_MINUTE` |
 | `store_unavailable` (503) on feedback | no evaluation integration yet: set `USE_MOCK_EVALUATION=true` for the mock sessions |
+| practice reference list is empty | no trained classifier and validated reference sequence are installed; dataset images alone are not performance references |
 | browser CORS error | add the frontend URL to `CORS_ALLOW_ORIGINS` and restart |
 Windows: use `copy` instead of `cp`, `.venv\Scripts\Activate.ps1` to activate, and run the same `python -m ...` commands.

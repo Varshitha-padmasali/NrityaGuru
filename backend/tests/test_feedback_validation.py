@@ -17,10 +17,10 @@ def _items(sid="mock-session-match"):
 
 
 def _exp(summary="This is MOCK test data.", obs=(), sug=()):
-    return FeedbackExplanation(
+    return FeedbackExplanation.model_construct(
         overall_summary=summary,
-        observations=[Observation(text=t, evidence_ids=ids) for t, ids in obs],
-        suggestions=[Suggestion(text=t, evidence_ids=ids) for t, ids in sug],
+        observations=[Observation.model_construct(text=t, evidence_ids=ids) for t, ids in obs],
+        suggestions=[Suggestion.model_construct(text=t, evidence_ids=ids) for t, ids in sug],
     )
 
 

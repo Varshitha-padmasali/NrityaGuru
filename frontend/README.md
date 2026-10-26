@@ -142,11 +142,13 @@ or evaluation results — the AI panels show their own retry.
 | Evaluation polling | Implemented, unit-tested |
 | Results page + feedback | Implemented, end-to-end checked (mock API) |
 | Progress page + trends | Implemented, visually checked (mock) |
-| Integration with the real FastAPI backend | **Pending — backend endpoints not built yet** |
+| Knowledge catalogue, retrieval and tutor integration with FastAPI | Implemented; HTTP knowledge flow was verified against the local SQLite-backed API; real Gemini remains untested |
+| Practice reference discovery and progress API | Integrated; reference list is intentionally empty until a trained model and validated sequence exist; progress reads persisted DB records |
+| Webcam upload with the real FastAPI backend | Session/upload/results APIs are integrated; bounded decoding is implemented, but evaluation returns unavailable without the trained model, task, reviewed reference and verified runtime |
 | Testing on Safari / real webcams / phones | **Pending — needs manual testing** |
 
 ## Known limitations
 - The contract in `docs/api-contract.md` is a proposal; field names must be confirmed with the backend.
-- No authentication yet; progress is global for the single local user.
-- Safari records MP4; the backend must accept both WebM and MP4.
+- No authentication yet; development progress is installation-wide and visibly labelled shared. Production progress/session/result endpoints are disabled.
+- Safari can record MP4/QuickTime; backend upload support includes MP4, WebM, and QuickTime containers when required dependencies are installed.
 - The live preview is mirrored for comfort; the uploaded recording is not mirrored.

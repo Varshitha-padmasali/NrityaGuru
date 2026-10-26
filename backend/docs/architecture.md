@@ -69,4 +69,4 @@ Services receive their dependencies (retrieval function, Gemini generator, store
 | guards reject suspicious AI text and fall back | trust the model | a made-up error about a learner's practice is worse than plainer wording |
 | JSON(B) for evaluation/feedback documents | many normalized tables | versioned contracts read whole; re-validated on every read |
 | in-memory rate limiter | Redis / gateway limiter | enough for a project; documented limits |
-| `create_all` for tables | Alembic migrations | fine while the schema is young; migrations once it changes often |
+| Alembic baseline + additive migration | ad hoc `create_all` on every startup | preserves the existing schema while giving upgrades explicit version history |

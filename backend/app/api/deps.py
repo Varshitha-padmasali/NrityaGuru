@@ -21,6 +21,18 @@ def check_unverified_allowed(include_unverified: bool, settings: Settings) -> No
         )
 
 
+def require_development_session_access(settings: Settings = Depends(get_settings)) -> None:
+    """Until authenticated owners exist, never expose installation-wide session data in prod."""
+    if settings.app_env == "production":
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "code": "user_auth_not_configured",
+                "message": "Private practice sessions are unavailable until authenticated ownership is configured.",
+            },
+        )
+
+
 @lru_cache
 def _cached_tutor_service() -> TutorService:
     return build_tutor_service(get_settings())
