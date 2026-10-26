@@ -108,7 +108,7 @@ def synthetic_csv(path, n_classes=3, per_class=30):
         for k in range(per_class):
             pts = (base + rng.normal(scale=1.5, size=base.shape)) * rng.uniform(0.8, 1.2) + rng.uniform(-50, 50, 3)
             row = dict.fromkeys(HEADER, "")
-            row.update(label=f"class{c}", file=f"{c}_{k}.png", md5=f"md5_{c}_{k}", width=100, height=100,
+            row.update(label=f"class{c}", file=f"{c}_{k}.png", md5=f"md5_{c}_{k}", phash=f"{c}_{k:016d}", width=100, height=100,
                        padded=0, n_hands=1, h0_side="Right", h0_score=0.9)
             for i in range(21):
                 row[f"h0_x{i}"], row[f"h0_y{i}"], row[f"h0_z{i}"] = pts[i]

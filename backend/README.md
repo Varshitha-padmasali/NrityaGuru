@@ -9,8 +9,9 @@ trusted evaluation results from PostgreSQL; a complete capture-to-storage runtim
 production model assets are not present in this checkout.
 
 **Honest status:** the knowledge seed contains 52 source-cited names/categories, not 52 fully
-verified gesture descriptions. The Kaggle image dataset is absent, its license and actual classes
-are unverified, and the Gemini code has not been run against the real API. Read
+verified gesture descriptions. The local Kaggle archive scan found 50 folders and 28,431 readable
+images mapping to 48 canonical IDs; a compatible recognition model is not currently loaded. The
+Gemini code has not been run against the real API. Read
 `docs/implementation_status.md` and `docs/mudra_catalogue.md`.
 
 ## How it fits together

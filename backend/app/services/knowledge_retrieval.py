@@ -9,6 +9,8 @@ Decision: PostgreSQL full-text search is NOT used yet. The curated knowledge bas
 SQLite test database. Revisit when the knowledge base is large or free-text search is needed.
 """
 from dataclasses import dataclass, field
+import json
+from functools import lru_cache
 from pathlib import Path
 
 from sqlalchemy.orm import Session
@@ -40,6 +42,32 @@ MULTIPLE_NOTE = (
     "Several references match this concept. They are alternatives, "
     "not a single correct answer."
 )
+DATASET_MAPPING_PATH = Path(__file__).resolve().parents[2] / "data" / "seed" / "dataset_mapping.json"
+
+
+@lru_cache(maxsize=1)
+def dataset_image_counts() -> dict[str, int]:
+    """Counts from the generated, checked-in folder crosswalk; images stay outside the repo."""
+    try:
+        rows = json.loads(DATASET_MAPPING_PATH.read_text(encoding="utf-8"))["class_folders"]
+    except (OSError, KeyError, json.JSONDecodeError):
+        return {}
+    counts: dict[str, int] = {}
+    for row in rows:
+        counts[row["mudra_id"]] = counts.get(row["mudra_id"], 0) + int(row.get("image_count", 0))
+    return counts
+
+
+@lru_cache(maxsize=1)
+def dataset_classes_by_mudra() -> dict[str, list[dict]]:
+    try:
+        rows = json.loads(DATASET_MAPPING_PATH.read_text(encoding="utf-8"))["class_folders"]
+    except (OSError, KeyError, json.JSONDecodeError):
+        return {}
+    result: dict[str, list[dict]] = {}
+    for row in rows:
+        result.setdefault(row["mudra_id"], []).append(row)
+    return result
 
 
 # ---------- serialization helpers ----------
@@ -74,6 +102,8 @@ def source_to_out(source: Source | None) -> SourceOut | None:
 
 def mudra_to_out(m: Mudra, assets_dir: Path = DEFAULT_ASSETS_DIR) -> MudraOut:
     available = media_available(m.reference_image_path, assets_dir)
+    image_count = dataset_image_counts().get(m.id, 0)
+    dataset_classes = sorted(dataset_classes_by_mudra().get(m.id, []), key=lambda row: row["dataset_folder"])
     return MudraOut(
         id=m.id,
         name=m.name,
@@ -84,6 +114,17 @@ def mudra_to_out(m: Mudra, assets_dir: Path = DEFAULT_ASSETS_DIR) -> MudraOut:
         description=m.description,
         practice_instructions=m.practice_instructions,
         reference_image_path=m.reference_image_path if available else None,
+        dataset_image_count=image_count,
+        dataset_images_available=image_count > 0,
+        dataset_classes=[{
+            "dataset_folder": row["dataset_folder"],
+            "original_label": row["original_label"],
+            "variant_id": row.get("variant_id"),
+            "image_count": int(row.get("image_count", 0)),
+            "mapping_status": row["mapping_status"],
+        } for row in dataset_classes],
+        # The repository has a training pipeline but no loaded inference model/API artifact.
+        recognition_supported=False,
         source=source_to_out(m.source),
         verification_status=m.verification_status,
         verification_notes=m.verification_notes,

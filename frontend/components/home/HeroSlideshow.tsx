@@ -19,6 +19,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { HERO_MUDRAS } from "@/lib/hero-mudras";
+import { listMudras } from "@/services/knowledge-service";
+import { useApiQuery } from "@/hooks/useApiQuery";
 import { getPhoto } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 import { Mandala } from "@/components/brand/Mandala";
@@ -57,10 +59,12 @@ export function HeroSlideshow() {
   const [userPaused, setUserPaused] = useState(false);
   const [hovering, setHovering] = useState(false);
   const reducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false);
+  const { data: catalogue } = useApiQuery((signal) => listMudras(signal), []);
 
   const paused = userPaused || hovering || reducedMotion;
-  const mudra = HERO_MUDRAS[index];
-  const current = stageImage(mudra);
+  const visual = HERO_MUDRAS[index];
+  const mudra = catalogue?.find((record) => record.id === visual.id);
+  const current = stageImage(visual);
 
   const goTo = useCallback((i: number) => {
     setIndex((i + HERO_MUDRAS.length) % HERO_MUDRAS.length);
@@ -100,7 +104,7 @@ export function HeroSlideshow() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0406] via-transparent to-[#0f0406]/50" />
         <div
           className="absolute inset-0 mix-blend-soft-light"
-          style={{ background: `radial-gradient(ellipse 40% 55% at 72% 40%, rgb(${mudra.accent} / 0.5), transparent 70%)`, transition: "background 1.2s" }}
+          style={{ background: `radial-gradient(ellipse 40% 55% at 72% 40%, rgb(${visual.accent} / 0.5), transparent 70%)`, transition: "background 1.2s" }}
         />
         {/* drifting marigold petals */}
         {!reducedMotion
@@ -137,13 +141,11 @@ export function HeroSlideshow() {
           {/* Caption for the current mudra */}
           <div key={`cap-${index}-${cycle}`} className="rise mt-8 border-l-2 border-gold-bright/70 pl-5" aria-live={paused ? "polite" : "off"}>
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-bright/90">
-              Mudra {String(index + 1).padStart(2, "0")} of {String(HERO_MUDRAS.length).padStart(2, "0")} · {mudra.english}
+              Featured image {String(index + 1).padStart(2, "0")} of {String(HERO_MUDRAS.length).padStart(2, "0")} · {mudra?.category ?? "Bharatanatyam hasta"}
             </p>
-            <p className="mt-1 font-display text-4xl italic text-gold-soft sm:text-5xl">{mudra.name}</p>
-            <p className="mt-2 max-w-md text-base leading-relaxed text-ivory/80">{mudra.description}</p>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-ivory/65">
-              <span className="font-semibold text-gold-bright/90">Used for: </span>
-              {mudra.usedFor}
+            <p className="mt-1 font-display text-4xl italic text-gold-soft sm:text-5xl">{mudra?.name ?? "Explore the mudra library"}</p>
+            <p className="mt-2 max-w-md text-base leading-relaxed text-ivory/80">
+              {mudra?.meaning ?? "The knowledge base lists this gesture name; verified meanings and usage are shown when a cited record supplies them."}
             </p>
           </div>
 
@@ -168,7 +170,7 @@ export function HeroSlideshow() {
           <Mandala spin className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[135%] w-[135%] -translate-x-1/2 -translate-y-1/2 text-gold-bright/35" />
           <div
             className="pointer-events-none absolute -inset-6 -z-10 animate-[ng-glow_5s_ease-in-out_infinite] rounded-[999px]"
-            style={{ background: `radial-gradient(circle, rgb(${mudra.accent} / 0.4), transparent 65%)` }}
+            style={{ background: `radial-gradient(circle, rgb(${visual.accent} / 0.4), transparent 65%)` }}
             aria-hidden="true"
           />
           {/* gold outer ring */}
@@ -183,7 +185,7 @@ export function HeroSlideshow() {
                       key={m.id}
                       role="group"
                       aria-roledescription="slide"
-                      aria-label={`${i + 1} of ${HERO_MUDRAS.length}: ${m.name}`}
+                      aria-label={`${i + 1} of ${HERO_MUDRAS.length}: ${catalogue?.find((record) => record.id === m.id)?.name ?? "Bharatanatyam hand gesture"}`}
                       aria-hidden={!active}
                       className={cn("absolute inset-0 transition-opacity duration-[1600ms] ease-out", active ? "opacity-100" : "opacity-0")}
                     >
@@ -194,7 +196,7 @@ export function HeroSlideshow() {
                         {/* eslint-disable-next-line @next/next/no-img-element -- local static photo */}
                         <img
                           src={img.src}
-                          alt={img.ai ? `AI-generated image of a Bharatanatyam dancer performing the ${m.name} mudra` : "A Bharatanatyam dancer in traditional costume performing on stage"}
+                          alt={img.ai ? `AI-generated image of a Bharatanatyam dancer; the catalogue label is ${catalogue?.find((record) => record.id === m.id)?.name ?? "not available"}` : "A Bharatanatyam dancer in traditional costume performing on stage"}
                           width={1000}
                           height={1500}
                           loading={i < 2 ? "eager" : "lazy"}
@@ -207,24 +209,24 @@ export function HeroSlideshow() {
                   );
                 })}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" aria-hidden="true" />
-                <p className="pointer-events-none absolute inset-x-0 bottom-10 text-center font-display text-3xl italic text-gold-soft drop-shadow-lg">{mudra.name}</p>
+                <p className="pointer-events-none absolute inset-x-0 bottom-10 text-center font-display text-3xl italic text-gold-soft drop-shadow-lg">{mudra?.name ?? "NrityaGuru"}</p>
                 <p className="absolute inset-x-0 bottom-2 mx-auto w-fit max-w-[92%] truncate rounded-full bg-black/50 px-2 py-0.5 text-[10px] font-medium text-white/90 backdrop-blur-sm">
                   {current.ai ? (
                     "AI-generated with Gemini · "
                   ) : (
                     <>
                       Photo:{" "}
-                      <a href={mudra.dancer.page} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">
-                        {mudra.dancer.artist}
+                      <a href={visual.dancer.page} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">
+                        {visual.dancer.artist}
                       </a>
                       {" · "}
                     </>
                   )}
                   Hand shape:{" "}
-                  <a href={mudra.page} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">
-                    {mudra.artist}
+                  <a href={visual.page} target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline">
+                    {visual.artist}
                   </a>{" "}
-                  / Wikimedia Commons · {mudra.license}
+                  / Wikimedia Commons · {visual.license}
                 </p>
               </div>
             </div>
@@ -234,9 +236,9 @@ export function HeroSlideshow() {
             <div className="h-32 w-32 overflow-hidden rounded-full border-[3px] border-gold-bright bg-[#2a1012] shadow-[0_12px_40px_-8px_rgb(0_0_0/0.8)] ring-4 ring-[#0f0406]/70 sm:h-40 sm:w-40">
               {/* eslint-disable-next-line @next/next/no-img-element -- local static photo */}
               <img
-                key={mudra.id}
-                src={mudra.src}
-                alt={`Reference photo of the ${mudra.name} hand shape`}
+                key={visual.id}
+                src={visual.src}
+                alt={`Reference photo accompanying ${mudra?.name ?? "a Bharatanatyam hasta"}`}
                 width={128}
                 height={128}
                 className="h-full w-full animate-[ng-rise_0.8s_ease-out_both] object-cover"
@@ -260,13 +262,14 @@ export function HeroSlideshow() {
             {HERO_MUDRAS.map((m, i) => {
               const active = i === index;
               const done = i < index;
+              const record = catalogue?.find((item) => item.id === m.id);
               return (
                 <li key={m.id}>
                   <button
                     type="button"
                     onClick={() => goTo(i)}
                     aria-current={active ? "step" : undefined}
-                    aria-label={`Show mudra ${i + 1}: ${m.name}`}
+                    aria-label={`Show hand gesture ${i + 1}: ${record?.name ?? "name unavailable"}`}
                     className="group block w-full text-left"
                   >
                     <span
@@ -284,7 +287,7 @@ export function HeroSlideshow() {
                         active ? "text-gold-bright" : "text-ivory/45 group-hover:text-ivory/80",
                       )}
                     >
-                      {m.name}
+                      {record?.name ?? `Gesture ${i + 1}`}
                     </span>
                     <span className="block h-[3px] overflow-hidden rounded-full bg-ivory/20">
                       <span

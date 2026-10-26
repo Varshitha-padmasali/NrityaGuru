@@ -37,12 +37,11 @@ export function LearnWorkspace() {
   useEffect(() => () => controllerRef.current?.abort(), []);
 
   const runExplain = async (query: string, retrieved: RetrieveResponse, signal: AbortSignal) => {
-    const mudraIds = [...new Set(retrieved.concepts.flatMap((c) => c.matches.map((m) => m.id)))];
-    if (mudraIds.length === 0) return;
+    void retrieved; // The backend RAG endpoint retrieves and grounds its own references.
     setExplaining(true);
     setExplainError(null);
     try {
-      setExplanation(await explainConcepts(query, mudraIds, signal));
+      setExplanation(await explainConcepts(query, signal));
     } catch (err) {
       if (!(err instanceof ApiError && err.kind === "aborted")) setExplainError(err);
     } finally {

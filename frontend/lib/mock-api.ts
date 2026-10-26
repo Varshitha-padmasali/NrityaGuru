@@ -51,32 +51,50 @@ function mockResult(session: MockSession) {
 
 export async function handleMockRequest(method: string, path: string, body: unknown): Promise<unknown> {
   await new Promise((r) => setTimeout(r, 300));
+  const pathWithoutQuery = path.split("?", 1)[0];
 
   if (path === endpoints.health()) return { status: "ok", db: "ok", model_loaded: false };
-  if (path === endpoints.mudras()) return mudras;
+  if (pathWithoutQuery === endpoints.mudras()) return [];
 
-  const mudraMatch = path.match(/^\/api\/mudras\/(\d+)$/);
+  const mudraMatch = pathWithoutQuery.match(/^\/api\/mudras\/(.+)$/);
   if (mudraMatch) {
-    const m = mudras.find((x) => x.id === Number(mudraMatch[1]));
-    if (!m) throw new ApiError("not_found", "not found", 404, "Mudra not found");
-    return { ...m, alt_names: [], usage: PLACEHOLDER, instructions: PLACEHOLDER, source: "Mock data", verification_status: "unverified", practice_reference_id: m.id === 1 ? 101 : null };
+    throw new ApiError("not_found", "not found", 404, "The mock API has no knowledge catalogue. Connect the backend to view mudra records.");
   }
 
   if (path === endpoints.retrieve()) {
     const text = String((body as { text?: string })?.text ?? "");
     const words = text.split(/\W+/).filter((w) => w.length > 3).slice(0, 4);
     return {
-      query: text,
+      original_text: text,
+      include_unverified: false,
+      include_keyword_matches: false,
+      supported_count: 0,
+      unsupported_count: words.length,
+      warnings: ["Mock mode has no knowledge catalogue."],
+      disclaimer: "Mock response; connect the backend for sourced knowledge.",
       concepts: words.map((w, i) => ({
-        concept: w.toLowerCase(),
-        supported: i % 3 !== 2,
-        matches: i % 3 === 2 ? [] : mudras.slice(0, i % 2 === 0 ? 1 : 2).map((m) => ({ ...m, rationale: PLACEHOLDER, source: "Mock data" })),
+        concept: { text: w.toLowerCase(), concept_type: "object" },
+        status: "unsupported",
+        references: [],
+        contains_unverified: false,
+        note: "Mock mode has no knowledge catalogue.",
       })),
     };
   }
 
   if (path === endpoints.explain()) {
-    return { explanation: "[Mock] The AI tutor explanation from the backend will appear here.", used_mudra_ids: [1], unsupported_concepts: [], model_name: "mock" };
+    return {
+      original_text: String((body as { text?: string })?.text ?? ""),
+      tutor: {
+        mode: "knowledge_only",
+        explanation: { summary: "Mock mode has no knowledge catalogue to explain.", concepts: [], suggestions: [], alternatives: [], source_ids: [], limitations: ["Connect the backend for sourced explanations."] },
+        model: null,
+        fallback_reason: "no_references",
+        notice: "Mock response; no traditional meanings were supplied.",
+      },
+      retrieval: { concepts: [] },
+      disclaimer: "Mock response; connect the backend for sourced knowledge.",
+    };
   }
 
   if (path === endpoints.movements()) return references;

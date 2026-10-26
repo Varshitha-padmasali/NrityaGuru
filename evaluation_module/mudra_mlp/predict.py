@@ -10,10 +10,10 @@ import joblib
 import numpy as np
 
 if __package__ and __package__.startswith("evaluation_module."):
-    from .catalogue import catalogue_digest
+    from .catalogue import canonical_record, catalogue_digest, dataset_mapping_digest
     from .features import FEATURE_SCHEMA_VERSION, FeatureError, hand_features
 else:
-    from mudra_mlp.catalogue import catalogue_digest
+    from mudra_mlp.catalogue import canonical_record, catalogue_digest, dataset_mapping_digest
     from mudra_mlp.features import FEATURE_SCHEMA_VERSION, FeatureError, hand_features
 
 
@@ -32,23 +32,36 @@ def load_bundle(path: Path | str, *, allow_non_catalogue: bool = False) -> dict:
             raise ValueError("model labels are not bound to the canonical mudra catalogue")
     elif metadata.get("catalogue_digest") != catalogue_digest():
         raise ValueError("model was trained against a different mudra catalogue; retrain it before inference")
+    elif metadata.get("dataset_mapping_digest") != dataset_mapping_digest():
+        raise ValueError("model was trained against a different dataset-folder mapping; retrain it before inference")
     return bundle
 
 
-def predict_hand(bundle: dict, coords, top_k: int = 3) -> dict:
+def predict_hand(bundle: dict, coords, top_k: int = 3, *, expected_label: str | None = None) -> dict:
     try:
         x = hand_features(coords).reshape(1, -1)
     except FeatureError as exc:
         return {"status": "invalid_input", "message": str(exc)}
     pipe = bundle["pipeline"]
+    classes = [str(label) for label in pipe.classes_]
+    if expected_label is not None:
+        record = canonical_record(expected_label) if bundle["metadata"].get("strict_catalogue") else None
+        expected = record["name"] if record else expected_label
+        if expected not in classes:
+            return {"status": "class_unavailable", "requested_label": expected_label,
+                    "available_labels": classes, "message": "This mudra is not supported by the loaded model."}
     proba = pipe.predict_proba(x)[0]
     order = np.argsort(proba)[::-1]
-    classes = pipe.classes_
+    confidence = float(proba[order[0]])
+    threshold = float(bundle["metadata"].get("low_confidence_raw_score_threshold", 0.5))
+    low_confidence = confidence < threshold
     return {
-        "status": "success",
-        "predicted_label": str(classes[order[0]]),
-        "confidence": float(proba[order[0]]),
-        "top": [{"label": str(classes[i]), "score": float(proba[i])} for i in order[:top_k]],
+        "status": "low_confidence" if low_confidence else "success",
+        "predicted_label": None if low_confidence else classes[order[0]],
+        "candidate_label": classes[order[0]],
+        "confidence": confidence,
+        "top": [{"label": classes[i], "score": float(proba[i])} for i in order[:top_k]],
         "model_version": bundle["metadata"]["model_version"],
-        "note": "confidence is a raw model score, not a calibrated probability",
+        "confidence_threshold": threshold,
+        "note": "confidence is a raw model score, not a calibrated probability; low-confidence results do not return a mudra label",
     }

@@ -1,5 +1,5 @@
 /**
- * The eight single-hand mudras (asamyuta hastas) shown in the home-page hero.
+ * Eight attributed hand-shape photographs used as home-page visuals.
  *
  * Both image sets come from Wikimedia Commons and are credited on the page as
  * their licences require:
@@ -7,10 +7,8 @@
  *                             Hasta" video lesson by Kalavenue (Arts venue), CC BY 3.0
  *   - public/images/dancers/  stage photographs by Suyash Dwivedi, CC BY-SA 4.0
  *
- * The short descriptions summarise the traditional Abhinaya Darpana
- * descriptions for a decorative hero. They are NOT the curated knowledge base:
- * the Mudras and Learn pages (backed by the API) remain the source of truth,
- * and a teacher should confirm fine hand details.
+ * The catalogue name and its cited knowledge are loaded from the backend at runtime.
+ * This file contains visual asset metadata only; it is not a second mudra catalogue.
  */
 import type { PhotoKey } from "./photos";
 
@@ -25,12 +23,6 @@ export interface HeroMudra {
   aiPosition?: string;
   /** "r g b" tint for the stage glow, matched to the costume colour in the prompt. */
   accent: string;
-  name: string;
-  /** Meaning of the Sanskrit name. */
-  english: string;
-  /** How the hand is held. */
-  description: string;
-  usedFor: string;
   /** Close-up of the hand shape; the video names each hasta, so it is a labelled reference. */
   src: string;
   /** Commons description page (source + licence) of the hand photo. */
@@ -60,13 +52,9 @@ const stage = (n: string, position = "50% 30%") => ({
 
 export const HERO_MUDRAS: HeroMudra[] = [
   {
-    id: "pataka",
+    id: "mudra_pataka",
     accent: "70 120 255",
     slot: "mudra1",
-    name: "Pataka",
-    english: "The flag",
-    description: "All four fingers held straight and together, the thumb bent in.",
-    usedFor: "clouds, a forest, a river, a blessing, “no”.",
     src: "/images/hands/pataka.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -74,14 +62,10 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("02", "50% 30%"),
   },
   {
-    id: "tripataka",
+    id: "mudra_tripataka",
     aiPosition: "30% 30%",
     accent: "255 90 170",
     slot: "mudra2",
-    name: "Tripataka",
-    english: "The three-part flag",
-    description: "Like Pataka, but the ring finger is bent down.",
-    usedFor: "a crown, a tree, a flame, a lamp.",
     src: "/images/hands/tripataka.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -89,13 +73,9 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("04", "50% 30%"),
   },
   {
-    id: "mushti",
+    id: "mudra_mushti",
     accent: "220 50 50",
     slot: "mudra3",
-    name: "Mushti",
-    english: "The fist",
-    description: "Fingers curled into the palm, the thumb resting over them.",
-    usedFor: "steadiness, holding something firmly, wrestling.",
     src: "/images/hands/mushti.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -103,14 +83,10 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("07", "50% 30%"),
   },
   {
-    id: "kapittha",
+    id: "mudra_kapitha",
     aiPosition: "25% 30%",
     accent: "40 190 160",
     slot: "mudra4",
-    name: "Kapittha",
-    english: "The wood-apple",
-    description: "Fingers curled, the index finger pressed down over the thumb.",
-    usedFor: "holding cymbals or a flower, milking, Lakshmi and Saraswati.",
     src: "/images/hands/kapittha.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -118,14 +94,10 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("09", "50% 30%"),
   },
   {
-    id: "alapadma",
+    id: "mudra_allapadma",
     accent: "255 170 200",
     aiPosition: "22% 35%",
     slot: "mudra5",
-    name: "Alapadma",
-    english: "The fully bloomed lotus",
-    description: "All fingers spread wide and gently curved outward.",
-    usedFor: "a lotus, the full moon, beauty, a round pot.",
     src: "/images/hands/alapadma.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -133,13 +105,9 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("10", "50% 30%"),
   },
   {
-    id: "hamsasya",
+    id: "mudra_hamsasya",
     accent: "235 235 255",
     slot: "mudra6",
-    name: "Hamsasya",
-    english: "The swan’s beak",
-    description: "Thumb and index finger tips touch; the other three fingers stay extended.",
-    usedFor: "pearls, painting, tying a thread, auspiciousness.",
     src: "/images/hands/hamsasya.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -147,14 +115,10 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("05", "42% 50%"),
   },
   {
-    id: "mayura",
+    id: "mudra_mayura",
     aiPosition: "50% 20%",
     accent: "110 90 255",
     slot: "mudra7",
-    name: "Mayura",
-    english: "The peacock",
-    description: "The thumb touches the ring finger; the other fingers stay extended.",
-    usedFor: "a peacock, a creeper, applying a tilak.",
     src: "/images/hands/mayura.jpg",
     page: HAND_PAGE,
     artist: ARTIST,
@@ -162,14 +126,10 @@ export const HERO_MUDRAS: HeroMudra[] = [
     dancer: stage("13", "50% 50%"),
   },
   {
-    id: "shikhara",
+    id: "mudra_shikhara",
     accent: "255 150 40",
     aiPosition: "40% 30%",
     slot: "mudra8",
-    name: "Shikhara",
-    english: "The peak",
-    description: "A closed fist with the thumb pointing straight up.",
-    usedFor: "a bow, a pillar, a husband, asking a question.",
     src: "/images/hands/shikhara.jpg",
     page: HAND_PAGE,
     artist: ARTIST,

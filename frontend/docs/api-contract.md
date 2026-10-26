@@ -10,7 +10,7 @@ Conventions
 - Base URL comes from `NEXT_PUBLIC_API_BASE_URL` (default `http://localhost:8000`).
 - JSON everywhere except the video upload (multipart).
 - Timestamps: ISO 8601 strings in UTC, e.g. `"2026-10-24T14:30:00Z"`.
-- IDs: integers.
+- Knowledge-base IDs are stable strings such as `mudra_pataka`; practice/session IDs use their API-defined types.
 - Nullable fields are always present (as `null`), never omitted.
 - Errors use FastAPI's default shape: `{"detail": "message"}` or the 422 list form.
   Status codes the UI understands: 400/422 (validation), 404, 413 (file too large),
@@ -29,68 +29,56 @@ Conventions
 
 ## 2. Mudras
 
-`GET /api/mudras` → `200` — `MudraSummary[]`
+`GET /api/mudras?include_unverified=true&limit=100` → `200` — catalogue records
 ```json
-[{ "id": 1, "name": "Pataka", "hasta_type": "asamyuta", "meaning": "Flag", "image_url": "/static/mudras/pataka.jpg" }]
+[{ "id": "mudra_pataka", "name": "Pataka", "alternate_names": ["pathaka"], "category": "Asamyuta Hasta", "meaning": "Flag", "usage": [], "description": null, "practice_instructions": null, "reference_image_path": null, "dataset_image_count": 568, "dataset_images_available": true, "dataset_classes": [{ "dataset_folder": "Pathaka(1)", "original_label": "Pathaka", "variant_id": null, "image_count": 568, "mapping_status": "observed_transliteration_crosswalk; teacher_review_pending" }], "recognition_supported": false, "source": null, "verification_status": "source_cited", "verification_notes": null, "limitations": [] }]
 ```
-- `hasta_type`: `"asamyuta" | "samyuta" | null`
-- `image_url`: absolute URL **or** a path relative to the backend (served by FastAPI `StaticFiles`), or `null`.
+- The endpoint returns up to 100 records by default (maximum 200); `q` searches names and aliases.
+- `include_unverified=true` is needed to retrieve the full 52-entry catalogue and requires `ALLOW_UNVERIFIED_RECORDS=true` on the backend.
+- `dataset_image_count` and `dataset_images_available` describe dataset coverage. `recognition_supported` refers to a compatible loaded model; all current records return `false`.
+- `reference_image_path` is a backend-served reference image, not a Kaggle dataset path. It is `null` unless the asset exists.
 
-`GET /api/mudras/{id}` → `200` — `MudraDetail` (all summary fields plus):
-```json
-{
-  "alt_names": [],
-  "usage": "…",
-  "instructions": "…",
-  "source": "Abhinaya Darpana, verse …",
-  "verification_status": "verified",
-  "practice_reference_id": 101
-}
-```
-- `verification_status`: `"verified" | "unverified" | "needs_review"`
-- `practice_reference_id`: id from `/api/movements` if this mudra can be evaluated, else `null`.
-- `404` if not found.
+`GET /api/mudras/{id-or-name}?include_unverified=true` returns the same catalogue record shape. IDs, canonical names, and unambiguous aliases are accepted.
 
 ## 3. Knowledge retrieval
 
 `POST /api/knowledge/retrieve`
 ```json
-{ "text": "Krishna is singing and dancing in the garden." }
+{ "text": "Krishna is singing and dancing in the garden.", "include_unverified": true, "include_keyword_matches": false }
 ```
-Validation: 3–500 characters after trimming (return 422 otherwise).
 
 → `200`
 ```json
 {
-  "query": "Krishna is singing and dancing in the garden.",
+  "original_text": "Krishna is singing and dancing in the garden.",
   "concepts": [
     {
-      "concept": "garden",
-      "supported": true,
-      "matches": [
-        { "id": 4, "name": "…", "hasta_type": "asamyuta", "meaning": "…", "image_url": "…", "rationale": "Why the KB links this mudra to the concept", "source": "…" }
-      ]
+      "concept": { "text": "garden" },
+      "status": "unsupported",
+      "references": []
     },
-    { "concept": "krishna", "supported": false, "matches": [] }
-  ]
+    { "concept": { "text": "krishna" }, "status": "unsupported", "references": [] }
+  ],
+  "supported_count": 0,
+  "unsupported_count": 2
 }
 ```
-- Several `matches` = alternative interpretations (the UI labels them "Option 1, 2…").
-- `supported: false` / empty `matches` = no verified mapping; the UI says so instead of guessing.
+- References carry source IDs, verification status, match type, and limitations. Several references are alternatives.
+- `include_unverified` is opt-in and requires the backend setting. Gemini receives only the records returned by this retrieval.
 - An empty `concepts` array is valid.
 
 ## 4. AI tutor
 
 `POST /api/tutor/explain`
 ```json
-{ "text": "learner's text", "mudra_ids": [1, 4] }
+{ "text": "learner's text", "include_unverified": true, "include_keyword_matches": false }
 ```
 → `200`
 ```json
-{ "explanation": "Plain text, paragraphs separated by blank lines.", "used_mudra_ids": [1, 4], "unsupported_concepts": ["krishna"], "model_name": "gemini-2.5-flash" }
+{ "original_text": "learner's text", "tutor": { "mode": "knowledge_only", "explanation": { "summary": "…", "concepts": [], "suggestions": [], "alternatives": [], "source_ids": [], "limitations": [] }, "model": null, "fallback_reason": "no_references", "notice": "…" }, "retrieval": { "concepts": [] }, "disclaimer": "…" }
 ```
-- The backend must ground the answer only in the knowledge-base rows for `mudra_ids`.
-- `503` when Gemini is unavailable — the UI keeps the retrieval results visible and offers retry.
+- The backend performs retrieval, then grounds and validates Gemini against those retrieved records. The retrieval is always returned, including when the tutor falls back to knowledge-only mode.
+- `include_unverified` is opt-in and requires the backend setting. The UI preserves source status and limitations.
 
 ## 5. Practice references
 

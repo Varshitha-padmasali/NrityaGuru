@@ -23,7 +23,7 @@ def synthetic_csv(path, n_classes=3, per_class=30):
         for k in range(per_class):
             pts = (base + rng.normal(scale=1.5, size=base.shape)) * rng.uniform(0.8, 1.2) + rng.uniform(-50, 50, 3)
             row = dict.fromkeys(HEADER, "")
-            row.update(label=f"class{c}", file=f"{c}_{k}.png", md5=f"md5_{c}_{k}", width=100, height=100,
+            row.update(label=f"class{c}", file=f"{c}_{k}.png", md5=f"md5_{c}_{k}", phash=f"{c}_{k:016d}", width=100, height=100,
                        padded=0, n_hands=1, h0_side="Right", h0_score=0.9)
             for i in range(21):
                 row[f"h0_x{i}"], row[f"h0_y{i}"], row[f"h0_z{i}"] = pts[i]
@@ -60,9 +60,24 @@ def test_train_save_load_predict(tmp_path):
     assert (tmp_path / "models" / "mudra_mlp.joblib").exists()
     assert (tmp_path / "models" / "mudra_mlp_metrics.json").exists()
     bundle = load_bundle(tmp_path / "models" / "mudra_mlp.joblib", allow_non_catalogue=True)
+    assert bundle["metadata"]["split_sizes"]["train_perceptual_groups"] == bundle["metadata"]["split_sizes"]["train"]
     out = predict_hand(bundle, template(100 + 1))      # a class1-shaped hand
     assert out["status"] == "success" and out["predicted_label"] == "class1"
     assert 0.0 <= out["confidence"] <= 1.0
+
+
+def test_prediction_distinguishes_unavailable_and_low_confidence(tmp_path):
+    csv_path = tmp_path / "lm.csv"
+    synthetic_csv(csv_path)
+    train(csv_path, ["class0", "class1", "class2"], tmp_path / "models", verbose=False,
+          strict_catalogue=False)
+    bundle = load_bundle(tmp_path / "models" / "mudra_mlp.joblib", allow_non_catalogue=True)
+    unavailable = predict_hand(bundle, template(100), expected_label="not-trained")
+    assert unavailable["status"] == "class_unavailable"
+    bundle["metadata"]["low_confidence_raw_score_threshold"] = 1.01
+    low = predict_hand(bundle, template(101))
+    assert low["status"] == "low_confidence"
+    assert low["predicted_label"] is None and low["candidate_label"]
 
 
 def test_predict_invalid_input_returns_status(tmp_path):

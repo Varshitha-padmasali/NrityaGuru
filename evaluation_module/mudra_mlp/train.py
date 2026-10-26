@@ -4,8 +4,8 @@ Run from the evaluation_module folder:
     python -m mudra_mlp.train --csv data\\hand_landmarks.csv --out models
 
 Honest-reporting notes:
-  * Split is by IMAGE (stratified). The dataset has no performer ids, so this does NOT test
-    generalisation to new people; real webcam accuracy will probably be lower.
+  * Split is grouped by perceptual image hash and stratified by label. The dataset has no
+    performer ids, so this does NOT test generalisation to new people.
   * Exact duplicate files are removed; files that appear under two labels are dropped.
   * Mirrored copies are added to the TRAINING set only. Validation/test use original images.
   * The scaler is fitted on training data only (inside the sklearn Pipeline).
@@ -25,16 +25,16 @@ import pandas as pd
 import sklearn
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, precision_recall_fscore_support
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 if __package__ and __package__.startswith("evaluation_module."):
-    from .catalogue import asamyuta_names, canonical_record, catalogue_digest
+    from .catalogue import asamyuta_names, canonical_record, catalogue_digest, dataset_mapping_digest, model_class_mapping
     from .features import FEATURE_SCHEMA_VERSION, FeatureError, feature_names, hand_features, mirrored_hand_features
 else:
-    from mudra_mlp.catalogue import asamyuta_names, canonical_record, catalogue_digest
+    from mudra_mlp.catalogue import asamyuta_names, canonical_record, catalogue_digest, dataset_mapping_digest, model_class_mapping
     from mudra_mlp.features import FEATURE_SCHEMA_VERSION, FeatureError, feature_names, hand_features, mirrored_hand_features
 
 SEED = 42
@@ -46,7 +46,7 @@ GRID = [{"hidden_layer_sizes": h, "alpha": a} for h in [(64,), (128, 64)] for a 
 
 def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue: bool = True):
     df = pd.read_csv(csv_path).copy()
-    required = {"label", "n_hands", "md5", *HAND_COLS}
+    required = {"label", "n_hands", "md5", "phash", *HAND_COLS}
     missing_columns = sorted(required - set(df.columns))
     if missing_columns:
         raise ValueError(f"landmark CSV is missing required columns: {missing_columns}")
@@ -102,7 +102,7 @@ def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue:
     df = df.drop_duplicates(subset=["md5"])
     info["dropped_exact_duplicates"] = int(before - len(df))
 
-    raw, labels = [], []
+    raw, labels, groups = [], [], []
     skipped = 0
     for _, row in df.iterrows():
         coords = row[HAND_COLS].to_numpy(dtype=float)
@@ -113,11 +113,13 @@ def load_dataset(csv_path: Path, classes: list[str] | None, *, strict_catalogue:
             continue
         raw.append(coords)
         labels.append(row["label_norm"])
+        groups.append(str(row["phash"]))
     info["dropped_invalid_landmarks"] = skipped
     info["final_samples"] = len(labels)
+    info["unique_perceptual_groups"] = len(set(groups))
     if not labels:
         raise ValueError("no valid hand-landmark rows remain after filtering")
-    return np.array(raw), np.array(labels), info
+    return np.array(raw), np.array(labels), np.array(groups), info
 
 
 def make_pipeline(hidden, alpha, seed: int = SEED) -> Pipeline:
@@ -139,14 +141,19 @@ def train(
 ) -> dict:
     if classes is not None and (not classes or len({c.strip().casefold() for c in classes}) != len(classes)):
         raise ValueError("classes must be omitted or be a non-empty list of unique labels")
-    raw, y, info = load_dataset(csv_path, classes, strict_catalogue=strict_catalogue)
+    raw, y, groups, info = load_dataset(csv_path, classes, strict_catalogue=strict_catalogue)
     counts = {label: int(np.sum(y == label)) for label in np.unique(y)}
     too_small = sorted(label for label in np.unique(y) if counts.get(label, 0) < 3)
     if too_small:
         raise ValueError(f"at least 3 valid samples per class are required for stratified train/validation/test splits: {too_small}")
     idx = np.arange(len(y))
-    tr, tmp = train_test_split(idx, test_size=0.4, stratify=y, random_state=seed)
-    va, te = train_test_split(tmp, test_size=0.5, stratify=y[tmp], random_state=seed)
+    outer = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=seed)
+    trval, te = next(outer.split(idx, y, groups))
+    inner = StratifiedGroupKFold(n_splits=4, shuffle=True, random_state=seed + 1)
+    tr_rel, va_rel = next(inner.split(trval, y[trval], groups[trval]))
+    tr, va = trval[tr_rel], trval[va_rel]
+    if set(groups[tr]) & set(groups[va]) or set(groups[tr]) & set(groups[te]) or set(groups[va]) & set(groups[te]):
+        raise RuntimeError("perceptually identical images leaked across train, validation or test splits")
 
     X = np.array([hand_features(r) for r in raw])
     X_mirror = np.array([mirrored_hand_features(r) for r in raw])
@@ -187,14 +194,28 @@ def train(
         "class_count": len(labels_sorted),
         "strict_catalogue": strict_catalogue,
         "catalogue_digest": catalogue_digest() if strict_catalogue else None,
+        "dataset_mapping_digest": dataset_mapping_digest() if strict_catalogue else None,
         "catalogue_class_count": len(asamyuta_names()) if strict_catalogue else None,
+        "class_mapping": model_class_mapping(labels_sorted) if strict_catalogue else {},
+        "preprocessing_configuration": {
+            "feature_schema_version": FEATURE_SCHEMA_VERSION,
+            "input_hand_count": 1,
+            "coordinates_per_hand": 63,
+            "feature_count": len(feature_names()),
+            "training_mirror_augmentation": True,
+            "image_split_group": "64-bit-dct-perceptual-hash",
+        },
+        "low_confidence_raw_score_threshold": 0.5,
         "best_config": {"hidden_layer_sizes": list(best_cfg["hidden_layer_sizes"]), "alpha": best_cfg["alpha"]},
         "split_sizes": {"train": int(len(tr)), "train_with_mirrored": int(len(X_train)),
-                        "validation": int(len(va)), "test": int(len(te))},
+                        "validation": int(len(va)), "test": int(len(te)),
+                        "train_perceptual_groups": int(len(set(groups[tr]))),
+                        "validation_perceptual_groups": int(len(set(groups[va]))),
+                        "test_perceptual_groups": int(len(set(groups[te])))},
         "dataset_report": info, "grid_results": results,
         "versions": {"python": platform.python_version(), "scikit-learn": sklearn.__version__,
                      "numpy": np.__version__, "pandas": pd.__version__},
-        "limitations": ["Image-level split; no performer ids, so performer generalisation is untested.",
+        "limitations": ["Perceptual-hash group split; no performer ids, so performer generalisation is untested.",
                         "Static images only; not validated on webcam video.",
                         "MLP scores are raw model outputs, not calibrated probabilities."],
     }

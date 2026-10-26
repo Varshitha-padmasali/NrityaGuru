@@ -22,7 +22,7 @@
     "reference_image_path": null,
     "source_id": "src_wikipedia_mudra_list",
     "verification_status": "source_cited",
-    "verification_notes": "Meaning and usages copied as facts from the Wikipedia list (secondary source). Not yet cross-checked against Abhinaya Darpana or a teacher. Hand-position description and image intentionally left empty until verified. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Meaning and usages copied as facts from the Wikipedia list (secondary source). Not yet cross-checked against Abhinaya Darpana or a teacher. Hand-position description and image intentionally left empty until verified. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_tripataka",
@@ -46,7 +46,7 @@
     "reference_image_path": null,
     "source_id": "src_wikipedia_mudra_list",
     "verification_status": "source_cited",
-    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_ardhapataka",
@@ -70,7 +70,7 @@
     "reference_image_path": null,
     "source_id": "src_wikipedia_mudra_list",
     "verification_status": "source_cited",
-    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Same status as Pataka: secondary source only, awaiting cross-check. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_kartarimukha",
@@ -86,7 +86,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_mayura",
@@ -102,7 +102,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_ardhachandra",
@@ -118,7 +118,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_arala",
@@ -132,7 +132,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_sukhatunda",
@@ -146,7 +146,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_mushti",
@@ -162,7 +162,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_shikhara",
@@ -178,7 +178,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_kapitha",
@@ -194,7 +194,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_katakamukha",
@@ -208,7 +208,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_suchi",
@@ -224,7 +224,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_chandrakala",
@@ -238,7 +238,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_padmakosha",
@@ -252,7 +252,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_sarpasirsha",
@@ -266,7 +266,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_mrigasirsha",
@@ -280,7 +280,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_simhamukham",
@@ -296,7 +296,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_kangula",
@@ -310,7 +310,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_allapadma",
@@ -324,7 +324,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_chatura",
@@ -338,7 +338,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_bhramara",
@@ -352,7 +352,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_hamsasya",
@@ -366,7 +366,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_hamsapaksha",
@@ -380,7 +380,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_samdamsha",
@@ -394,7 +394,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_mukula",
@@ -408,7 +408,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_tamrachuda",
@@ -422,7 +422,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_trishula",
@@ -438,7 +438,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established. Existing classifier label retained as an explicit legacy alias; dataset equivalence has not been rechecked against the missing original dataset."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json. Any legacy model label is retained only as a project spelling alias; dataset folders are mapped separately in dataset_mapping.json and are not teacher-verified."
   },
   {
     "id": "mudra_anjali",
@@ -452,7 +452,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_kapota",
@@ -466,7 +466,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_karkata",
@@ -480,7 +480,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_swastika",
@@ -494,7 +494,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_dola",
@@ -508,7 +508,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_puspaputa",
@@ -522,7 +522,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_utsanga",
@@ -536,7 +536,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_shivlinga",
@@ -550,7 +550,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_katakavardana",
@@ -564,7 +564,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_kartariswastika",
@@ -578,7 +578,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_shakata",
@@ -592,7 +592,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_shanka",
@@ -606,7 +606,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_chakra",
@@ -620,7 +620,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_samputa",
@@ -634,7 +634,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_pasha",
@@ -648,7 +648,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_keelaka",
@@ -662,7 +662,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_matsya",
@@ -676,7 +676,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_kurma",
@@ -690,7 +690,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_varaha",
@@ -704,7 +704,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_garuda",
@@ -718,7 +718,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_nagabandha",
@@ -732,7 +732,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_khatwa",
@@ -746,7 +746,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_berunda",
@@ -760,7 +760,7 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   },
   {
     "id": "mudra_avahitta",
@@ -774,6 +774,6 @@
     "reference_image_path": null,
     "source_id": "src_ncert_kriti_i_dance",
     "verification_status": "source_cited",
-    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, dataset label correspondence, and teacher verification have not been established."
+    "verification_notes": "Name and hasta category listed in NCERT Kriti-I, Grade 6, Chapter 12. The name/category are source-cited; hand form, meanings, usages, teacher verification has not been established; candidate dataset folder mappings are recorded separately in dataset_mapping.json."
   }
 ]

@@ -6,9 +6,44 @@
 export type HastaType = "asamyuta" | "samyuta";
 export type VerificationStatus = "verified" | "unverified" | "needs_review";
 
+export interface CatalogueSource {
+  id: string;
+  source_name: string;
+  source_url: string | null;
+}
+
+export interface DatasetClassMapping {
+  dataset_folder: string;
+  original_label: string;
+  variant_id: string | null;
+  image_count: number;
+  mapping_status: string;
+}
+
+/** GET /api/mudras records as returned by the backend's 52-entry catalogue. */
+export interface CatalogueMudra {
+  id: string;
+  name: string;
+  alternate_names: string[];
+  category: string;
+  meaning: string | null;
+  usage: string[];
+  description: string | null;
+  practice_instructions: string | null;
+  reference_image_path: string | null;
+  dataset_image_count: number;
+  dataset_images_available: boolean;
+  dataset_classes: DatasetClassMapping[];
+  recognition_supported: boolean;
+  source: CatalogueSource | null;
+  verification_status: "verified" | "source_cited" | "unverified";
+  verification_notes: string | null;
+  limitations: string[];
+}
+
 /** GET /api/mudras (list item) and embedded mudra references. */
 export interface MudraSummary {
-  id: number;
+  id: number | string;
   name: string;
   hasta_type: HastaType | null;
   meaning: string | null;
@@ -50,14 +85,56 @@ export interface RetrieveResponse {
   concepts: ConceptResult[];
 }
 
+export interface BackendRetrievalResponse {
+  original_text: string;
+  concepts: {
+    concept: { text: string };
+    status: string;
+    references: {
+      record_type: string;
+      record_id: string;
+      name: string;
+      category: string;
+      meaning: string | null;
+      description: string | null;
+      reference_media_path: string | null;
+      match_type: string;
+      evidence_notes: string[];
+      verification_status: string;
+      source: { source_name: string } | null;
+    }[];
+  }[];
+}
+
 /** POST /api/tutor/explain */
 export interface ExplainRequest {
   text: string;
-  mudra_ids: number[];
 }
+
+export interface TutorExplainResponse {
+  original_text: string;
+  tutor: {
+    mode: "ai" | "knowledge_only";
+    explanation: {
+      summary: string;
+      concepts: { concept: string; supported: boolean; explanation: string; source_ids: string[] }[];
+      suggestions: string[];
+      alternatives: string[];
+      source_ids: string[];
+      limitations: string[];
+    };
+    model: string | null;
+    fallback_reason: string | null;
+    notice: string | null;
+  };
+  retrieval: unknown;
+  disclaimer: string;
+}
+
 export interface ExplainResponse {
-  explanation: string;
-  used_mudra_ids: number[];
-  unsupported_concepts: string[];
-  model_name: string;
+  /** Compatibility name retained for current UI component imports. */
+  original_text: string;
+  tutor: TutorExplainResponse["tutor"];
+  retrieval: unknown;
+  disclaimer: string;
 }

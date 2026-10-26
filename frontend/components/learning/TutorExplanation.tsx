@@ -22,15 +22,17 @@ export function TutorExplanation({ data, loading, error, onRetry }: { data: Expl
       {!loading && error ? <ErrorState error={error} title="The AI tutor is unavailable right now" onRetry={onRetry} /> : null}
       {!loading && !error && data ? (
         <div className="space-y-3 text-[17px] leading-relaxed text-ink">
-          {data.explanation
-            .split(/\n{2,}/)
-            .map((p) => p.trim())
-            .filter(Boolean)
-            .map((paragraph, i) => (
-              <p key={i} className="whitespace-pre-line">
-                {paragraph}
-              </p>
-            ))}
+          <p>{data.tutor.explanation.summary}</p>
+          {data.tutor.explanation.concepts.map((item, i) => (
+            <p key={`${item.concept}-${i}`}><strong>{item.concept}:</strong> {item.explanation}</p>
+          ))}
+          {data.tutor.explanation.suggestions.length > 0 ? (
+            <ul className="list-inside list-disc text-sm">
+              {data.tutor.explanation.suggestions.map((suggestion) => <li key={suggestion}>{suggestion}</li>)}
+            </ul>
+          ) : null}
+          {data.tutor.notice ? <p className="text-sm text-ink-muted">{data.tutor.notice}</p> : null}
+          <p className="text-xs text-ink-muted">{data.disclaimer}</p>
         </div>
       ) : null}
     </section>

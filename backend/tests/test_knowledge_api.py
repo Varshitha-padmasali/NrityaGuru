@@ -72,10 +72,21 @@ def test_mudra_list_supports_search_and_all_52_default_page(db_session, make_cli
     client = make_client()
     all_records = client.get("/api/mudras", params={"include_unverified": True})
     assert len(all_records.json()) == 52  # default page includes the complete catalogue
+    pataka = next(record for record in all_records.json() if record["id"] == "mudra_pataka")
+    assert pataka["dataset_image_count"] == 568
+    assert pataka["dataset_images_available"] is True
+    assert pataka["recognition_supported"] is False
+    kataka = next(record for record in all_records.json() if record["id"] == "mudra_katakamukha")
+    assert kataka["dataset_image_count"] == 1487
+    assert {item["dataset_folder"] for item in kataka["dataset_classes"]} == {
+        "Katakamukha_1", "Katakamukha_2", "Katakamukha_3"
+    }
     found = client.get("/api/mudras", params={"include_unverified": True, "q": "kapota"})
     assert [record["name"] for record in found.json()] == ["Kapota"]
     by_name = client.get("/api/mudras/Kapota", params={"include_unverified": True})
     assert by_name.status_code == 200 and by_name.json()["id"] == "mudra_kapota"
+    by_dataset_label = client.get("/api/mudras", params={"include_unverified": True, "q": "Katakamukha_2"})
+    assert [record["id"] for record in by_dataset_label.json()] == ["mudra_katakamukha"]
 
 
 def test_mudra_detail_and_404s(db_session, make_client):
@@ -86,6 +97,7 @@ def test_mudra_detail_and_404s(db_session, make_client):
     ok = client.get("/api/mudras/mudra_pataka", params={"include_unverified": True})
     assert ok.status_code == 200
     assert ok.json()["source"]["source_name"].startswith("List of mudras")
+    assert ok.json()["dataset_image_count"] == 568
 
 
 def test_movements_list_is_empty_but_ok(db_session, make_client):

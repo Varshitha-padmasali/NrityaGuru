@@ -29,11 +29,11 @@ def _write(path, value, shape=(40, 80, 3)):
 
 def test_extraction_counts_pixels_and_missing_values(tmp_path):
     ds = tmp_path / "ds"
-    _write(ds / "pathaka" / "a (1).png", 200)           # detected
-    _write(ds / "pathaka" / "b.jpg", 200)               # detected
-    _write(ds / "mushti" / "dark.png", 10)              # not detected, even after padding
-    (ds / "mushti" / "broken.png").write_bytes(b"not an image")
-    (ds / "mushti" / "notes.txt").write_text("ignored")
+    _write(ds / "Pathaka(1)" / "a (1).png", 200)         # detected
+    _write(ds / "Pathaka(1)" / "b.jpg", 200)             # detected
+    _write(ds / "Mushti(1)" / "dark.png", 10)            # not detected, even after padding
+    (ds / "Mushti(1)" / "broken.png").write_bytes(b"not an image")
+    (ds / "Mushti(1)" / "notes.txt").write_text("ignored")
 
     out = tmp_path / "out" / "lm.csv"
     summary = run(ds, FakeLandmarker(), out, tmp_path / "out" / "failed.csv")
@@ -56,7 +56,7 @@ def test_extraction_counts_pixels_and_missing_values(tmp_path):
 
 def test_duplicates_are_counted(tmp_path):
     ds = tmp_path / "ds"
-    _write(ds / "a" / "1.png", 200)
-    _write(ds / "b" / "2.png", 200)   # identical bytes -> exact duplicate
+    _write(ds / "Pathaka(1)" / "1.png", 200)
+    _write(ds / "Mushti(1)" / "2.png", 200)  # identical bytes -> exact duplicate
     summary = run(ds, FakeLandmarker(), tmp_path / "lm.csv")
     assert summary["exact_duplicates"] == 1
