@@ -39,10 +39,6 @@ export function parseFastApiDetail(body: unknown): string | null {
   if (!body || typeof body !== "object") return null;
   const detail = (body as { detail?: unknown }).detail;
   if (typeof detail === "string") return detail;
-  if (detail && typeof detail === "object" && !Array.isArray(detail)) {
-    const message = (detail as { message?: unknown }).message;
-    return typeof message === "string" ? message : null;
-  }
   if (Array.isArray(detail)) {
     const messages = detail
       .map((d) => {

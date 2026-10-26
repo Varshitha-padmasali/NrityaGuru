@@ -45,18 +45,18 @@ const STEPS: { key: string; label: string; phases: PracticePhase[] }[] = [
 
 export function PracticeFlow() {
   const { movementId } = useParams<{ movementId: string }>();
-  const referenceId = movementId;
+  const referenceId = Number(movementId);
   const router = useRouter();
 
-  const refs = useApiQuery((signal) => listPracticeReferences(signal), [], Boolean(referenceId));
-  const reference = refs.data?.find((r) => String(r.id) === referenceId) ?? null;
+  const refs = useApiQuery((signal) => listPracticeReferences(signal), [], Number.isInteger(referenceId));
+  const reference = refs.data?.find((r) => r.id === referenceId) ?? null;
   const maxSeconds = reference?.max_duration_seconds ?? config.maxRecordingSeconds;
 
   const camera = useCamera();
   const recorder = useMediaRecorder({ maxSeconds, maxBytes: config.maxUploadMb * 1024 * 1024 });
   const [state, dispatch] = useReducer(practiceReducer, initialPracticeState);
 
-  const sessionIdRef = useRef<number | string | null>(null); // reuse one session across upload retries
+  const sessionIdRef = useRef<number | null>(null); // reuse one session across upload retries
   const submittingRef = useRef(false); // hard lock against double submit
   const controllerRef = useRef<AbortController | null>(null);
 
@@ -124,19 +124,16 @@ export function PracticeFlow() {
         sessionId = session.session_id;
         sessionIdRef.current = sessionId;
       }
-      if (sessionId === null) throw new Error("Could not initialize session");
       await uploadPracticeVideo(sessionId, reference.id, recording.blob, (p) => dispatch({ type: "UPLOAD_PROGRESS", progress: p }), controller.signal);
       dispatch({ type: "UPLOAD_DONE", sessionId });
       camera.stop(); // video is uploaded — turn the camera light off
     } catch (err) {
       submittingRef.current = false;
       if (err instanceof ApiError && err.kind === "aborted") return;
-      const prefix = err instanceof ApiError && err.status === 503 ? "Practice processing is unavailable." : "Upload failed.";
-      dispatch({ type: "FAIL", message: `${prefix} ${describeError(err)}`, recoverTo: "recorded" });
+      dispatch({ type: "FAIL", message: `Upload failed. ${describeError(err)}`, recoverTo: "recorded" });
       return;
     }
 
-    if (sessionId === null) return;
     try {
       await evaluateAndWait(sessionId, controller.signal);
       dispatch({ type: "EVALUATION_DONE", sessionId });
@@ -170,7 +167,7 @@ export function PracticeFlow() {
   };
 
   // --- Render -----------------------------------------------------------------
-  if (!referenceId) {
+  if (!Number.isInteger(referenceId)) {
     return <EmptyState title="Unknown practice reference" description="This link doesn't point to a valid reference." action={<BackLink />} />;
   }
   if (refs.loading) return <LoadingState label="Loading reference…" className="min-h-80" />;

@@ -6,7 +6,6 @@ export const endpoints = {
   retrieve: () => "/api/knowledge/retrieve",
   explain: () => "/api/tutor/explain",
   movements: () => "/api/movements",
-  practiceReferences: () => "/api/practice/references",
   sessions: () => "/api/practice/sessions",
   sessionVideo: (sessionId: number | string) => `/api/practice/sessions/${encodeURIComponent(String(sessionId))}/video`,
   sessionEvaluate: (sessionId: number | string) => `/api/practice/sessions/${encodeURIComponent(String(sessionId))}/evaluate`,

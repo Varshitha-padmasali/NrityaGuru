@@ -6,7 +6,7 @@ import { isEvaluateResponse, isFeedback, isSessionResults } from "@/lib/validato
 import { ApiError } from "@/types/api";
 import type { EvaluateResponse, Feedback, SessionResults } from "@/types/evaluation";
 
-export function startEvaluation(sessionId: number | string, signal?: AbortSignal): Promise<EvaluateResponse> {
+export function startEvaluation(sessionId: number, signal?: AbortSignal): Promise<EvaluateResponse> {
   return apiRequest(endpoints.sessionEvaluate(sessionId), {
     method: "POST",
     json: {},
@@ -43,7 +43,7 @@ const sleep = (ms: number, signal?: AbortSignal) =>
  * Start evaluation and, if the backend answers "processing", poll the results
  * endpoint until it is evaluated, failed, or we give up.
  */
-export async function evaluateAndWait(sessionId: number | string, signal?: AbortSignal): Promise<SessionResults> {
+export async function evaluateAndWait(sessionId: number, signal?: AbortSignal): Promise<SessionResults> {
   const first = await startEvaluation(sessionId, signal);
   if (first.status === "failed") {
     throw new ApiError("http", "Evaluation failed", null, first.error ?? "The evaluation could not be completed.");

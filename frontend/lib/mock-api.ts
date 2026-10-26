@@ -13,6 +13,14 @@ import { ApiError } from "@/types/api";
 const NOW = () => new Date().toISOString();
 const PLACEHOLDER = "[Mock placeholder — real text comes from the knowledge base]";
 
+const mudras = [1, 2, 3].map((id) => ({
+  id,
+  name: `Sample Mudra ${String.fromCharCode(64 + id)}`,
+  hasta_type: "asamyuta" as const,
+  meaning: PLACEHOLDER,
+  image_url: null,
+}));
+
 const references = [
   { id: 101, name: "Sample Mudra A (hold)", reference_type: "mudra" as const, description: PLACEHOLDER, mudra_ids: [1], image_url: null, max_duration_seconds: 5 },
   { id: 102, name: "Sample sequence A → B → C", reference_type: "sequence" as const, description: PLACEHOLDER, mudra_ids: [1, 2, 3], image_url: null, max_duration_seconds: 8 },
@@ -43,53 +51,35 @@ function mockResult(session: MockSession) {
 
 export async function handleMockRequest(method: string, path: string, body: unknown): Promise<unknown> {
   await new Promise((r) => setTimeout(r, 300));
-  const pathWithoutQuery = path.split("?", 1)[0];
 
   if (path === endpoints.health()) return { status: "ok", db: "ok", model_loaded: false };
-  if (pathWithoutQuery === endpoints.mudras()) return [];
+  if (path === endpoints.mudras()) return mudras;
 
-  const mudraMatch = pathWithoutQuery.match(/^\/api\/mudras\/(.+)$/);
+  const mudraMatch = path.match(/^\/api\/mudras\/(\d+)$/);
   if (mudraMatch) {
-    throw new ApiError("not_found", "not found", 404, "The mock API has no knowledge catalogue. Connect the backend to view mudra records.");
+    const m = mudras.find((x) => x.id === Number(mudraMatch[1]));
+    if (!m) throw new ApiError("not_found", "not found", 404, "Mudra not found");
+    return { ...m, alt_names: [], usage: PLACEHOLDER, instructions: PLACEHOLDER, source: "Mock data", verification_status: "unverified", practice_reference_id: m.id === 1 ? 101 : null };
   }
 
   if (path === endpoints.retrieve()) {
     const text = String((body as { text?: string })?.text ?? "");
     const words = text.split(/\W+/).filter((w) => w.length > 3).slice(0, 4);
     return {
-      original_text: text,
-      include_unverified: false,
-      include_keyword_matches: false,
-      supported_count: 0,
-      unsupported_count: words.length,
-      warnings: ["Mock mode has no knowledge catalogue."],
-      disclaimer: "Mock response; connect the backend for sourced knowledge.",
-      concepts: words.map((w) => ({
-        concept: { text: w.toLowerCase(), concept_type: "object" },
-        status: "unsupported",
-        references: [],
-        contains_unverified: false,
-        note: "Mock mode has no knowledge catalogue.",
+      query: text,
+      concepts: words.map((w, i) => ({
+        concept: w.toLowerCase(),
+        supported: i % 3 !== 2,
+        matches: i % 3 === 2 ? [] : mudras.slice(0, i % 2 === 0 ? 1 : 2).map((m) => ({ ...m, rationale: PLACEHOLDER, source: "Mock data" })),
       })),
     };
   }
 
   if (path === endpoints.explain()) {
-    return {
-      original_text: String((body as { text?: string })?.text ?? ""),
-      tutor: {
-        mode: "knowledge_only",
-        explanation: { summary: "Mock mode has no knowledge catalogue to explain.", concepts: [], suggestions: [], alternatives: [], source_ids: [], limitations: ["Connect the backend for sourced explanations."] },
-        model: null,
-        fallback_reason: "no_references",
-        notice: "Mock response; no traditional meanings were supplied.",
-      },
-      retrieval: { concepts: [] },
-      disclaimer: "Mock response; connect the backend for sourced knowledge.",
-    };
+    return { explanation: "[Mock] The AI tutor explanation from the backend will appear here.", used_mudra_ids: [1], unsupported_concepts: [], model_name: "mock" };
   }
 
-  if (path === endpoints.practiceReferences()) return references;
+  if (path === endpoints.movements()) return references;
 
   if (path === endpoints.sessions() && method === "POST") {
     const refId = Number((body as { reference_id?: number })?.reference_id);
@@ -119,7 +109,6 @@ export async function handleMockRequest(method: string, path: string, body: unkn
 
   if (path === endpoints.progress()) {
     return {
-      scope: "shared_development",
       sessions: [...sessions.values()].map((s) => ({
         session_id: s.session_id,
         reference_id: s.reference_id,

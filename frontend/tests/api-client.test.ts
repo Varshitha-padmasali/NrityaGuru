@@ -22,26 +22,19 @@ afterEach(() => {
 });
 
 const validRetrieve = {
-  original_text: "a lotus",
-  concepts: [{ concept: { text: "lotus" }, status: "supported", references: [{
-    record_type: "mudra", record_id: "mudra_allapadma", name: "Allapadma", category: "Asamyuta Hasta",
-    meaning: null, description: null, usage: [], practice_instructions: null, reference_media_path: null,
-    match_type: "exact_name", evidence_notes: ["exact name match"], verification_status: "source_cited",
-    source: null, mapping_source: null, limitations: [],
-  }] }],
-  include_unverified: true, include_keyword_matches: false, supported_count: 1, unsupported_count: 0,
-  warnings: [], disclaimer: "reference information",
+  query: "a lotus",
+  concepts: [{ concept: "lotus", supported: true, matches: [{ id: 1, name: "Alapadma", hasta_type: "asamyuta", meaning: "Lotus", image_url: null, rationale: null, source: "KB" }] }],
 };
 
 describe("apiRequest", () => {
   it("returns the validated body on success and posts JSON", async () => {
     const fetchMock = mockFetch(jsonResponse(validRetrieve));
     const result = await retrieveKnowledge("  a lotus ");
-    expect(result.concepts[0].matches[0].name).toBe("Allapadma");
+    expect(result.concepts[0].matches[0].name).toBe("Alapadma");
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe("http://localhost:8000/api/knowledge/retrieve");
     expect(init.method).toBe("POST");
-    expect(JSON.parse(init.body)).toEqual({ text: "a lotus", include_unverified: true });
+    expect(JSON.parse(init.body)).toEqual({ text: "a lotus" });
   });
 
   it("raises 'malformed' when the body does not match the agreed schema", async () => {

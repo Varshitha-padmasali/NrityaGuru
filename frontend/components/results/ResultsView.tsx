@@ -20,7 +20,7 @@ import { EmptyState, ErrorState, LoadingState, Notice } from "@/components/ui/St
 import { IconAlert, IconArrowLeft, IconCamera, IconChart, IconInfo, IconRefresh, IconSparkle } from "@/components/ui/Icons";
 import { Spinner } from "@/components/ui/Spinner";
 import { StatusBadge } from "@/components/progress/StatusBadge";
-import { formatDateTime, formatFrameRange, formatModelScore } from "@/lib/utils";
+import { formatDateTime, formatFrameRange, formatProbability } from "@/lib/utils";
 import { PredictionTimeline } from "./PredictionTimeline";
 
 const POLL_MS = 3000;
@@ -31,12 +31,6 @@ const DEVIATION_TITLES: Record<Deviation["kind"], string> = {
   feature_deviation: "Hand shape differed from the reference",
   high_alignment_cost: "This part differed most from the reference",
   insufficient_landmarks: "Hands not clearly visible",
-  finger: "Finger position difference detected",
-  joint: "Joint position difference detected",
-  hand_pose: "Hand pose difference detected",
-  timing: "Timing difference detected",
-  posture: "Posture difference detected",
-  other: "Practice difference detected",
 };
 
 export function ResultsView() {
@@ -124,7 +118,7 @@ export function ResultsView() {
   );
 }
 
-function EvaluationDetails({ sessionId, result, initialFeedback }: { sessionId: number | string; result: EvaluationResult; initialFeedback: Feedback | null }) {
+function EvaluationDetails({ sessionId, result, initialFeedback }: { sessionId: number; result: EvaluationResult; initialFeedback: Feedback | null }) {
   const coverage = result.frames_total > 0 ? result.frames_with_landmarks / result.frames_total : 0;
   const topPrediction = [...result.predictions].sort((a, b) => b.frame_end - b.frame_start - (a.frame_end - a.frame_start))[0] ?? null;
 
@@ -153,7 +147,7 @@ function EvaluationDetails({ sessionId, result, initialFeedback }: { sessionId: 
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">Mostly detected</p>
           <p className="mt-2 font-display text-2xl font-semibold text-maroon-dark">{topPrediction?.label ?? "—"}</p>
           <p className="mt-1 text-sm text-ink-muted">
-            {topPrediction ? `Raw model score ${formatModelScore(topPrediction.confidence)} for the longest stretch; this is not calibrated.` : "No gesture could be classified."}
+            {topPrediction ? `Model confidence ${formatProbability(topPrediction.confidence)} for the longest stretch.` : "No gesture could be classified."}
           </p>
         </Card>
         <Card className="p-5">
@@ -170,7 +164,7 @@ function EvaluationDetails({ sessionId, result, initialFeedback }: { sessionId: 
 
       <Card className="p-6">
         <h2 className="font-display text-2xl font-semibold text-maroon-dark">What the model saw over time</h2>
-        <p className="mb-4 mt-1 text-sm text-ink-muted">The trained classifier labels parts of the recording. Scores are uncalibrated model outputs, not probabilities or marks for dancing.</p>
+        <p className="mb-4 mt-1 text-sm text-ink-muted">The trained classifier labels each part of your recording. Confidence is the model&apos;s probability, not a mark for your dancing.</p>
         <PredictionTimeline predictions={result.predictions} framesTotal={result.frames_total} fps={result.fps} />
       </Card>
 
@@ -241,7 +235,7 @@ function EvaluationDetails({ sessionId, result, initialFeedback }: { sessionId: 
   );
 }
 
-function FeedbackPanel({ sessionId, initialFeedback }: { sessionId: number | string; initialFeedback: Feedback | null }) {
+function FeedbackPanel({ sessionId, initialFeedback }: { sessionId: number; initialFeedback: Feedback | null }) {
   const [feedback, setFeedback] = useState<Feedback | null>(initialFeedback);
   const [attempt, setAttempt] = useState(0);
   const [failure, setFailure] = useState<{ attempt: number; error: unknown } | null>(null);

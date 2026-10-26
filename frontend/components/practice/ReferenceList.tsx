@@ -20,7 +20,7 @@ export function ReferenceList() {
       <EmptyState
         icon={<IconCamera width={32} height={32} />}
         title="No practice references yet"
-        description="No trained mudra classifier or validated movement reference sequences are installed yet. Dataset photos alone are not used as performance references."
+        description="A mudra can be practised here once it has a recorded reference and the evaluation model supports it."
       />
     );
   }

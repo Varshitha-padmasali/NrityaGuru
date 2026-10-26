@@ -15,20 +15,14 @@ export interface DtwResult {
   distance: number;
   /** Optional normalised value defined by the backend (e.g. distance / path length). */
   normalized: number | null;
-  path_length: number | null;
+  path_length: number;
 }
 
 export type DeviationKind =
   | "wrong_label"
   | "feature_deviation"
   | "high_alignment_cost"
-  | "insufficient_landmarks"
-  | "finger"
-  | "joint"
-  | "hand_pose"
-  | "timing"
-  | "posture"
-  | "other";
+  | "insufficient_landmarks";
 
 export interface Deviation {
   kind: DeviationKind;
@@ -40,7 +34,7 @@ export interface Deviation {
 }
 
 export interface EvaluationResult {
-  reference: { id: number | string; name: string };
+  reference: { id: number; name: string };
   predictions: Prediction[];
   dtw: DtwResult | null;
   frames_total: number;
@@ -55,7 +49,7 @@ export interface EvaluationResult {
 
 /** POST /api/practice/sessions/{id}/evaluate */
 export interface EvaluateResponse {
-  session_id: number | string;
+  session_id: number;
   status: "evaluated" | "processing" | "failed";
   result: EvaluationResult | null;
   error: string | null;

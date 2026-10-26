@@ -28,7 +28,7 @@ export interface PracticeState {
   phase: PracticePhase;
   /** Upload progress, 0..1 (only meaningful while uploading). */
   uploadProgress: number;
-  sessionId: number | string | null;
+  sessionId: number | null;
   error: string | null;
   /** Where RETRY returns to from the error phase. */
   recoverTo: PracticePhase;
@@ -42,8 +42,8 @@ export type PracticeEvent =
   | { type: "RETAKE" }
   | { type: "SUBMIT" }
   | { type: "UPLOAD_PROGRESS"; progress: number }
-  | { type: "UPLOAD_DONE"; sessionId: number | string }
-  | { type: "EVALUATION_DONE"; sessionId: number | string }
+  | { type: "UPLOAD_DONE"; sessionId: number }
+  | { type: "EVALUATION_DONE"; sessionId: number }
   | { type: "FAIL"; message: string; recoverTo: PracticePhase }
   | { type: "RETRY" }
   | { type: "RESET" };
