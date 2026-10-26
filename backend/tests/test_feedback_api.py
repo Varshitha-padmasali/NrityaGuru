@@ -4,7 +4,7 @@ import json
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.deps import get_evidence_service, get_feedback_service, get_limiter
+from app.api.deps import get_feedback_workflow, get_limiter
 from app.core.config import Settings
 from app.core.rate_limit import SlidingWindowLimiter
 from app.db.database import get_db
@@ -14,9 +14,10 @@ from app.schemas.evaluation import EvidenceSource
 from app.services.evaluation_errors import EvaluationValidationError
 from app.services.evaluation_evidence import EvidenceService, build_evidence_service
 from app.services.feedback_service import FeedbackService
+from app.services.feedback_workflow import FeedbackWorkflow
 from app.core.enums import EvaluationErrorCode
 from app.services.gemini_client import GeminiRateLimitError
-from tests.factories import FakeGenerator, make_reference_info
+from tests.factories import FakeGenerator, InMemoryFeedbackStore, make_reference_info
 
 
 def _fake_lookup(db, result, *, include_unverified=False):
@@ -36,9 +37,11 @@ def make_client():
     def _make(generator=None, evidence_service=None, limiter=None):
         app = create_app()
         app.dependency_overrides[get_db] = lambda: None
-        app.dependency_overrides[get_evidence_service] = lambda: evidence_service or EvidenceService(
+        evidence = evidence_service or EvidenceService(
             MockEvaluationStore(), EvidenceSource.MOCK_STORE, reference_lookup=_fake_lookup)
-        app.dependency_overrides[get_feedback_service] = lambda: FeedbackService(generator, "test-model" if generator else None)
+        workflow = FeedbackWorkflow(
+            evidence, FeedbackService(generator, "test-model" if generator else None), InMemoryFeedbackStore())
+        app.dependency_overrides[get_feedback_workflow] = lambda: workflow
         app.dependency_overrides[get_limiter] = lambda: limiter or SlidingWindowLimiter(1000, 60)
         return TestClient(app)
 

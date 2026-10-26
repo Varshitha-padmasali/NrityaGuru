@@ -18,7 +18,7 @@ The word lists are classification hints only. They contain no Bharatanatyam know
 
 ## Known limitations
 - Lexicons are English and small. Indic-script text is tokenized but not classified beyond "other".
-- Capitalised words after a newline-less lowercase word (e.g. "the Moon") are treated as entities.
+- A capitalised word in the middle of a sentence (e.g. "the Moon") is treated as an entity: a known false positive.
 - Nouns that are also verbs (dance, play, love) are labelled actions when in the verb lexicon.
 - Multi-word concepts ("lotus flower") are not detected as one unit yet.
 - Extracted concepts are candidates. Whether a mapping exists is decided only by the knowledge base.
