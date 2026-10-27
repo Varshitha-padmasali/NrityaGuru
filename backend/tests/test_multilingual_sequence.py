@@ -268,6 +268,8 @@ def test_gemini_transport_failure_uses_the_same_deterministic_fallback(db_sessio
     result = generate_multilingual_sequence(db_session, "The river flows.", mode="ai_assisted", generator=BrokenGenerator(), include_unverified=True)
     assert result.gemini_used is False
     assert [step.mudra_id for step in result.ordered_sequence] == ["mudra_pataka"]
+    assert "Gemini was unavailable" in result.sentence_translations[0].note
+    assert "not configured" not in result.sentence_translations[0].note
 
 
 def test_gemini_selection_failure_retains_only_database_matches(db_session):

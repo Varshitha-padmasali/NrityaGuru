@@ -369,7 +369,7 @@ def generate_multilingual_sequence(
             original_sentence=sentence,
             english_translation=translation,
             translated=translation is not None,
-            note=None if translation is not None else "English translation unavailable; Gemini was not configured or its translation output was rejected.",
+            note=None if translation is not None else "English translation unavailable because Gemini was unavailable or its translation output could not be validated.",
         ))
 
     events = [SemanticEvent(**event.model_dump()) for event in analysis.events]

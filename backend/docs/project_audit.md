@@ -1,6 +1,6 @@
 # NrityaGuru Project Audit and Completion Record
 
-Updated 26 October 2026. This report distinguishes code present in the repository from
+Updated 27 October 2026. This report distinguishes code present in the repository from
 features verified against a live service, real camera, Gemini, PostgreSQL, or trained model.
 
 ## Architecture found
@@ -63,7 +63,14 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
 - Made no changes to any file under `frontend/`; recorded SHA-256 hashes for all 133 frontend
   source/config files and verified them after implementation.
 - Rebuilt and started the backend with PostgreSQL. Alembic revision `0002_practice_reference`
-  ran and the repeatable seed loaded 52 mudras, 3 sources, and 6 mappings. No volume was removed.
+  ran and the repeatable seed loaded 52 mudras, 4 sources, and 398 mappings. No volume was removed.
+- Configured Compose to load the server-only `backend/.env` for the backend container. Verified
+  the Gemini setting is present by checking only its boolean state and confirmed backend
+  readiness. No Gemini API request was made.
+- Downloaded Google's official Hand Landmarker task to the ignored `artifacts/` directory, verified
+  that it initializes in Linux Docker, and detected one hand in a local sample image. The full
+  dataset pass was stopped because AMD64 emulation on this Apple Silicon host was too slow; no
+  partial CSV or model was retained.
 
 ## Feature status
 
@@ -71,12 +78,13 @@ features verified against a live service, real camera, Gemini, PostgreSQL, or tr
 |---|---|---|
 | FastAPI imports and HTTP app startup | Complete and live-tested | Running backend responds to health/readiness and frontend-shaped APIs inside Docker |
 | PostgreSQL persistence | Complete and live-tested | Compose readiness passed; migration revision `0002_practice_reference` and PostgreSQL catalog queries succeeded |
-| Idempotent knowledge seed | Complete and live-tested | PostgreSQL has 52 mudras, 3 sources, 6 mappings; startup seed is repeatable |
+| Idempotent knowledge seed | Complete and live-tested | PostgreSQL has 52 mudras, 4 sources, 398 mappings; startup seed is repeatable |
 | Frozen frontend contract integration | Implemented and tested | Numeric aliases, catalogue/detail/retrieval/tutor/session/progress/feedback shapes adapted in backend; no frontend files changed |
-| Knowledge retrieval and grounded fallback | Implemented and live-tested | River retrieved Pataka as `needs_review`; tutor returned knowledge-only fallback because no Gemini key is configured |
-| Dataset validation and canonical crosswalk | Complete for current local dataset scan | 50 directories, 28,431 readable JPGs, no corrupt images; candidate label crosswalk awaits expert review |
+| Gemini configuration and guarded integration | Configured; provider calls not made | `backend/.env` is loaded by Compose; backend reports key configured without revealing it; Gemini tests use fakes and pass; no live request was made |
+| Knowledge retrieval and grounded fallback | Implemented and live-tested | River retrieved Pataka as `needs_review`; grounded fallback remains available when Gemini is unavailable |
+| Dataset validation and canonical crosswalk | Dataset scan complete; task inference smoke-tested | 50 directories, 28,431 readable JPGs; official task detects a hand in Docker; candidate label crosswalk awaits expert review |
 | MLP/DTW algorithms | Implemented and unit-tested | No trained bundle or genuine reference sequences; no real prediction/evaluation claim |
-| Reference sequence format | Implemented and unit-tested | Version 1 validator exists; no reference recordings have been supplied/reviewed |
+| Reference sequence format | Implemented and unit-tested | Version 1 validator exists; teacher-approved reference clips are still required |
 | Browser camera and recording controls | Implemented with mocked tests | No real camera/browser end-to-end run was performed in this pass |
 | Practice reference discovery | Complete as a safe capability boundary | Returns `[]` until model and validated reference sequences exist |
 | Session API and bounded video decoding | Implemented, partial | Creation/upload/results endpoints, temp cleanup, and resource limits exist; evaluation still returns a structured unavailable response without a compatible task/model/reference and verified runtime |
@@ -120,7 +128,7 @@ npm run lint
 npm run build
 ```
 
-Latest results: backend 497 passed/1 deselected; evaluation 53 passed; vision 71 passed;
+Latest results: backend 541 passed/1 deselected; evaluation 53 passed; vision 71 passed;
 frontend Vitest 58 passed without editing frontend files.
 The backend Docker image built and ran; PostgreSQL readiness and frontend HTTP 200 were verified.
 
@@ -134,10 +142,10 @@ docker compose up -d --build db backend
 
 PostgreSQL is available on host port 5433, FastAPI on `http://localhost:8000` (Swagger at `/docs`),
 and the existing Next.js container on `http://localhost:3000`. Compose migrates and seeds PostgreSQL
-on backend startup. The current frontend container remains untouched. A clean frontend build cannot
-be performed until its missing Dockerfile is supplied. Set
-`GEMINI_API_KEY` in the shell before Compose if live Gemini explanations are desired; no key is
-required for retrieval or fallback explanations. The configured browser origin is
+on backend startup and reads the server-side key from `backend/.env`. The current frontend container
+remains untouched. A clean frontend build cannot be performed until its missing Dockerfile is
+supplied. Gemini provider authentication/model entitlement has not been verified with a live API
+request. The configured browser origin is
 `http://localhost:3000`.
 
 Alembic migration execution was verified against the Compose PostgreSQL service. No Docker volume
@@ -145,14 +153,14 @@ was removed and the local SQLite database was left untouched.
 
 ## Remaining work and order
 
-1. Run the Linux/amd64 evaluation container from `mac_m1_runbook.md` to process actual dataset
-   images, train the MLP, and produce honest held-out metrics; verify uncertain class mappings
-   with a dance teacher before describing classes as culturally verified.
-2. Collect genuine consented teacher recordings, convert them to candidate references, obtain
+1. Run dataset extraction and MLP training on a native Linux/AMD64 host (or another suitable
+   accelerator); report held-out metrics and verify uncertain class mappings with a dance teacher.
+2. Collect genuine consented teacher recordings (the user can provide these), convert them to candidate references, obtain
    teacher review, and ingest the approved sequences.
 3. Run the separate native-runtime smoke command with the produced artifacts; only then enable
    the evaluator gate and exercise the actual browser camera flow.
-4. Configure a Gemini key for an authorized real API smoke test, test the camera in a browser,
-   and supply authentic teacher references/model assets before enabling evaluation.
+4. Only if authorized later, run a real Gemini API check; live calls were intentionally not made
+   during this pass. Test the camera in a browser and supply authentic teacher references/model
+   assets before enabling evaluation.
 5. Ask before adding a frontend Dockerfile/PostCSS build setup; the strict frontend freeze currently
    prevents a clean frontend image build from source.

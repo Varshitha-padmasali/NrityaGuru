@@ -13,6 +13,7 @@ SDK facts used (verified against Google's current docs/release notes, Oct 2026):
 Not verified by execution: this environment had no network access or API key.
 """
 import logging
+import time
 from typing import TYPE_CHECKING, Any, Protocol
 
 from app.core.enums import TutorFallbackReason
@@ -138,18 +139,28 @@ class GeminiTextGenerator:
 
     def generate(self, *, system_instruction: str, prompt: str) -> str:
         config = self._build_config(system_instruction)
-        try:
-            response = self._client.models.generate_content(
-                model=self._model, contents=prompt, config=config
-            )
-        except GeminiError:
-            raise
-        except Exception as exc:  # noqa: BLE001 - deliberately broad, then classified
-            # Log only the exception type and numeric code: messages may contain request details.
-            logger.warning(
-                "Gemini call failed: %s (code=%s)", type(exc).__name__, getattr(exc, "code", None)
-            )
-            raise classify_error(exc) from None
+        response = None
+        for attempt in range(2):
+            try:
+                response = self._client.models.generate_content(
+                    model=self._model, contents=prompt, config=config
+                )
+                break
+            except GeminiError:
+                raise
+            except Exception as exc:  # noqa: BLE001 - classify without retaining upstream text
+                error = classify_error(exc)
+                # One bounded retry smooths transient provider 5xx/timeouts. Never retry
+                # authentication, model, validation, or quota errors; logs omit request data.
+                retryable = isinstance(error, (GeminiTimeoutError, GeminiUnavailableError))
+                logger.warning(
+                    "Gemini call failed: %s (code=%s, attempt=%s)",
+                    type(exc).__name__, getattr(exc, "code", None), attempt + 1,
+                )
+                if attempt == 0 and retryable:
+                    time.sleep(0.25)
+                    continue
+                raise error from None
 
         try:
             text = response.text

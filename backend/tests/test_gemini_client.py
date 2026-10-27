@@ -76,3 +76,44 @@ def test_reasons_map_to_fallback_enum():
 def test_missing_api_key_is_a_configuration_error():
     with pytest.raises(GeminiNotConfiguredError):
         GeminiTextGenerator(api_key="", model="m")
+
+
+class _Response:
+    text = '{"ok":true}'
+
+
+class _Models:
+    def __init__(self, outcomes):
+        self.outcomes = list(outcomes)
+        self.calls = 0
+
+    def generate_content(self, **kwargs):
+        self.calls += 1
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, Exception):
+            raise outcome
+        return outcome
+
+
+class _Client:
+    def __init__(self, outcomes):
+        self.models = _Models(outcomes)
+
+
+def test_transient_gateway_timeout_is_retried_once(monkeypatch):
+    client = _Client([_Err(code=504), _Response()])
+    generator = GeminiTextGenerator(api_key="fake-test-key", model="m", client=client)
+    monkeypatch.setattr(generator, "_build_config", lambda _: object())
+    monkeypatch.setattr("app.services.gemini_client.time.sleep", lambda _: None)
+
+    assert generator.generate(system_instruction="system", prompt="prompt") == '{"ok":true}'
+    assert client.models.calls == 2
+
+
+def test_auth_error_is_not_retried():
+    client = _Client([_Err(code=403), _Response()])
+    generator = GeminiTextGenerator(api_key="fake-test-key", model="m", client=client)
+
+    with pytest.raises(GeminiAuthOrModelError):
+        generator.generate(system_instruction="system", prompt="prompt")
+    assert client.models.calls == 1

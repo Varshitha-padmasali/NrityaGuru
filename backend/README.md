@@ -11,10 +11,12 @@ this checkout, so evaluation returns an explicit unavailable response.
 
 **Honest status:** the knowledge seed contains 52 source-cited names/categories, not 52 fully
 verified gesture descriptions. The local Kaggle archive scan found 50 folders and 28,431 readable
-images mapping to 48 canonical IDs; a compatible recognition model is not currently loaded. The
-Gemini code has not been run against the real API. Practice reference discovery currently returns
-an empty list because this checkout has neither a validated reference sequence nor a trained
-classifier. Progress reads persisted session/result/feedback rows; authentication is not present.
+images mapping to 48 canonical IDs; a compatible recognition model is not currently loaded. Compose
+loads the server-only key from `backend/.env` and reports it configured, but no live Gemini request
+has been made in this implementation pass. Offline tests use fake generators. Practice reference
+discovery currently returns an empty list because there is no validated reference sequence or
+trained classifier. Progress reads persisted session/result/feedback rows; authentication is not
+present.
 Read
 `docs/implementation_status.md` and `docs/mudra_catalogue.md`.
 
@@ -39,7 +41,7 @@ docker compose up -d db                      # 1. local PostgreSQL (change the p
 cd backend
 python3 -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt              # 2. dependencies (version ranges; run `pip freeze > requirements.lock.txt` to record exact versions)
-cp .env.example .env                         # 3. settings (Windows: copy .env.example .env). Put your real key only in .env
+cp -n .env.example .env                      # 3. first-time settings only; preserves an existing key file
 alembic upgrade head                         # 4. versioned, data-preserving schema setup/upgrade
 python -m app.db.seed                        # 5. load the validated seed data (safe to repeat)
 python -m scripts.smoke_gemini               # 6. optional: checks your key, model id and SDK with one tiny request
@@ -82,13 +84,15 @@ pytest -q                          # everything except the live test
 python -m scripts.static_checks    # 11 static checks (also run inside pytest)
 pytest -m live                     # optional: one real Gemini call, mock data only
 ```
-Expected summary: **476 passed, 1 deselected** with `google-genai` installed; **469 passed, 1 skipped, 1 deselected** without it
+Latest verified summary: **539 passed, 1 deselected**; the deselected test is the live Gemini test.
 (the whole SDK test file is skipped as one module). If your numbers differ, see `docs/implementation_status.md`.
 
 ## API
-The API includes health/readiness, knowledge catalogue and retrieval, tutor, feedback, practice
-reference discovery, and progress routes; webcam session/upload/inference routes are not
-implemented. See `docs/api_reference.md` and the audit at `docs/project_audit.md`.
+The API includes health/readiness, knowledge catalogue and retrieval, multilingual lyric-to-mudra
+sequence generation, tutor, feedback, bounded practice-session uploads/results, practice-reference
+discovery, and progress routes. Real video evaluation stays unavailable until a compatible model
+and teacher-reviewed temporal references are installed and the evaluator runtime is verified. See
+`docs/api_reference.md` and `docs/project_audit.md`.
 
 ## Project layout
 ```

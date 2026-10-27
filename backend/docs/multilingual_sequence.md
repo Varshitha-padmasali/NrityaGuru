@@ -42,4 +42,9 @@ docker compose build backend
 docker compose up -d backend
 ```
 
-The Learn UI is wired to the sequence response. The API tests use a temporary SQLite database; Docker/PostgreSQL service status could not be checked in this environment because access to the Docker socket was denied. Gemini is not configured locally, so live model calls were not made; mocked Gemini, validation, and fallback paths are covered by the test suite.
+The Learn UI is wired to the sequence response. The local backend is running against a fresh,
+ignored SQLite database seeded with 52 mudras and 398 mappings. The server-side Gemini setting is
+configured and is never exposed to the browser. No live model call was made during this pass; mock
+Gemini, validation, timeout retry, and fallback paths are covered by the test suite. The last
+observed live request (from the user's screenshot session) received HTTP 504 twice; the client now
+retries one transient timeout before using the honest deterministic fallback.

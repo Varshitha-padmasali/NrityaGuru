@@ -1,6 +1,6 @@
 # NrityaGuru implementation status
 
-Updated 26 October 2026. The complete repository audit, baseline findings, verified changes,
+Updated 27 October 2026. The complete repository audit, baseline findings, verified changes,
 commands, and remaining work are in [project_audit.md](project_audit.md).
 
 ## Current status
@@ -11,7 +11,7 @@ commands, and remaining work are in [project_audit.md](project_audit.md).
 | Knowledge base | 52 source-cited names/categories; no entries are teacher-verified |
 | Dataset | 50 folders / 28,431 valid JPGs / 48 candidate canonical IDs; crosswalk still requires teacher review |
 | Frozen frontend integration | Backend adapters now match its numeric IDs and compact response shapes; no frontend files were modified. API endpoints verified inside the running containers |
-| Gemini | Grounded service and safe fallback implemented; real API call not run because no key is configured |
+| Gemini | Grounded service and safe fallback implemented; `backend/.env` is loaded in Compose and the setting is verified, but no live provider call was made in this pass |
 | Browser camera | Capture and recording components exist and have mock-based coverage; real hardware not tested |
 | Practice references | API returns an empty list until a compatible classifier and validated reference sequences exist |
 | Practice session/API | Session creation, bounded video upload/decode, result retrieval, and explicit unavailable responses implemented; landmark inference is blocked |
@@ -20,14 +20,14 @@ commands, and remaining work are in [project_audit.md](project_audit.md).
 | DTW | Sequence algorithm exists; no authentic reference sequences are available |
 | Reference sequence contract | Version 1 validator, candidate preparation CLI, persistence and reviewer-token intake are implemented; no authentic recordings are present |
 | Progress/access | Development history is explicitly installation-wide/shared; progress, session, result and feedback access are blocked in production until authentication is added |
-| Database | PostgreSQL Compose service is healthy; Alembic revision `0002_practice_reference` ran and repeatable seed loaded 52 mudras, 3 sources, and 6 mappings |
+| Database | PostgreSQL was healthy before the Docker daemon became unavailable; local fresh SQLite is migrated and seeded with 52 mudras, 4 sources, and 398 mappings |
 | Deployment | Backend image rebuilt and running; an existing frontend container is healthy. Frontend source has no Dockerfile, so a clean frontend image rebuild is blocked by the strict frontend freeze |
 
 ## Test evidence
 
 Latest executed checks:
 
-- Backend: 497 passed, 1 deselected, 1 third-party deprecation warning.
+- Backend: 541 passed, 1 deselected, 1 third-party deprecation warning after retry and fallback-message updates.
 - Evaluation module: 53 passed (run with `PYTHONPATH=.` from `evaluation_module/`), including variant exclusion, model dependency-version checks, candidate preparation and reference-contract tests.
 - Vision module: 71 passed.
 - Frontend: 58 Vitest tests passed; the restored frontend source/config was left unchanged.
@@ -51,16 +51,16 @@ response shapes were separately checked in the running containers.
 
 ## Important limits
 
-The real MediaPipe hand task file was downloaded to temporary storage and tested on this Mac.
-MediaPipe's native graph failed to start because it required an unavailable macOS GPU service,
-even with CPU delegate selection and a second tested MediaPipe version. The Linux/amd64
-extraction/training container and runbook are present. The backend Docker image ran, but its native
-evaluation gate is still off. No real landmarks were extracted, no MLP was trained, and no accuracy
-is reported. Artifacts are not in Git.
+The official MediaPipe hand task file was downloaded to ignored `artifacts/`. It initializes and
+detects a hand in a sample image in the Linux/amd64 evaluation image. Full extraction was attempted
+in four workers, but Docker Desktop's daemon exited with an unexpected EOF; only partial CSVs were
+produced and removed, no MLP was trained, and no accuracy is reported. The macOS native MediaPipe
+graph also failed on this host. The backend evaluation gate remains off. Artifacts are not in Git.
 
 The local SQLite database was not reset or migrated. Compose initialized its PostgreSQL volume,
 then applied Alembic revision `0002_practice_reference` and idempotently seeded 52 mudras, three
-sources, and six mappings. No practice session was written during live verification.
+sources, and 398 mappings. No practice session was written during live verification. Compose passed
+the key setting through to the backend container; the key itself was never printed or logged.
 
 No real reference sequences or reference media are present. Candidate/verified intake is now
 persistent and reviewer-token gated. Synthetic demo sequences and mock
