@@ -104,6 +104,7 @@ class GeminiTextGenerator:
         *,
         api_key: str,
         model: str,
+        fallback_model: str | None = None,
         timeout_seconds: float = 30.0,
         thinking_level: str | None = None,
         client: Any | None = None,
@@ -111,6 +112,7 @@ class GeminiTextGenerator:
         if not api_key:
             raise GeminiNotConfiguredError("GEMINI_API_KEY is not set.")
         self._model = model
+        self._fallback_model = fallback_model if fallback_model and fallback_model != model else None
         self._thinking_level = thinking_level
         if client is None:
             try:
@@ -139,36 +141,52 @@ class GeminiTextGenerator:
 
     def generate(self, *, system_instruction: str, prompt: str) -> str:
         config = self._build_config(system_instruction)
-        response = None
-        for attempt in range(2):
-            try:
-                response = self._client.models.generate_content(
-                    model=self._model, contents=prompt, config=config
-                )
-                break
-            except GeminiError:
-                raise
-            except Exception as exc:  # noqa: BLE001 - classify without retaining upstream text
-                error = classify_error(exc)
-                # One bounded retry smooths transient provider 5xx/timeouts. Never retry
-                # authentication, model, validation, or quota errors; logs omit request data.
-                retryable = isinstance(error, (GeminiTimeoutError, GeminiUnavailableError))
-                logger.warning(
-                    "Gemini call failed: %s (code=%s, attempt=%s)",
-                    type(exc).__name__, getattr(exc, "code", None), attempt + 1,
-                )
-                if attempt == 0 and retryable:
-                    time.sleep(0.25)
-                    continue
-                raise error from None
+        models = [(self._model, 2)]
+        if self._fallback_model:
+            # The fallback also gets one bounded retry for provider 5xx/timeouts.
+            models.append((self._fallback_model, 2))
 
-        try:
-            text = response.text
-        except Exception:  # noqa: BLE001 - some SDK versions raise when output is blocked
-            text = None
-        if not text or not text.strip():
-            raise GeminiEmptyResponseError("Gemini returned no text.")
-        return text
+        last_error: GeminiError | None = None
+        for model_index, (model, max_attempts) in enumerate(models):
+            for attempt in range(max_attempts):
+                try:
+                    response = self._client.models.generate_content(
+                        model=model, contents=prompt, config=config
+                    )
+                    try:
+                        text = response.text
+                    except Exception:  # noqa: BLE001 - blocked response varies by SDK version
+                        text = None
+                    if not text or not text.strip():
+                        raise GeminiEmptyResponseError("Gemini returned no text.")
+                    if model_index:
+                        logger.info("Gemini primary model unavailable; fallback model responded.")
+                    return text
+                except GeminiEmptyResponseError:
+                    raise
+                except GeminiError:
+                    raise
+                except Exception as exc:  # noqa: BLE001 - never retain provider response text
+                    error = classify_error(exc)
+                    retryable = isinstance(error, (GeminiTimeoutError, GeminiUnavailableError))
+                    logger.warning(
+                        "Gemini call failed: %s (code=%s, model_attempt=%s, attempt=%s)",
+                        type(exc).__name__, getattr(exc, "code", None), model_index + 1, attempt + 1,
+                    )
+                    last_error = error
+                    if retryable and attempt < max_attempts - 1:
+                        time.sleep(0.5 * (2**attempt))
+                        continue
+                    # A 429 can be specific to one model. Try the configured fallback
+                    # once before reporting a provider/quota failure to the application.
+                    if (retryable or isinstance(error, GeminiRateLimitError)) and model_index == 0 and self._fallback_model:
+                        logger.info("Retrying Gemini request with the configured fallback Flash model.")
+                        break
+                    raise error from None
+
+        if last_error:
+            raise last_error
+        raise GeminiUnavailableError("Gemini could not be reached.")
 
 
 def build_text_generator(settings: "Settings") -> GeminiTextGenerator:
@@ -178,6 +196,7 @@ def build_text_generator(settings: "Settings") -> GeminiTextGenerator:
     return GeminiTextGenerator(
         api_key=settings.gemini_api_key.get_secret_value(),
         model=settings.gemini_model,
+        fallback_model=settings.gemini_fallback_model,
         timeout_seconds=settings.gemini_timeout_seconds,
         thinking_level=settings.gemini_thinking_level,
     )

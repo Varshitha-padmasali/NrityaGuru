@@ -82,14 +82,10 @@ def _decisions(rows):
 def test_english_sequence_keeps_original_phrases_and_labels_inference(db_session):
     load_seed(db_session)
     text = "Krishna is dancing in the garden."
-    generator = QueueGenerator(
-        _analysis(text),
-        _decisions([
+    generator = QueueGenerator(_decisions([
             {"event_order": 1, "mudra_ids": ["mudra_shikhara"], "reason": "An AI suggestion for the named figure.", "confidence": 0.42, "uncertainty": []},
-            {"event_order": 2, "mudra_ids": ["mudra_allapadma"], "reason": "The retrieved source lists dance as an alternate usage.", "confidence": 0.8, "uncertainty": []},
             {"event_order": 3, "mudra_ids": ["mudra_pataka"], "reason": "A catalogue-only garden suggestion.", "confidence": 0.31, "uncertainty": []},
-        ]),
-    )
+        ]))
     result = generate_multilingual_sequence(db_session, text, mode=SequenceMode.AI_ASSISTED, generator=generator, include_unverified=True)
     assert result.detected_language.code == "en" and result.gemini_used is True
     assert [step.phrase for step in result.ordered_sequence] == ["Krishna", "dancing", "garden"]
@@ -98,7 +94,7 @@ def test_english_sequence_keeps_original_phrases_and_labels_inference(db_session
     assert "does not support this AI-inferred association with the lyric concept" in result.ordered_sequence[0].source_citations[0].claim_scope
     assert result.ordered_sequence[1].source_citations[0].source_id == "src_mirror_of_gesture_1917"
     assert all(step.original_text == text for step in result.ordered_sequence)
-    assert generator.calls[0][0] and generator.calls[1][0]
+    assert len(generator.calls) == 1
 
 
 def test_source_supported_english_candidates_can_be_used_without_gemini(db_session):
@@ -146,55 +142,33 @@ def test_requested_english_lyrics_examples_use_database_or_report_gaps(db_sessio
 def test_invalid_ai_ids_are_discarded_and_do_not_invent_citations(db_session):
     load_seed(db_session)
     text = "A zephyr arrives."
-    analysis = {
-        "language_code": "en", "language_name": "English", "language_confidence": 0.9,
-        "events": [{"order": 1, "phrase": "zephyr", "event_type": "nature", "concepts": ["zephyr"], "lookup_terms": ["zephyr"], "negated": False, "context": ""}],
-        "caveats": [],
-    }
-    _add_translations(analysis, text)
-    generator = QueueGenerator(analysis, _decisions([
+    generator = QueueGenerator(_decisions([
         {"event_order": 1, "mudra_ids": ["not_a_database_id"], "reason": "made up", "confidence": 0.9, "uncertainty": []},
     ]))
     result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=generator, include_unverified=True)
     assert result.ordered_sequence == []
     assert result.unmapped_concepts[0].concept == "zephyr"
-    assert any("Invalid catalogue IDs" in caveat for caveat in result.interpretation_caveats)
+    assert any("52-mudra catalogue" in caveat for caveat in result.interpretation_caveats)
 
 
 def test_negated_source_match_is_not_mislabelled_as_a_traditional_positive_usage(db_session):
     load_seed(db_session)
     text = "The river does not flow."
-    analysis = {
-        "language_code": "en", "language_name": "English", "language_confidence": 0.99,
-        "events": [{"order": 1, "phrase": "not flow", "event_type": "action", "concepts": ["flow"],
-                    "lookup_terms": ["flow"], "negated": True, "tense": "present", "relations": ["river is agent"], "context": "river does not flow"}],
-        "caveats": [],
-    }
-    _add_translations(analysis, text)
-    generator = QueueGenerator(analysis, _decisions([
-        {"event_order": 1, "mudra_ids": ["mudra_pataka"], "reason": "Possible depiction of the river despite negation.", "confidence": 0.3, "uncertainty": []},
+    generator = QueueGenerator(_decisions([
+        {"event_order": 2, "mudra_ids": ["mudra_pataka"], "reason": "Possible depiction despite negation.", "confidence": 0.3, "uncertainty": []},
     ]))
     result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=generator, include_unverified=True)
-    assert result.ordered_sequence[0].selection_type == SelectionType.AI_INFERRED
-    assert "negated" in " ".join(result.ordered_sequence[0].uncertainty_notes)
-    assert all("does not support this AI-inferred association" in citation.claim_scope for citation in result.ordered_sequence[0].source_citations)
+    flow_step = next(step for step in result.ordered_sequence if step.phrase == "flow")
+    assert flow_step.selection_type == SelectionType.AI_INFERRED
+    assert "negated" in " ".join(flow_step.uncertainty_notes)
+    assert all("does not support this AI-inferred association" in citation.claim_scope for citation in flow_step.source_citations)
 
 
 def test_reusing_a_mudra_does_not_merge_ai_inference_into_a_source_supported_step(db_session):
     load_seed(db_session)
     text = "The river is near the garden."
-    analysis = {
-        "language_code": "en", "language_name": "English", "language_confidence": 0.99,
-        "events": [
-            {"order": 1, "phrase": "river", "event_type": "nature", "concepts": ["river"], "lookup_terms": ["river"], "negated": False, "context": ""},
-            {"order": 2, "phrase": "garden", "event_type": "location", "concepts": ["garden"], "lookup_terms": ["garden"], "negated": False, "context": ""},
-        ],
-        "caveats": [],
-    }
-    _add_translations(analysis, text)
-    generator = QueueGenerator(analysis, _decisions([
-        {"event_order": 1, "mudra_ids": ["mudra_pataka"], "reason": "Source-backed river mapping.", "confidence": 0.8, "uncertainty": []},
-        {"event_order": 2, "mudra_ids": ["mudra_pataka"], "reason": "AI suggestion for garden.", "confidence": 0.3, "uncertainty": []},
+    generator = QueueGenerator(_decisions([
+        {"event_order": 3, "mudra_ids": ["mudra_pataka"], "reason": "AI suggestion for garden.", "confidence": 0.3, "uncertainty": []},
     ]))
     result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=generator, include_unverified=True)
     assert [step.selection_type for step in result.ordered_sequence] == [SelectionType.SOURCE_SUPPORTED, SelectionType.AI_INFERRED]
@@ -218,14 +192,7 @@ def test_eight_mudra_catalogue_never_substitutes_an_unrelated_gesture(db_session
 def test_full_catalogue_is_default_and_ai_inference_still_uses_real_catalogue_ids(db_session):
     load_seed(db_session)
     text = "A zephyr appears."
-    analysis = {
-        "language_code": "en", "language_name": "English", "language_confidence": 0.99,
-        "events": [{"order": 1, "phrase": "zephyr", "event_type": "nature", "concepts": ["zephyr"],
-                    "lookup_terms": ["zephyr"], "negated": False, "context": ""}],
-        "caveats": [],
-    }
-    _add_translations(analysis, text)
-    generator = QueueGenerator(analysis, _decisions([
+    generator = QueueGenerator(_decisions([
         {"event_order": 1, "mudra_ids": ["mudra_berunda"], "reason": "A catalogue-only suggestion.", "confidence": 0.2, "uncertainty": []},
     ]))
     result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=generator, include_unverified=True)
@@ -235,59 +202,86 @@ def test_full_catalogue_is_default_and_ai_inference_still_uses_real_catalogue_id
     assert result.ordered_sequence[0].source_citations
 
 
-def test_malformed_analysis_falls_back_to_deterministic_database_retrieval(db_session):
+def test_selection_prompt_normalizes_catalogue_names_and_string_confidence(db_session):
     load_seed(db_session)
-    generator = QueueGenerator({"wrong": "shape"})
-    result = generate_multilingual_sequence(db_session, "The river flows.", mode="ai_assisted", generator=generator, include_unverified=True)
+    text = "A zephyr appears."
+    generator = QueueGenerator({"selections": [{
+        "event_order": 1,
+        "mudra_ids": ["Mayura"],
+        "reason": "A bird-related catalogue suggestion.",
+        "confidence": "0.55",
+        "uncertainty": [],
+        "model_note": "Extra explanatory fields are ignored.",
+    }]})
+    result = generate_multilingual_sequence(
+        db_session, text, mode="ai_assisted", generator=generator, include_unverified=True
+    )
+    assert len(generator.calls) == 1  # English skips translation prompt 1.
+    payload = json.loads(generator.calls[0][1])
+    assert len(payload["catalogue"]) == 52
+    assert [step.mudra_id for step in result.ordered_sequence] == ["mudra_mayura"]
+    assert result.ordered_sequence[0].selection_type == SelectionType.AI_INFERRED
+
+
+def test_english_identity_translation_does_not_depend_on_gemini(db_session):
+    load_seed(db_session)
+    result = generate_multilingual_sequence(db_session, "The river flows.", mode="ai_assisted", generator=None, include_unverified=True)
     assert result.gemini_used is False
     assert result.ordered_sequence[0].mudra_id == "mudra_pataka"
-    assert result.detected_language.code == "und-Latn"
-    assert any("deterministic extraction" in caveat for caveat in result.interpretation_caveats)
+    assert result.detected_language.code == "en"
+    assert result.sentence_translations[0].english_translation == "The river flows."
 
 
-def test_incomplete_sentence_translation_output_is_rejected_for_the_whole_input(db_session):
+def test_english_identity_translates_every_sentence_without_gemini(db_session):
     load_seed(db_session)
     text = "The river flows. A tree stands."
-    incomplete = _analysis(text)
-    incomplete["sentence_translations"] = incomplete["sentence_translations"][:1]
     result = generate_multilingual_sequence(
-        db_session, text, mode="ai_assisted", generator=QueueGenerator(incomplete), include_unverified=True
+        db_session, text, mode="ai_assisted", generator=None, include_unverified=True
     )
     assert result.gemini_used is False
     assert len(result.sentence_translations) == 2
-    assert all(not item.translated and item.english_translation is None for item in result.sentence_translations)
+    assert all(item.translated and item.english_translation == item.original_sentence for item in result.sentence_translations)
 
 
-def test_gemini_transport_failure_uses_the_same_deterministic_fallback(db_session):
+def test_gemini_transport_failure_reports_translation_unavailable_for_telugu(db_session):
     load_seed(db_session)
 
     class BrokenGenerator:
         def generate(self, *, system_instruction, prompt):
             raise GeminiUnavailableError("mock unavailable")
 
-    result = generate_multilingual_sequence(db_session, "The river flows.", mode="ai_assisted", generator=BrokenGenerator(), include_unverified=True)
+    text = "కృష్ణుడు నదిలో నడుస్తున్నాడు."
+    result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=BrokenGenerator(), include_unverified=True)
     assert result.gemini_used is False
-    assert [step.mudra_id for step in result.ordered_sequence] == ["mudra_pataka"]
-    assert "Gemini was unavailable" in result.sentence_translations[0].note
+    assert result.ordered_sequence == []
+    assert "temporarily unavailable" in result.sentence_translations[0].note
     assert "not configured" not in result.sentence_translations[0].note
 
 
 def test_gemini_selection_failure_retains_only_database_matches(db_session):
     load_seed(db_session)
-    text = "The river flows."
+    text = "A zephyr appears beside the river."
     analysis = {
         "language_code": "en", "language_name": "English", "language_confidence": 0.99,
-        "events": [{"order": 1, "phrase": "river", "event_type": "nature", "concepts": ["river"],
-                    "lookup_terms": ["river"], "negated": False, "context": ""}],
+        "events": [
+            {"order": 1, "phrase": "zephyr", "event_type": "nature", "concepts": ["zephyr"],
+             "lookup_terms": ["zephyr"], "negated": False, "context": ""},
+            {"order": 2, "phrase": "river", "event_type": "nature", "concepts": ["river"],
+             "lookup_terms": ["river"], "negated": False, "context": ""},
+        ],
         "caveats": [],
     }
     _add_translations(analysis, text)
-    generator = FailOnSecondCall(analysis)
+    class BrokenSelectionGenerator:
+        def generate(self, *, system_instruction, prompt):
+            raise GeminiUnavailableError("mock unavailable")
+
+    generator = BrokenSelectionGenerator()
     result = generate_multilingual_sequence(db_session, text, mode="ai_assisted", generator=generator, include_unverified=True)
     assert result.gemini_used is True
     assert [step.mudra_id for step in result.ordered_sequence] == ["mudra_pataka"]
     assert all(step.selection_type == SelectionType.SOURCE_SUPPORTED for step in result.ordered_sequence)
-    assert any("only deterministic source-backed" in caveat for caveat in result.interpretation_caveats)
+    assert any("database matches are still shown" in caveat for caveat in result.interpretation_caveats)
 
 
 @pytest.mark.parametrize(

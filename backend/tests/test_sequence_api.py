@@ -36,22 +36,10 @@ def _client(db_session, *, generator=None, allow_unverified=True):
 def test_sequence_api_returns_three_ordered_steps_for_peacock_rain_dancing(db_session):
     load_seed(db_session)
     text = "Peacock is dancing in the rain."
-    analysis = {
-        "language_code": "en", "language_name": "English", "language_confidence": 0.99,
-        "sentence_translations": [{"order": 1, "translation": "A peacock is dancing in the rain."}],
-        "events": [
-            {"order": 1, "phrase": "Peacock", "event_type": "entity", "concepts": ["peacock"], "lookup_terms": ["peacock"], "negated": False, "context": "subject"},
-            {"order": 2, "phrase": "dancing", "event_type": "action", "concepts": ["dancing"], "lookup_terms": ["dance"], "negated": False, "context": "action"},
-            {"order": 3, "phrase": "rain", "event_type": "nature", "concepts": ["rain"], "lookup_terms": ["rain"], "negated": False, "context": "setting"},
-        ],
-        "caveats": [],
-    }
     decisions = {"selections": [
-        {"event_order": 1, "mudra_ids": ["mudra_mayura"], "reason": "AI suggestion for the bird concept.", "confidence": 0.44, "uncertainty": []},
-        {"event_order": 2, "mudra_ids": ["mudra_allapadma"], "reason": "Retrieved source usage.", "confidence": 0.8, "uncertainty": []},
         {"event_order": 3, "mudra_ids": ["mudra_pataka"], "reason": "AI suggestion for the weather concept.", "confidence": 0.29, "uncertainty": []},
     ]}
-    client = _client(db_session, generator=QueueGenerator(analysis, decisions))
+    client = _client(db_session, generator=QueueGenerator(decisions))
     response = client.post("/api/knowledge/sequence", json={"text": text})
     assert response.status_code == 200
     body = response.json()
@@ -59,7 +47,7 @@ def test_sequence_api_returns_three_ordered_steps_for_peacock_rain_dancing(db_se
     assert body["sentence_translations"] == [{
         "position": 1,
         "original_sentence": text,
-        "english_translation": "A peacock is dancing in the rain.",
+        "english_translation": text,
         "translated": True,
         "note": None,
     }]
@@ -71,7 +59,7 @@ def test_sequence_api_returns_three_ordered_steps_for_peacock_rain_dancing(db_se
     )
 
 
-def test_sequence_api_returns_one_translation_for_each_sentence(db_session):
+def test_sequence_api_identity_translates_each_english_sentence(db_session):
     load_seed(db_session)
     client = _client(db_session)
     response = client.post("/api/knowledge/sequence", json={"text": "The river flows. A tree stands."})
@@ -79,7 +67,7 @@ def test_sequence_api_returns_one_translation_for_each_sentence(db_session):
     body = response.json()
     assert len(body["sentence_translations"]) == 2
     assert [item["original_sentence"] for item in body["sentence_translations"]] == ["The river flows.", "A tree stands."]
-    assert all(item["translated"] is False and item["english_translation"] is None for item in body["sentence_translations"])
+    assert all(item["translated"] is True and item["english_translation"] == item["original_sentence"] for item in body["sentence_translations"])
     assert body["gemini_used"] is False
 
 

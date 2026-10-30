@@ -4,17 +4,15 @@ AI-assisted Bharatanatyam learning and practice platform (college mini-project).
 
 | Folder | Owner | Status |
 |---|---|---|
-| `backend/` | Knowledge base, tutor, practice sessions, upload/decode, feedback | 52 source-cited catalogue entries; no verified model or movement references |
+| `backend/` | Knowledge base, tutor, practice sessions, upload/decode, feedback | Seed rebuilt from 52 workbook entries, 50 linked mudra images, and source-tracked meaning/usage mappings |
 | `frontend/` | Next.js frontend | Mudra catalogue, details, retrieval and tutor use the backend schemas |
 | `evaluation_module/` | Landmark extraction, MLP and DTW | Reproducible data/training/reference preparation; model and task assets are not included |
 | `vision/` | Video, hand/pose landmarks and Member 4 adapter | Existing vision pipeline and tests |
-| `evaluation_stub/` | Evaluation examples | Clearly labelled mock documentation/data only |
 | `docker-compose.yml` | - | local PostgreSQL, FastAPI and Next.js services |
 
 Start with `backend/README.md`.
-See `backend/docs/mudra_catalogue.md` for catalogue provenance, dataset validation, and
-the distinction between 52 knowledge records, 50 dataset folders/48 mapped IDs, and the absent
-loaded model.
+See `backend/docs/mudra_catalogue.md` for workbook provenance, image coverage, dataset validation,
+and the distinction between knowledge records and classifier training data.
 See `backend/docs/project_audit.md` for verified status and remaining external dependencies.
 For MacBook Air M1 startup, dataset preparation, evaluator setup, and reviewer-managed reference
 intake, follow [the M1 runbook](backend/docs/mac_m1_runbook.md).

@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     # Verified Oct 2026: Google recommends gemini-3.8-flash for new projects. gemini-2.5-flash
     # still exists but access is limited to existing users since 18 Sep 2026.
     gemini_model: str = "gemini-3.8-flash"
+    # Use the stable prior Flash release when the primary model is overloaded or
+    # reaches a model-specific rate limit.
+    gemini_fallback_model: str | None = "gemini-3.6-flash"
     gemini_timeout_seconds: float = Field(default=30.0, gt=0, le=120)
     # Optional. Valid: LOW, MEDIUM, HIGH. (MINIMAL is rejected by gemini-3.8-flash.)
     # Leave unset to use the model default (MEDIUM).

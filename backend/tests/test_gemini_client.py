@@ -86,9 +86,11 @@ class _Models:
     def __init__(self, outcomes):
         self.outcomes = list(outcomes)
         self.calls = 0
+        self.requested_models = []
 
     def generate_content(self, **kwargs):
         self.calls += 1
+        self.requested_models.append(kwargs.get("model"))
         outcome = self.outcomes.pop(0)
         if isinstance(outcome, Exception):
             raise outcome
@@ -108,6 +110,18 @@ def test_transient_gateway_timeout_is_retried_once(monkeypatch):
 
     assert generator.generate(system_instruction="system", prompt="prompt") == '{"ok":true}'
     assert client.models.calls == 2
+
+
+def test_model_specific_rate_limit_uses_configured_flash_fallback(monkeypatch):
+    client = _Client([_Err(code=429), _Err(code=503), _Response()])
+    generator = GeminiTextGenerator(
+        api_key="fake-test-key", model="primary-flash", fallback_model="fallback-flash", client=client
+    )
+    generator._build_config = lambda _: object()
+    monkeypatch.setattr("app.services.gemini_client.time.sleep", lambda _: None)
+
+    assert generator.generate(system_instruction="system", prompt="prompt") == '{"ok":true}'
+    assert client.models.requested_models == ["primary-flash", "fallback-flash", "fallback-flash"]
 
 
 def test_auth_error_is_not_retried():
